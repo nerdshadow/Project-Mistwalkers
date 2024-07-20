@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MovingMapBehavior : MonoBehaviour
 {
-    public GameObject mapPiece;
+    public List<GameObject> mapPiece = new List<GameObject>();
     public List<GameObject> currentMapPieces = new List<GameObject>();
     public float speed = 1.0f;
     void Start()
@@ -22,9 +22,9 @@ public class MovingMapBehavior : MonoBehaviour
         if (mapPiece == null)
             return;
 
-        currentMapPieces.Add(Instantiate(mapPiece, new Vector3(0, 0, -25), Quaternion.identity));
-        currentMapPieces.Add(Instantiate(mapPiece, new Vector3(0, 0, 0), Quaternion.identity));
-        currentMapPieces.Add(Instantiate(mapPiece, new Vector3(0, 0, 25), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, -25), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, 0), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, 25), Quaternion.identity));
     }
     void MovingMapPieces()
     {
@@ -53,7 +53,7 @@ public class MovingMapBehavior : MonoBehaviour
     {
         if (mapPiece == null)
             return;
-        currentMapPieces.Add(Instantiate(mapPiece, currentMapPieces.Last().transform.position + new Vector3(0, 0, 25), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPiece[0], currentMapPieces.Last().transform.position + new Vector3(0, 0, 25), Quaternion.identity));
     }
     void DeleteMapPiece(GameObject _mapPiece)
     {

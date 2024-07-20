@@ -244,7 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939988afded6f284fbc2ed9f7ed33378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapPiece: {fileID: 4071290468975551145, guid: 4530e81551d23dc4fbced9f1a676cd50, type: 3}
+  mapPiece:
+  - {fileID: 4071290468975551145, guid: 4530e81551d23dc4fbced9f1a676cd50, type: 3}
+  - {fileID: 3323260530270392498, guid: 9d0d957754ca037438813140c2165382, type: 3}
   currentMapPieces: []
   speed: 0.1
 --- !u!4 &274381663
@@ -688,7 +690,7 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.05
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
@@ -1114,7 +1116,7 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.05
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
@@ -1186,7 +1188,7 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.05
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
@@ -1258,7 +1260,7 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.05
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
