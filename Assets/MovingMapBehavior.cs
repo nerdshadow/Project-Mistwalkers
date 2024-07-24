@@ -53,7 +53,7 @@ public class MovingMapBehavior : MonoBehaviour
     {
         if (mapPiece == null)
             return;
-        currentMapPieces.Add(Instantiate(mapPiece[0], currentMapPieces.Last().transform.position + new Vector3(0, 0, 25), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPiece[Random.Range(0, (mapPiece.Count))], currentMapPieces.Last().transform.position + new Vector3(0, 0, 25), Quaternion.identity));
     }
     void DeleteMapPiece(GameObject _mapPiece)
     {
