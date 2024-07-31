@@ -5,12 +5,17 @@ using UnityEngine;
 public class WheelBehaviour : MonoBehaviour
 {
     public WheelCollider currentWheelColl = null;
+    public bool isTurningWheel = true;
     private void OnEnable()
     {
         TryGetWheelCollInParent();
     }
 
-    private void FixedUpdate()
+    //private void FixedUpdate()
+    //{
+    //    UpdateWheelVFX();
+    //}
+    private void Update()
     {
         UpdateWheelVFX();
     }
