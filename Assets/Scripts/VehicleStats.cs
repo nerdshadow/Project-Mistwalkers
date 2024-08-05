@@ -6,8 +6,10 @@ using UnityEngine;
 public class VehicleStats : ScriptableObject
 {
     public float maxSpeed = 60f;
+    public float maxRpm = 500f;
     public float forwardTorque = 100f;
     public float backwardTorque = 100f;
-    public float brakeForce = 80f;
+    public float brakeTorque = 80f;
     public float maxTurnAngle = 15f;
+    public float turnSpeed = 1f;
 }

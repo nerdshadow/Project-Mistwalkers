@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9ce9802cad24647b2f7f0b38d422e0, type: 3}
   m_Name: SimpleTruckStats
   m_EditorClassIdentifier: 
-  maxSpeed: 60
-  forwardTorque: 500
-  backwardTorque: 400
-  brakeForce: 300
+  maxSpeed: 30
+  maxRpm: 500
+  forwardTorque: 1350
+  backwardTorque: 1000
+  brakeTorque: 500
   maxTurnAngle: 25
+  turnSpeed: 2

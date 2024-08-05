@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WheelBehaviour : MonoBehaviour
+public class WheelBehaviour_UnityWheelCollider : MonoBehaviour
 {
     public WheelCollider currentWheelColl = null;
+    public Collider baseCollider = null;
     public bool isTurningWheel = true;
     private void OnEnable()
     {
         TryGetWheelCollInParent();
+        //currentWheelColl.ConfigureVehicleSubsteps(2, 2, 2);
+        IgnoreParent();
     }
 
     //private void FixedUpdate()
@@ -39,5 +42,18 @@ public class WheelBehaviour : MonoBehaviour
         {
             currentWheelColl = GetComponentInParent<WheelCollider>();
         }
+        if (baseCollider != null)
+        {
+            return;
+        }
+        else
+        {
+            baseCollider = GetComponentInParent<VehicleBehaviour_UnityWheelCollider>().GetComponent<Collider>();
+        }
+
+    }
+    void IgnoreParent()
+    {
+        Physics.IgnoreCollision(currentWheelColl, baseCollider);
     }
 }
