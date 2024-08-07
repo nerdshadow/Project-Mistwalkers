@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac9ce9802cad24647b2f7f0b38d422e0, type: 3}
+  m_Name: GezhBaseStats
+  m_EditorClassIdentifier: 
+  vehicleBaseName: Gezh
+  maxSpeed: 35
+  maxRpm: 500
+  forwardTorque: 800
+  backwardTorque: 750
+  brakeTorque: 300
+  maxTurnAngle: 30
+  turnSpeed: 2
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  vehicleBasePrefab: {fileID: 0}

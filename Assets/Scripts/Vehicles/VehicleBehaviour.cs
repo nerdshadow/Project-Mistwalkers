@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(ShowCenterOfMass))]
 public class VehicleBehaviour : MonoBehaviour
 {
     #region Wheels
@@ -9,7 +11,7 @@ public class VehicleBehaviour : MonoBehaviour
     [Space(5)]
     public bool isAllWheelDrive = false;
     [SerializeField]
-    VehicleStats currentVehicleStats = null;
+    VehicleBaseStats currentVehicleStats = null;
     [SerializeField]
     List<WheelCollider> turnWheels = new List<WheelCollider>();
     [SerializeField]
@@ -81,11 +83,11 @@ public class VehicleBehaviour : MonoBehaviour
     public void FindParts()
     {
         vehicleBase = this.gameObject;
-        if (cabHolder.transform.GetChild(0).gameObject != null)
+        if (cabHolder != null && cabHolder.transform.GetChild(0).gameObject != null)
         {
             vehicleCab = cabHolder.transform.GetChild(0).gameObject;
         }
-        if (bodyHolder.transform.GetChild(0).gameObject != null)
+        if (bodyHolder != null && bodyHolder.transform.GetChild(0).gameObject != null)
         {
             vehicleBody = bodyHolder.transform.GetChild(0).gameObject;
         }

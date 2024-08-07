@@ -8,9 +8,16 @@ public class TestSpawnVehicle : MonoBehaviour
     GameObject vehicle;
     [SerializeField]
     Transform position;
-    [ContextMenu("Spawn")]
+    [SerializeField]
+    TurretStats turretStats;
+    [ContextMenu("SpawnVehicle")]
     void SpawnVehicle()
     {
         Instantiate(vehicle, position);
+    }
+    [ContextMenu("SpawnTurret")]
+    void SpawnTurret()
+    {
+        Instantiate(turretStats.turretPrefab, position.transform.position, Quaternion.identity);
     }
 }
