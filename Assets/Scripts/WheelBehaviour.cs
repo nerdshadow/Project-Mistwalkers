@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WheelBehaviour_UnityWheelCollider : MonoBehaviour
+public class WheelBehaviour : MonoBehaviour
 {
     public WheelCollider currentWheelColl = null;
     public Collider baseCollider = null;
@@ -48,7 +48,7 @@ public class WheelBehaviour_UnityWheelCollider : MonoBehaviour
         }
         else
         {
-            baseCollider = GetComponentInParent<VehicleBehaviour_UnityWheelCollider>().GetComponent<Collider>();
+            baseCollider = GetComponentInParent<VehicleBehaviour>().GetComponent<Collider>();
         }
 
     }

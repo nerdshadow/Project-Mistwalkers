@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleBehaviour_UnityWheelCollider : MonoBehaviour
+public class VehicleBehaviour : MonoBehaviour
 {
     #region Wheels
     [Header("Wheels")]
@@ -59,13 +59,14 @@ public class VehicleBehaviour_UnityWheelCollider : MonoBehaviour
         if (canDrive == false)
             return;
         FollowCheckpoints();
+
     }
     void FindWheels()
     {
         if (turnWheels.Count + staticWheels.Count != 0)
             return;
 
-        foreach (var potWheel in GetComponentsInChildren<WheelBehaviour_UnityWheelCollider>())
+        foreach (var potWheel in GetComponentsInChildren<WheelBehaviour>())
         {
             if (potWheel.isTurningWheel == true)
             {
@@ -120,10 +121,11 @@ public class VehicleBehaviour_UnityWheelCollider : MonoBehaviour
                 currentCheckpoint = checkpoints[(checkpoints.IndexOf(currentCheckpoint) + 1)];
             else
             {
-                if(followPointList == true)
-                    Move(Movement.stop);
-                else
-                    Move(Movement.release);
+                //if(followPointList == true)
+                //    Move(Movement.stop);
+                //else
+                //    Move(Movement.release);
+                Move(Movement.stop);
             }
         }
 
@@ -138,7 +140,7 @@ public class VehicleBehaviour_UnityWheelCollider : MonoBehaviour
             angleBetween = Vector3.Angle(targetDir, -transform.forward);
         }
         //Debug.Log("Angle is " + angleBetween);
-        //turn vehicle
+        //turn vehicle 
         if (angleBetween >= 5f)
         {
             float targetAngle = 0f;
@@ -330,6 +332,8 @@ public class VehicleBehaviour_UnityWheelCollider : MonoBehaviour
 
     void Turn(float _targetAngle, float _angleBetween)
     {
+        if (vehicleIsBehind != true)
+            _targetAngle *= -1f;
         if (currentTurnAngle > _targetAngle)
         {
             currentTurnAngle -= currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
