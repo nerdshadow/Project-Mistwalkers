@@ -5,8 +5,12 @@ using UnityEngine;
 public class WheelBehaviour : MonoBehaviour
 {
     public WheelCollider currentWheelColl = null;
-    public Collider baseCollider = null;
+    public List<Collider> vehicleColliders = null;
     public bool isTurningWheel = true;
+    private void OnDisable()
+    {
+        vehicleColliders.Clear();
+    }
     private void OnEnable()
     {
         TryGetWheelCollInParent();
@@ -42,18 +46,16 @@ public class WheelBehaviour : MonoBehaviour
         {
             currentWheelColl = GetComponentInParent<WheelCollider>();
         }
-        if (baseCollider != null)
-        {
-            return;
-        }
-        else
-        {
-            baseCollider = GetComponentInParent<VehicleBehaviour>().GetComponent<Collider>();
-        }
+
+        vehicleColliders.Add(GetComponentInParent<VehicleBehaviour>().GetComponent<Collider>());
+        vehicleColliders.AddRange(GetComponentInParent<VehicleBehaviour>().GetComponentsInChildren<Collider>());            
 
     }
     void IgnoreParent()
     {
-        Physics.IgnoreCollision(currentWheelColl, baseCollider);
+        foreach (Collider collider in vehicleColliders) 
+        {
+            Physics.IgnoreCollision(currentWheelColl, collider);
+        }
     }
 }

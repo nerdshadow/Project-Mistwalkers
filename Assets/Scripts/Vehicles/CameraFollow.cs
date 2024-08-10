@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField]
-    Transform playerBody;
+    Transform followBody;
     [SerializeField]
     float followSpeed;
     [SerializeField]
@@ -17,7 +17,14 @@ public class CameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 pos = Vector3.Lerp(transform.position, playerBody.position + offset + (-transform.forward * followDistance), followSpeed * Time.deltaTime);
+        Follow();
+    }
+    void Follow()
+    {
+        if(followBody == null)
+            return;
+
+        Vector3 pos = Vector3.Lerp(transform.position, followBody.position + offset + (-transform.forward * followDistance), followSpeed * Time.deltaTime);
         transform.position = pos;
 
         transform.rotation = rotation;
@@ -25,7 +32,7 @@ public class CameraFollow : MonoBehaviour
     [ContextMenu("RefreshCamera")]
     void RefreshCameraEdit()
     {
-        Vector3 pos = playerBody.position + offset + (-transform.forward * followDistance);
+        Vector3 pos = followBody.position + offset + (-transform.forward * followDistance);
         transform.position = pos;
 
         transform.rotation = rotation;

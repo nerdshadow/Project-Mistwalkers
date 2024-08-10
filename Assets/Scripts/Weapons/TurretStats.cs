@@ -14,6 +14,7 @@ public class TurretStats : ScriptableObject
         Energy = 2
     }
     TurretType turretType = TurretType.Machinegun;
+    public int weight = 50;
     [Header("CombatStats")]
     public float reloadSpeed = 1f;
     public float maxRange = 10f;

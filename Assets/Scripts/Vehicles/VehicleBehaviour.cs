@@ -29,7 +29,8 @@ public class VehicleBehaviour : MonoBehaviour
     [SerializeField]
     float currentBrakeTorque = 0f;
     [SerializeField]
-    float currentTurnAngle = 0f;
+    float currentTurnAngle = 0f;    
+    public Rigidbody rigidBody;
     [SerializeField]
     GameObject currentCheckpoint;
     [SerializeField]
@@ -48,12 +49,16 @@ public class VehicleBehaviour : MonoBehaviour
     GameObject bodyHolder;
     public GameObject vehicleBody;
     #endregion Parts
+    private void OnValidate()
+    {
+        UpdateComp();
+        UpdateParts();
+    }
     private void Start()
     {
-        FindParts();
+        UpdateComp();
+        UpdateParts();
         FindWheels();
-        if(followPointList == true)
-            currentCheckpoint = checkpoints[0];
     }
     private void FixedUpdate()
     {
@@ -80,7 +85,16 @@ public class VehicleBehaviour : MonoBehaviour
             }
         }
     }
-    public void FindParts()
+    void UpdateComp()
+    {
+        if (rigidBody == null)
+            rigidBody = GetComponent<Rigidbody>();
+        rigidBody.mass = currentVehicleStats.vehicleBaseMass;
+
+        if (followPointList == true)
+            currentCheckpoint = checkpoints[0];
+    }
+    public void UpdateParts()
     {
         vehicleBase = this.gameObject;
         if (cabHolder != null && cabHolder.transform.GetChild(0).gameObject != null)
@@ -165,7 +179,7 @@ public class VehicleBehaviour : MonoBehaviour
         }
 
         //Check current values
-        currentVelocity = GetComponent<Rigidbody>().velocity.z;
+        currentVelocity = rigidBody.velocity.z;
         currentSpeed = currentVelocity * 3.6f;
         currentSpeed = Mathf.Abs(currentSpeed);
 
@@ -331,7 +345,6 @@ public class VehicleBehaviour : MonoBehaviour
         zDistance = Mathf.Abs(mainDifference.z);
         //Debug.Log("zDist = " + zDistance);
     }
-
     void Turn(float _targetAngle, float _angleBetween)
     {
         if (vehicleIsBehind != true)
@@ -378,7 +391,7 @@ public class VehicleBehaviour : MonoBehaviour
     [ContextMenu("Push")]
     void PushCar()
     {
-        GetComponent<Rigidbody>().AddRelativeForce(transform.forward * pushpower, ForceMode.Acceleration);
+        rigidBody.AddRelativeForce(transform.forward * pushpower, ForceMode.Acceleration);
     }
     #endregion Dev
 }

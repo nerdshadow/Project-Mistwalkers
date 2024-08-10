@@ -10,18 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf1fcd89407a4de45970a16c05ceda9d, type: 3}
-  m_Name: SimpleBullet
+  m_Name: SimpleMGBullet
   m_EditorClassIdentifier: 
   ammmoName: BasicBullet
   ammoType: 0
   ammoDamage: 1
   onHitImpulsePower: 50
   recoilImpulsePower: 25
-  bString: Bullet
   bulletTrailVfx_Prefab: {fileID: 0}
   trailLifetime: 0.1
-  sString: s
   shellPrefab: {fileID: 0}
   shellSpeed: 100
-  lString: l
   laserTrailVfx_Prefab: {fileID: 0}

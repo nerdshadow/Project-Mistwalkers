@@ -14,28 +14,25 @@ public class AmmoCustomInspector : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
+        EditorGUILayout.Space(10);
         //ammoStatsBuffer.ammoType = (AmmoStats.AmmoType)EditorGUILayout.EnumPopup("CurrentAmmoType", ammoStatsBuffer.ammoType);
         switch (ammoStatsBuffer.ammoType)
         {
             case AmmoStats.AmmoType.Bullet:
                 {
-                    ammoStatsBuffer.bString = EditorGUILayout.TextField("Name", ammoStatsBuffer.bString);
-                    //mTest.objName = EditorGUILayout.TextField("Name", mTest.objName);
-                    //mTest.addon = (GameObject)EditorGUILayout.ObjectField("Addon", mTest.addon, typeof(GameObject), true);
+                    ammoStatsBuffer.bulletTrailVfx_Prefab = (GameObject)EditorGUILayout.ObjectField("Bullet TrailVFX",ammoStatsBuffer.bulletTrailVfx_Prefab, typeof(GameObject), true);
+                    ammoStatsBuffer.trailLifetime = EditorGUILayout.FloatField("Trail Life Time", ammoStatsBuffer.trailLifetime);
                     break;
                 }
             case AmmoStats.AmmoType.CannonShell:
                 {
-                    ammoStatsBuffer.sString = EditorGUILayout.TextField("Name", ammoStatsBuffer.sString);
-                    //mTest.objName = EditorGUILayout.TextField("Name", mTest.objName);
-                    //mTest.addon = (GameObject)EditorGUILayout.ObjectField("Addon", mTest.addon, typeof(GameObject), true);
+                    ammoStatsBuffer.shellPrefab = (GameObject)EditorGUILayout.ObjectField("Shell Prefab", ammoStatsBuffer.shellPrefab, typeof(GameObject), true);
+                    ammoStatsBuffer.shellSpeed = EditorGUILayout.FloatField("Shell speed", ammoStatsBuffer.shellSpeed);
                     break;
                 }
             case AmmoStats.AmmoType.LaserBatteries:
                 {
-                    ammoStatsBuffer.lString = EditorGUILayout.TextField("Name", ammoStatsBuffer.lString);
-                    //mTest.objName = EditorGUILayout.TextField("Name", mTest.objName);
-                    //mTest.zType = (ZBehaviour)EditorGUILayout.EnumPopup("ZType", mTest.zType);
+                    ammoStatsBuffer.laserTrailVfx_Prefab = (GameObject)EditorGUILayout.ObjectField("Laser TrailVFX", ammoStatsBuffer.laserTrailVfx_Prefab, typeof(GameObject), true);
                     break;
                 }
         }

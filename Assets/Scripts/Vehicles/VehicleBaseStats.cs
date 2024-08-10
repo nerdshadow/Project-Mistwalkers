@@ -7,6 +7,7 @@ public class VehicleBaseStats : ScriptableObject
 {
     [Header("Info")]
     public string vehicleBaseName = "Simple Vehicle Base";
+    public float vehicleBaseMass = 1000f;
     [Header("MovementStats")]
     public float maxSpeed = 60f;
     public float maxRpm = 500f;

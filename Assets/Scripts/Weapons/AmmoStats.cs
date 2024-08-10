@@ -23,8 +23,6 @@ public class AmmoStats : ScriptableObject
 
     #region Bullet
     [HideInInspector]
-    public string bString = "b";
-    [HideInInspector]
     public GameObject bulletTrailVfx_Prefab;
     [HideInInspector]
     public float trailLifetime = 0.1f;
@@ -32,16 +30,12 @@ public class AmmoStats : ScriptableObject
 
     #region Shell
     [HideInInspector]
-    public string sString = "s";
-    [HideInInspector]
     public GameObject shellPrefab;
     [HideInInspector]
     public float shellSpeed = 100f;
     #endregion Shell
 
     #region Laser
-    [HideInInspector]
-    public string lString = "l";
     [HideInInspector]
     public GameObject laserTrailVfx_Prefab;
     #endregion Laser

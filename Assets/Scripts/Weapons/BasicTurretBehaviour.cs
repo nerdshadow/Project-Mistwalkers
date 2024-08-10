@@ -1,7 +1,6 @@
 //using System;
 using System.Collections;
 using UnityEngine;
-
 public class BasicTurretBehaviour : MonoBehaviour
 {
     [Header("Refs")]
@@ -18,12 +17,27 @@ public class BasicTurretBehaviour : MonoBehaviour
     protected GameObject HorTurret = null;
     [SerializeField]
     protected GameObject VertTurret = null;
+    public bool canFire = false;
+    bool reloading = false;
+    [SerializeField]
+    public enum FireRateType
+    {
+        Automatic = 0,
+        Burst = 1
+    }
+    [SerializeField]
+    FireRateType fireRateType = FireRateType.Automatic;
     [SerializeField]
     Vector3 currentSpread = Vector3.zero;
     Coroutine checkingTime = null;
     public Transform targetTrans = null;
     public Rigidbody bodyRb;
     public Transform shootPoint;
+    private void OnValidate()
+    {
+        //Update things
+
+    }
     private void OnEnable()
     {
         currentSpread = turretStats.minSpreadAmount;
@@ -34,13 +48,49 @@ public class BasicTurretBehaviour : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        FindTarget();
-        TryRotateTurret();   
+        //FindTarget();
+        TryRotateTurret();
+        Fire();
     }
+    public void ChangeTargetTo(GameObject _newTarget)
+    {
+        targetTrans = _newTarget.transform;
+    }
+    public void ChangeTargetTo(Transform _newTargetTrans)
+    {
+        targetTrans = _newTargetTrans;
+    }
+    public void ClearTarget() //If changing name -> change next func too
+    {
+        targetTrans = null;
+    }
+    public void ClearTarget(float time)
+    {
+        Invoke("ClearTarget", time);
+    }
+    [SerializeField]
+    Transform centerOfArea = null;
     public virtual void FindTarget()
     {
+        if (centerOfArea == null)
+        {
+            centerOfArea = transform.root.transform;            
+        }
         if (targetTrans != null)
+        {
+            if (Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange)
+                ClearTarget();
             return;
+        }
+        Collider[] potTargets = Physics.OverlapSphere(centerOfArea.position, turretStats.maxRange * 1.1f);
+        foreach (Collider potTarget in potTargets)
+        {
+            if (potTarget.isTrigger == false)
+            {
+                ChangeTargetTo(potTarget.transform);
+                break;
+            }
+        }
     }
     protected void TryRotateTurret()
     {
@@ -51,31 +101,50 @@ public class BasicTurretBehaviour : MonoBehaviour
     }
     protected void RotateHor()
     {
-        if(VertTurret == null)
+        if(HorTurret == null)
             return;
+        //Old
         //Debug.Log("Hor Rotating");
-        ghostHorRotator.transform.LookAt(targetTrans, transform.up);
+        //ghostHorRotator.transform.LookAt(targetTrans, transform.up);
 
-        HorTurret.transform.rotation = Quaternion.RotateTowards(HorTurret.transform.rotation, ghostHorRotator.transform.rotation, turretStats.horizontalSpeed);
-        HorTurret.transform.localEulerAngles = new Vector3(0.0f, HorTurret.transform.eulerAngles.y, 0.0f);
+        //HorTurret.transform.rotation = Quaternion.RotateTowards(HorTurret.transform.rotation, ghostHorRotator.transform.rotation, turretStats.horizontalSpeed);
+        //HorTurret.transform.localEulerAngles = new Vector3(0.0f, HorTurret.transform.eulerAngles.y, 0.0f);
 
-        //Quaternion rotate = Quaternion.FromToRotation(HorTurret.transform.forward, targetTrans.position - HorTurret.transform.position);
-        //HorTurret.transform.localRotation = Quaternion.RotateTowards(HorTurret.transform.localRotation, rotate, horizontalSpeed);
-        //HorTurret.transform.localEulerAngles = new Vector3(0.0f, HorTurret.transform.localEulerAngles.y, 0.0f);
+        //New
+        Vector3 _lookDirection = (targetTrans.position - ghostHorRotator.transform.position).normalized;
+        Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
+
+        ghostHorRotator.transform.rotation = Quaternion.RotateTowards(ghostHorRotator.transform.rotation, _lookRotation, turretStats.horizontalSpeed);
+        HorTurret.transform.localEulerAngles = new Vector3(0.0f, ghostHorRotator.transform.localEulerAngles.y, 0.0f);
 
     }
     protected void RotateVert()
     {
         if (VertTurret == null)
             return;
-
         //Debug.Log("Vert Rotating");
-        ghostVertRotator.transform.LookAt(targetTrans, transform.up);
+        //OLD
+        //ghostVertRotator.transform.LookAt(targetTrans, transform.up);
 
-        VertTurret.transform.rotation = Quaternion.RotateTowards(VertTurret.transform.rotation, ghostVertRotator.transform.rotation, turretStats.verticalSpeed);
-        VertTurret.transform.localEulerAngles = new Vector3(VertTurret.transform.eulerAngles.x, 0.0f, 0.0f);
+        //VertTurret.transform.rotation = Quaternion.RotateTowards(VertTurret.transform.rotation, ghostVertRotator.transform.rotation, turretStats.verticalSpeed);
+        //VertTurret.transform.localEulerAngles = new Vector3(VertTurret.transform.eulerAngles.x, 0.0f, 0.0f);
 
+        Vector3 _lookDirection = (targetTrans.position - ghostVertRotator.transform.position).normalized;
+        Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
+
+        ghostVertRotator.transform.rotation = Quaternion.RotateTowards(ghostVertRotator.transform.rotation, _lookRotation, turretStats.verticalSpeed);
+        VertTurret.transform.localEulerAngles = new Vector3(ghostVertRotator.transform.localEulerAngles.x, 0.0f, 0.0f);
     }
+
+
+    void Fire()
+    {
+        if (canFire != true || reloading == true)
+            return;
+        TryToShoot();
+        StartCoroutine(Reload());
+    }
+    [ContextMenu("Shoot")]
     public virtual void TryToShoot()
     {
         Debug.Log(this.name + " gun tried to shoot");
@@ -97,14 +166,21 @@ public class BasicTurretBehaviour : MonoBehaviour
     }
     void ShootBullet() 
     {
+        GameObject currentBulletTrail;
+        currentBulletTrail = Instantiate(ammoStats.bulletTrailVfx_Prefab, shootPoint.position, shootPoint.rotation);
+        currentBulletTrail.GetComponent<BulletTrail>().lineLifetime = ammoStats.trailLifetime;
+        currentBulletTrail.GetComponent<LineRenderer>().SetPosition(0, shootPoint.position);
+        currentBulletTrail.GetComponent<BulletTrail>().StartTimer();
+        currentBulletTrail.SetActive(true);
+
         if (checkingTime == null)
         {
-            checkingTime = StartCoroutine(CheckTimer());
+            checkingTime = StartCoroutine(CheckSpreadTimer());
         }
         else
         {
             StopCoroutine(checkingTime);
-            checkingTime = StartCoroutine(CheckTimer());
+            checkingTime = StartCoroutine(CheckSpreadTimer());
         }
 
         ActivateRecoil();
@@ -115,7 +191,7 @@ public class BasicTurretBehaviour : MonoBehaviour
         shootDir.Normalize();
         if (Physics.Raycast(shootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
         {
-            //currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
 
             //hit.collider.GetComponentInParent<IDestroyable>()?.ChangeHealth(-gunDamage);
 
@@ -135,14 +211,16 @@ public class BasicTurretBehaviour : MonoBehaviour
         }
         else
         {
-            //currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, shootPoint.position + (shootDir * gunRange));
+            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, shootPoint.position + (shootDir * turretStats.maxRange));
         }
     }
     void ShootSheel()
     {
+
     }
     void ShootLaser()
     {
+
     }
     public virtual void ActivateRecoil()
     {
@@ -166,7 +244,7 @@ public class BasicTurretBehaviour : MonoBehaviour
                 currentSpread.z = Mathf.Lerp(currentSpread.z, turretStats.minSpreadAmount.z, Time.deltaTime * turretStats.spreadEnlargingSpeed * 1.2f);
         }
     }
-    IEnumerator CheckTimer()
+    IEnumerator CheckSpreadTimer()
     {
         currentSpread.x = Mathf.Lerp(currentSpread.x, turretStats.maxSpreadAmount.x, Time.deltaTime * turretStats.spreadEnlargingSpeed);
         currentSpread.y = Mathf.Lerp(currentSpread.y, turretStats.maxSpreadAmount.y, Time.deltaTime * turretStats.spreadEnlargingSpeed);
@@ -175,5 +253,11 @@ public class BasicTurretBehaviour : MonoBehaviour
         StopCoroutine(checkingTime);
         checkingTime = null;
         yield break;
+    }
+    IEnumerator Reload()
+    {
+        reloading = true;
+        yield return new WaitForSeconds(turretStats.reloadSpeed);
+        reloading = false;
     }
 }
