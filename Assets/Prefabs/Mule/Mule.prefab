@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWheelColl: {fileID: 0}
-  baseCollider: {fileID: 0}
+  vehicleColliders: []
   isTurningWheel: 1
 --- !u!1 &2701248885993204277
 GameObject:
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWheelColl: {fileID: 0}
-  baseCollider: {fileID: 0}
+  vehicleColliders: []
   isTurningWheel: 1
 --- !u!1 &3044862094280063979
 GameObject:
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 8846465601921203477}
   - component: {fileID: 5694705027647814387}
   m_Layer: 0
-  m_Name: SimpleTruck
+  m_Name: Mule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -424,13 +424,14 @@ MonoBehaviour:
   currentTorque: 0
   currentBrakeTorque: 0
   currentTurnAngle: 0
+  rigidBody: {fileID: 6641565102744452899}
   currentCheckpoint: {fileID: 0}
   checkpoints: []
-  vehicleBase: {fileID: 0}
+  vehicleBase: {fileID: 4147948000499981016}
   cabHolder: {fileID: 7717899956627438259}
-  vehicleCab: {fileID: 0}
+  vehicleCab: {fileID: 3612599241733292088}
   bodyHolder: {fileID: 7678377033677822845}
-  vehicleBody: {fileID: 0}
+  vehicleBody: {fileID: 9002076924879482870}
   accelerationSpeed: 4
   decelerationSpeed: 5
   vehicleIsBehind: 0
@@ -548,7 +549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWheelColl: {fileID: 0}
-  baseCollider: {fileID: 0}
+  vehicleColliders: []
   isTurningWheel: 0
 --- !u!1 &7678377033677822845
 GameObject:
@@ -767,7 +768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWheelColl: {fileID: 0}
-  baseCollider: {fileID: 0}
+  vehicleColliders: []
   isTurningWheel: 0
 --- !u!1001 &759665581459765748
 PrefabInstance:
@@ -777,6 +778,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2309515760195581908}
     m_Modifications:
+    - target: {fileID: 8266862021848406972, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: currentBase
+      value: 
+      objectReference: {fileID: 6499170523579952361}
     - target: {fileID: 8468557490274277390, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.7284839e-14
@@ -830,6 +835,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+--- !u!1 &9002076924879482870 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8531808458537784834, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+  m_PrefabInstance: {fileID: 759665581459765748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9154837248229401082 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8468557490274277390, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
@@ -1139,11 +1149,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7259302291381086888, guid: c113be0c53731cc44b322dad355a8833, type: 3}
+      propertyPath: currentBase
+      value: 
+      objectReference: {fileID: 6499170523579952361}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c113be0c53731cc44b322dad355a8833, type: 3}
+--- !u!1 &3612599241733292088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5339831645677519633, guid: c113be0c53731cc44b322dad355a8833, type: 3}
+  m_PrefabInstance: {fileID: 8662783051243471657}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3775383389649681725 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5502475674593459732, guid: c113be0c53731cc44b322dad355a8833, type: 3}

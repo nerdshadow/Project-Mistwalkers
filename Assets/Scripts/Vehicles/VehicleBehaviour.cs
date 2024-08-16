@@ -41,12 +41,10 @@ public class VehicleBehaviour : MonoBehaviour
     #region Parts
     [Header("Parts")]
     [Space(5)]
-    public GameObject vehicleBase;
-    [SerializeField]
-    GameObject cabHolder;
-    public GameObject vehicleCab;
-    [SerializeField]
-    GameObject bodyHolder;
+    public GameObject vehicleBase;    
+    public GameObject cabHolder;
+    public GameObject vehicleCab;    
+    public GameObject bodyHolder;
     public GameObject vehicleBody;
     #endregion Parts
     private void OnValidate()
@@ -97,13 +95,22 @@ public class VehicleBehaviour : MonoBehaviour
     public void UpdateParts()
     {
         vehicleBase = this.gameObject;
-        if (cabHolder != null && cabHolder.transform.GetChild(0).gameObject != null)
+        if (cabHolder != null && cabHolder.transform.childCount == 1)
         {
             vehicleCab = cabHolder.transform.GetChild(0).gameObject;
         }
-        if (bodyHolder != null && bodyHolder.transform.GetChild(0).gameObject != null)
+        else if (cabHolder != null && cabHolder.transform.childCount > 1)
+        {
+            Debug.Log("Too many parts for " + cabHolder.name);
+        }
+
+        if (bodyHolder != null && bodyHolder.transform.childCount == 1)
         {
             vehicleBody = bodyHolder.transform.GetChild(0).gameObject;
+        }
+        else if (bodyHolder != null && bodyHolder.transform.childCount > 1)
+        {
+            Debug.Log("Too many parts for " + bodyHolder.name);
         }
     }
     void FollowCheckpoints()

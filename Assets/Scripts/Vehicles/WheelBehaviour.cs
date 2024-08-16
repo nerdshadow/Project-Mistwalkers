@@ -9,10 +9,12 @@ public class WheelBehaviour : MonoBehaviour
     public bool isTurningWheel = true;
     private void OnDisable()
     {
-        vehicleColliders.Clear();
+        //Debug.Log("Wheel disables");
+        vehicleColliders = new List<Collider>();
     }
     private void OnEnable()
     {
+        //Debug.Log("Wheel enables");
         TryGetWheelCollInParent();
         //currentWheelColl.ConfigureVehicleSubsteps(2, 2, 2);
         IgnoreParent();
@@ -36,25 +38,32 @@ public class WheelBehaviour : MonoBehaviour
             transform.rotation = rot;
         }
     }
-    void TryGetWheelCollInParent()
+    [ContextMenu("Find colliders")]
+    public void TryGetWheelCollInParent()
     {
-        if (currentWheelColl != null)
-        {
-            return;
-        }
-        else 
+        if(currentWheelColl == null)
         {
             currentWheelColl = GetComponentInParent<WheelCollider>();
         }
+        List<Collider> poTColliders = new List<Collider>();
 
-        vehicleColliders.Add(GetComponentInParent<VehicleBehaviour>().GetComponent<Collider>());
-        vehicleColliders.AddRange(GetComponentInParent<VehicleBehaviour>().GetComponentsInChildren<Collider>());            
+        poTColliders.Add(GetComponentInParent<VehicleBehaviour>().GetComponent<Collider>());
+        poTColliders.AddRange(GetComponentInParent<VehicleBehaviour>().GetComponentsInChildren<Collider>());
 
+        foreach (Collider collider in poTColliders)
+        {
+            if (collider != null && !vehicleColliders.Contains(collider))
+                if(collider != currentWheelColl)
+                    vehicleColliders.Add(collider);
+
+        }
     }
-    void IgnoreParent()
+    public void IgnoreParent()
     {
         foreach (Collider collider in vehicleColliders) 
         {
+            if(collider == null)
+                vehicleColliders.Remove(collider);
             Physics.IgnoreCollision(currentWheelColl, collider);
         }
     }

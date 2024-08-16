@@ -103,14 +103,7 @@ public class BasicTurretBehaviour : MonoBehaviour
     {
         if(HorTurret == null)
             return;
-        //Old
-        //Debug.Log("Hor Rotating");
-        //ghostHorRotator.transform.LookAt(targetTrans, transform.up);
 
-        //HorTurret.transform.rotation = Quaternion.RotateTowards(HorTurret.transform.rotation, ghostHorRotator.transform.rotation, turretStats.horizontalSpeed);
-        //HorTurret.transform.localEulerAngles = new Vector3(0.0f, HorTurret.transform.eulerAngles.y, 0.0f);
-
-        //New
         Vector3 _lookDirection = (targetTrans.position - ghostHorRotator.transform.position).normalized;
         Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
 
@@ -122,12 +115,6 @@ public class BasicTurretBehaviour : MonoBehaviour
     {
         if (VertTurret == null)
             return;
-        //Debug.Log("Vert Rotating");
-        //OLD
-        //ghostVertRotator.transform.LookAt(targetTrans, transform.up);
-
-        //VertTurret.transform.rotation = Quaternion.RotateTowards(VertTurret.transform.rotation, ghostVertRotator.transform.rotation, turretStats.verticalSpeed);
-        //VertTurret.transform.localEulerAngles = new Vector3(VertTurret.transform.eulerAngles.x, 0.0f, 0.0f);
 
         Vector3 _lookDirection = (targetTrans.position - ghostVertRotator.transform.position).normalized;
         Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
@@ -220,7 +207,53 @@ public class BasicTurretBehaviour : MonoBehaviour
     }
     void ShootLaser()
     {
+        GameObject currentLaserTrail;
+        currentLaserTrail = Instantiate(ammoStats.laserTrailVfx_Prefab, shootPoint.position, shootPoint.rotation);
+        currentLaserTrail.GetComponent<BulletTrail>().lineLifetime = ammoStats.trailLifetime;
+        currentLaserTrail.GetComponent<LineRenderer>().SetPosition(0, shootPoint.position);
+        currentLaserTrail.GetComponent<BulletTrail>().StartTimer();
+        currentLaserTrail.SetActive(true);
 
+        if (checkingTime == null)
+        {
+            checkingTime = StartCoroutine(CheckSpreadTimer());
+        }
+        else
+        {
+            StopCoroutine(checkingTime);
+            checkingTime = StartCoroutine(CheckSpreadTimer());
+        }
+
+        ActivateRecoil();
+
+        Vector3 shootDir = shootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
+                                                        Random.Range(-currentSpread.y, currentSpread.y),
+                                                        Random.Range(-currentSpread.z, currentSpread.z));
+        shootDir.Normalize();
+        if (Physics.Raycast(shootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
+        {
+            currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+
+            //hit.collider.GetComponentInParent<IDestroyable>()?.ChangeHealth(-gunDamage);
+
+            //if (hit.collider.GetComponentInParent<CharacterStats>() != null)
+            //{
+            //    hit.collider.GetComponentInParent<CharacterStats>().ChangeHealth(-gunDamage);
+            //}
+
+            //if (hit.collider.GetComponentInParent<Rigidbody>() != null)
+            //{
+            //    Vector3 forceVector = (hit.point - shootPoint.position);
+            //    if (hit.collider.GetComponentInParent<CharacterStats>() != null)
+            //        forceVector.y = 0;
+            //    forceVector = forceVector.normalized;
+            //    hit.collider.GetComponentInParent<Rigidbody>().AddForce(forceVector * impulsePower, ForceMode.Impulse);
+            //}
+        }
+        else
+        {
+            currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, shootPoint.position + (shootDir * turretStats.maxRange));
+        }
     }
     public virtual void ActivateRecoil()
     {

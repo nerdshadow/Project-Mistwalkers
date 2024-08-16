@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ce30895fad3464481d42bc3e6c291b, type: 3}
+  m_Name: _Mule_Caterpillar_BodyStats
+  m_EditorClassIdentifier: 
+  partName: Caterpillar Body
+  partType: 1
+  partMass: 800
+  partPrefab: {fileID: 2340046302237935110, guid: 3ac31082be43aac4cac972f49aa5db72, type: 3}
+  relatedBase: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
+  weaponsSlots: []

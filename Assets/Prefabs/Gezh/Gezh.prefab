@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1148989693751646893}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.67, y: 0, z: 1.15}
+  m_LocalPosition: {x: 0.67, y: 0, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -133,7 +133,7 @@ Transform:
   m_GameObject: {fileID: 2039010124010034829}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.67, y: 0, z: 1.15}
+  m_LocalPosition: {x: -0.67, y: 0, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -219,7 +219,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2624534617395545890}
-  m_Mesh: {fileID: 4268754489167533231, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
+  m_Mesh: {fileID: 8824348967649780953, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
 --- !u!23 &6463832287467374932
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -429,7 +429,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3829265644095700579}
-  m_Mesh: {fileID: 4268754489167533231, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
+  m_Mesh: {fileID: 8824348967649780953, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
 --- !u!23 &7386907535994412916
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -578,7 +578,7 @@ Transform:
   m_GameObject: {fileID: 5032987746838187577}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.67, y: 0, z: -1.15}
+  m_LocalPosition: {x: 0.67, y: 0, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -712,7 +712,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5292393260157163422}
-  m_Mesh: {fileID: 4268754489167533231, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
+  m_Mesh: {fileID: 8824348967649780953, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
 --- !u!23 &3330239583232353415
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -802,7 +802,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5393972700812242164}
-  m_Mesh: {fileID: 422096647724239926, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
+  m_Mesh: {fileID: -650113081761595176, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
 --- !u!23 &2658533959521042396
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -867,11 +867,12 @@ MonoBehaviour:
   currentTorque: 0
   currentBrakeTorque: 0
   currentTurnAngle: 0
+  rigidBody: {fileID: 1937096660923711801}
   currentCheckpoint: {fileID: 0}
   checkpoints: []
-  vehicleBase: {fileID: 0}
+  vehicleBase: {fileID: 5393972700812242164}
   cabHolder: {fileID: 4539315412361799609}
-  vehicleCab: {fileID: 0}
+  vehicleCab: {fileID: 9187707128748235780}
   bodyHolder: {fileID: 0}
   vehicleBody: {fileID: 0}
   accelerationSpeed: 6
@@ -893,7 +894,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5393972700812242164}
   serializedVersion: 4
-  m_Mass: 600
+  m_Mass: 1000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0.2, z: -0.5}
@@ -985,7 +986,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6360541227955374305}
-  m_Mesh: {fileID: 4268754489167533231, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
+  m_Mesh: {fileID: 8824348967649780953, guid: 6a1cf0891bbee41429ffe61afbb17d7d, type: 3}
 --- !u!23 &7956199963159923708
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1054,7 +1055,7 @@ Transform:
   m_GameObject: {fileID: 6643924885683094053}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.67, y: 0, z: -1.15}
+  m_LocalPosition: {x: -0.67, y: 0, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1108,6 +1109,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5065986526231340889}
     m_Modifications:
+    - target: {fileID: 3053057404943854317, guid: 34c6d569fadd25c4da8008fbf3c1e3a9, type: 3}
+      propertyPath: currentBase
+      value: 
+      objectReference: {fileID: 1365189564819071499}
     - target: {fileID: 3266335394881406129, guid: 34c6d569fadd25c4da8008fbf3c1e3a9, type: 3}
       propertyPath: m_Name
       value: Gezh_Cab
@@ -1172,5 +1177,10 @@ PrefabInstance:
 --- !u!4 &3921674961604367005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7257980509351119400, guid: 34c6d569fadd25c4da8008fbf3c1e3a9, type: 3}
+  m_PrefabInstance: {fileID: 5968694783050111157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9187707128748235780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3266335394881406129, guid: 34c6d569fadd25c4da8008fbf3c1e3a9, type: 3}
   m_PrefabInstance: {fileID: 5968694783050111157}
   m_PrefabAsset: {fileID: 0}

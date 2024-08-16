@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9ce30895fad3464481d42bc3e6c291b, type: 3}
-  m_Name: ST_Body_Stats_SO
+  m_Name: _Gezh_Jarang_CabStats
   m_EditorClassIdentifier: 
-  partName: ST_Body
-  partType: 1
-  partMass: 500
-  partPrefab: {fileID: 8531808458537784834, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
-  relatedBase: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
+  partName: Jarang_Cab
+  partType: 0
+  partMass: 600
+  partPrefab: {fileID: 4458923564306038029, guid: bf79a076622376d4f854aa5c4057668e, type: 3}
+  relatedBase: {fileID: 11400000, guid: 85721aa2eda8d144d89a5ed43483bfbb, type: 2}

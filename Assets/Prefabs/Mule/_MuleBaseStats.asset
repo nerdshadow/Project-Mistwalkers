@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac9ce9802cad24647b2f7f0b38d422e0, type: 3}
-  m_Name: GezhBaseStats
+  m_Name: _MuleBaseStats
   m_EditorClassIdentifier: 
-  vehicleBaseName: Gezh
-  maxSpeed: 35
+  vehicleBaseName: Simple Vehicle Base
+  vehicleBaseMass: 1000
+  maxSpeed: 30
   maxRpm: 500
-  forwardTorque: 800
-  backwardTorque: 750
-  brakeTorque: 300
-  maxTurnAngle: 30
+  forwardTorque: 1350
+  backwardTorque: 1000
+  brakeTorque: 500
+  maxTurnAngle: 25
   turnSpeed: 2
   baseColor: {r: 1, g: 1, b: 1, a: 1}
-  vehicleBasePrefab: {fileID: 0}
+  vehicleBasePrefab: {fileID: 4147948000499981016, guid: ba03702b47c3b794b901987661779b24, type: 3}

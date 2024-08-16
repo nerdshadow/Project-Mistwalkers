@@ -18,6 +18,7 @@ public class VehiclePartStats : ScriptableObject
     public float partMass = 300f;
     public GameObject partPrefab;
     [SerializeField]
-    VehicleBaseStats relatedBase;
+    public VehicleBaseStats relatedBase;
+    public List<Transform> weaponsSlots = new List<Transform>();
     #endregion Info
 }
