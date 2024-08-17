@@ -261,6 +261,20 @@ public class BasicTurretBehaviour : MonoBehaviour
     void ShootShell()
     {
         Debug.Log("Tried to shoot Shell");
+
+        Vector3 shootDir = currentShootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
+                                                         Random.Range(-currentSpread.y, currentSpread.y),
+                                                         Random.Range(-currentSpread.z, currentSpread.z));
+        shootDir.Normalize();
+
+        GameObject currentShell = Instantiate(ammoStats.shellPrefab, currentShootPoint.position, currentShootPoint.rotation);
+        currentShell.transform.rotation = Quaternion.LookRotation(shootDir);
+        currentShell.GetComponent<ProjectileBehaviour>().impulsePower = ammoStats.onHitImpulsePower;
+        currentShell.GetComponent<Rigidbody>().AddForce(currentShell.transform.forward * ammoStats.shellSpeed);
+        currentShell = null;
+
+        ActivateRecoil();
+
         if (fireRateType == FireRateType.Burst)
         {
             burstCurrentSize -= 1;

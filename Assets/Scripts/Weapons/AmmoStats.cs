@@ -33,6 +33,8 @@ public class AmmoStats : ScriptableObject
     public GameObject shellPrefab;
     [HideInInspector]
     public float shellSpeed = 100f;
+    [HideInInspector]
+    public float shellLifeTime = 20f;
     #endregion Shell
 
     #region Laser
