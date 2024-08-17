@@ -33,6 +33,7 @@ public class AmmoCustomInspector : Editor
             case AmmoStats.AmmoType.LaserBatteries:
                 {
                     ammoStatsBuffer.laserTrailVfx_Prefab = (GameObject)EditorGUILayout.ObjectField("Laser TrailVFX", ammoStatsBuffer.laserTrailVfx_Prefab, typeof(GameObject), true);
+                    ammoStatsBuffer.trailLifetime = EditorGUILayout.FloatField("Trail Life Time", ammoStatsBuffer.trailLifetime);
                     break;
                 }
         }

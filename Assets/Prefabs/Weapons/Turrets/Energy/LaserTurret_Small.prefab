@@ -122,7 +122,10 @@ MonoBehaviour:
   currentSpread: {x: 0, y: 0, z: 0}
   targetTrans: {fileID: 0}
   bodyRb: {fileID: 0}
-  shootPoint: {fileID: 6769574319335404500}
+  shootPoints:
+  - {fileID: 6769574319335404500}
+  currentShootPoint: {fileID: 6769574319335404500}
+  lastShootPoint: {fileID: 0}
   centerOfArea: {fileID: 0}
 --- !u!1 &3216098211011286905
 GameObject:

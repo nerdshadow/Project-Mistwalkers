@@ -176,6 +176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8452685534187077794}
+  - component: {fileID: 9116207492850872179}
   m_Layer: 0
   m_Name: Small_Turret_Pos_1
   m_TagString: Untagged
@@ -198,3 +199,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5502475674593459732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9116207492850872179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7266336976150936936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c379832e4c1ac4e84f7bd008a4bf73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeapon: {fileID: 0}
+  SlotTurretSize: 0

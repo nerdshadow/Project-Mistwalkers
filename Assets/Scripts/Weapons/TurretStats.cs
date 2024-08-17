@@ -2,18 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TurretType
+{
+    Machinegun = 0,
+    Cannon = 1,
+    Energy = 2
+}
+public enum TurretSize
+{
+    Small = 0,
+    Medium = 1,
+    Large = 2
+}
 [CreateAssetMenu(fileName = "TurretStats", menuName = "SO/CreateTurretStatsSO")]
 public class TurretStats : ScriptableObject
 {
     [Header("Info")]
     public string turretName = "Simple Turret";
-    public enum TurretType
-    {
-        Machinegun = 0,
-        Cannon = 1,
-        Energy = 2
-    }
-    TurretType turretType = TurretType.Machinegun;
+    public TurretType TurretType = TurretType.Machinegun;
+    public TurretSize TurretSize = TurretSize.Small;
     public int weight = 50;
     [Header("CombatStats")]
     public float reloadSpeed = 1f;

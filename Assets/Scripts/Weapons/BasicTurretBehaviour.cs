@@ -1,11 +1,19 @@
 //using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+[SerializeField]
+public enum FireRateType
+{
+    Automatic = 0,
+    Burst = 1
+}
 public class BasicTurretBehaviour : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField]
-    protected TurretStats turretStats;
+    public TurretStats turretStats;
     [SerializeField]
     protected AmmoStats ammoStats;
     [Header("Vars")]
@@ -20,27 +28,57 @@ public class BasicTurretBehaviour : MonoBehaviour
     public bool canFire = false;
     bool reloading = false;
     [SerializeField]
-    public enum FireRateType
-    {
-        Automatic = 0,
-        Burst = 1
-    }
-    [SerializeField]
     FireRateType fireRateType = FireRateType.Automatic;
+    public int burstMaxSize = 3;
+    int burstCurrentSize;
     [SerializeField]
     Vector3 currentSpread = Vector3.zero;
     Coroutine checkingTime = null;
     public Transform targetTrans = null;
+    [HideInInspector]
     public Rigidbody bodyRb;
-    public Transform shootPoint;
+    public List<Transform> shootPoints = new List<Transform>();
+    [HideInInspector]
+    public Transform currentShootPoint;
+    [HideInInspector]
+    public Transform lastShootPoint = null;
+
+    UnityAction MGShoot;
+    UnityAction SShoot;
+    UnityAction LShoot;
     private void OnValidate()
     {
         //Update things
-
+        if (shootPoints.Count < 1)
+        {
+            Debug.LogWarning("No shootpoints at " + this.name);
+            currentShootPoint = transform;
+            //currentShootPoint.position = new Vector3(currentShootPoint.position.x, currentShootPoint.position.y + 0.2f, currentShootPoint.position.z);
+        }
+        else
+            currentShootPoint = shootPoints[0];
     }
     private void OnEnable()
     {
         currentSpread = turretStats.minSpreadAmount;
+        if (shootPoints.Count < 1)
+        {
+            Debug.LogWarning("No shootpoints at " + this.name);
+            currentShootPoint = transform;
+            currentShootPoint.position = new Vector3(currentShootPoint.position.x, currentShootPoint.position.y + 0.2f, currentShootPoint.position.z);
+        }
+        else
+            currentShootPoint = shootPoints[0];
+
+        MGShoot += ShootBullet;
+        SShoot += ShootShell;
+        LShoot += ShootLaser;
+    }
+    private void OnDisable()
+    {
+        MGShoot -= ShootBullet;
+        SShoot -= ShootShell;
+        LShoot -= ShootLaser;
     }
     private void Update()
     {
@@ -135,13 +173,15 @@ public class BasicTurretBehaviour : MonoBehaviour
     public virtual void TryToShoot()
     {
         Debug.Log(this.name + " gun tried to shoot");
+        if (fireRateType == FireRateType.Burst)
+            burstCurrentSize = burstMaxSize;
         switch (ammoStats.ammoType)
         {
             case AmmoStats.AmmoType.Bullet:
                 ShootBullet();
                 break;
             case AmmoStats.AmmoType.CannonShell:
-                ShootSheel();
+                ShootShell();
                 break;
             case AmmoStats.AmmoType.LaserBatteries:
                 ShootLaser();
@@ -151,12 +191,21 @@ public class BasicTurretBehaviour : MonoBehaviour
                 break;
         }
     }
+    void ChangeShootPoint()
+    {
+        if (shootPoints.Count <= 1)
+            return;
+        lastShootPoint = currentShootPoint;
+        currentShootPoint = shootPoints[Random.Range(0, shootPoints.Count)];
+        if (currentShootPoint == lastShootPoint)
+            ChangeShootPoint();
+    }
     void ShootBullet() 
     {
         GameObject currentBulletTrail;
-        currentBulletTrail = Instantiate(ammoStats.bulletTrailVfx_Prefab, shootPoint.position, shootPoint.rotation);
+        currentBulletTrail = Instantiate(ammoStats.bulletTrailVfx_Prefab, currentShootPoint.position, currentShootPoint.rotation);
         currentBulletTrail.GetComponent<BulletTrail>().lineLifetime = ammoStats.trailLifetime;
-        currentBulletTrail.GetComponent<LineRenderer>().SetPosition(0, shootPoint.position);
+        currentBulletTrail.GetComponent<LineRenderer>().SetPosition(0, currentShootPoint.position);
         currentBulletTrail.GetComponent<BulletTrail>().StartTimer();
         currentBulletTrail.SetActive(true);
 
@@ -172,11 +221,11 @@ public class BasicTurretBehaviour : MonoBehaviour
 
         ActivateRecoil();
 
-        Vector3 shootDir = shootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
+        Vector3 shootDir = currentShootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
                                                         Random.Range(-currentSpread.y, currentSpread.y),
                                                         Random.Range(-currentSpread.z, currentSpread.z));
         shootDir.Normalize();
-        if (Physics.Raycast(shootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
+        if (Physics.Raycast(currentShootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
         {
             currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
 
@@ -189,7 +238,7 @@ public class BasicTurretBehaviour : MonoBehaviour
 
             //if (hit.collider.GetComponentInParent<Rigidbody>() != null)
             //{
-            //    Vector3 forceVector = (hit.point - shootPoint.position);
+            //    Vector3 forceVector = (hit.point - currentShootPoint.position);
             //    if (hit.collider.GetComponentInParent<CharacterStats>() != null)
             //        forceVector.y = 0;
             //    forceVector = forceVector.normalized;
@@ -198,19 +247,34 @@ public class BasicTurretBehaviour : MonoBehaviour
         }
         else
         {
-            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, shootPoint.position + (shootDir * turretStats.maxRange));
+            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, currentShootPoint.position + (shootDir * turretStats.maxRange * 2f));
         }
+        currentBulletTrail = null;
+        if (fireRateType == FireRateType.Burst)
+        {
+            burstCurrentSize -= 1;
+            if (burstCurrentSize > 0)
+                StartCoroutine(BurstFireReload(MGShoot));
+        }
+        ChangeShootPoint(); //Change after shoot
     }
-    void ShootSheel()
+    void ShootShell()
     {
-
+        Debug.Log("Tried to shoot Shell");
+        if (fireRateType == FireRateType.Burst)
+        {
+            burstCurrentSize -= 1;
+            if (burstCurrentSize > 0)
+                StartCoroutine(BurstFireReload(SShoot));
+        }
+        ChangeShootPoint(); //Change after shoot
     }
     void ShootLaser()
     {
         GameObject currentLaserTrail;
-        currentLaserTrail = Instantiate(ammoStats.laserTrailVfx_Prefab, shootPoint.position, shootPoint.rotation);
+        currentLaserTrail = Instantiate(ammoStats.laserTrailVfx_Prefab, currentShootPoint.position, currentShootPoint.rotation);
         currentLaserTrail.GetComponent<BulletTrail>().lineLifetime = ammoStats.trailLifetime;
-        currentLaserTrail.GetComponent<LineRenderer>().SetPosition(0, shootPoint.position);
+        currentLaserTrail.GetComponent<LineRenderer>().SetPosition(0, currentShootPoint.position);
         currentLaserTrail.GetComponent<BulletTrail>().StartTimer();
         currentLaserTrail.SetActive(true);
 
@@ -226,11 +290,11 @@ public class BasicTurretBehaviour : MonoBehaviour
 
         ActivateRecoil();
 
-        Vector3 shootDir = shootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
+        Vector3 shootDir = currentShootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
                                                         Random.Range(-currentSpread.y, currentSpread.y),
                                                         Random.Range(-currentSpread.z, currentSpread.z));
         shootDir.Normalize();
-        if (Physics.Raycast(shootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
+        if (Physics.Raycast(currentShootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
         {
             currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
 
@@ -243,7 +307,7 @@ public class BasicTurretBehaviour : MonoBehaviour
 
             //if (hit.collider.GetComponentInParent<Rigidbody>() != null)
             //{
-            //    Vector3 forceVector = (hit.point - shootPoint.position);
+            //    Vector3 forceVector = (hit.point - currentShootPoint.position);
             //    if (hit.collider.GetComponentInParent<CharacterStats>() != null)
             //        forceVector.y = 0;
             //    forceVector = forceVector.normalized;
@@ -252,14 +316,21 @@ public class BasicTurretBehaviour : MonoBehaviour
         }
         else
         {
-            currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, shootPoint.position + (shootDir * turretStats.maxRange));
+            currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, currentShootPoint.position + (shootDir * turretStats.maxRange * 2f));
         }
+        if (fireRateType == FireRateType.Burst)
+        {
+            burstCurrentSize -= 1;
+            if (burstCurrentSize > 0)
+                StartCoroutine(BurstFireReload(LShoot));
+        }
+        ChangeShootPoint(); //Change after shoot
     }
     public virtual void ActivateRecoil()
     {
         if (bodyRb == true)
         {
-            Vector3 forceVector = (bodyRb.position - shootPoint.position);
+            Vector3 forceVector = (bodyRb.position - currentShootPoint.position);
             //forceVector.y = 0;
             forceVector = forceVector.normalized;
             bodyRb.AddForce(forceVector * ammoStats.recoilImpulsePower, ForceMode.Impulse);
@@ -292,5 +363,10 @@ public class BasicTurretBehaviour : MonoBehaviour
         reloading = true;
         yield return new WaitForSeconds(turretStats.reloadSpeed);
         reloading = false;
+    }
+    IEnumerator BurstFireReload(UnityAction shootAction)
+    {
+        yield return new WaitForSeconds(turretStats.reloadSpeed * 0.2f);
+        shootAction.Invoke();
     }
 }

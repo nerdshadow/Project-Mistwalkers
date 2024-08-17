@@ -7,6 +7,7 @@ public class BulletTrail : MonoBehaviour
     [SerializeField]
     LineRenderer lineRenderer;
     public float lineLifetime = 0.1f;
+    [ContextMenu("Start Timer")]
     public void StartTimer()
     {
         lineRenderer = GetComponent<LineRenderer>();

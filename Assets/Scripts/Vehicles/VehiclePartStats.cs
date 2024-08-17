@@ -19,6 +19,14 @@ public class VehiclePartStats : ScriptableObject
     public GameObject partPrefab;
     [SerializeField]
     public VehicleBaseStats relatedBase;
-    public List<Transform> weaponsSlots = new List<Transform>();
+    public List<WeaponSlotBehaviour> weaponsSlots = new List<WeaponSlotBehaviour>();
     #endregion Info
+    private void OnValidate()
+    {
+        weaponsSlots.Clear();
+        if (partPrefab == null)
+            return;
+
+        weaponsSlots.AddRange(partPrefab.GetComponentsInChildren<WeaponSlotBehaviour>());
+    }
 }

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 2134227184137122885}
-  lineLifetime: 0.2
+  lineLifetime: 5
 --- !u!120 &2134227184137122885
 LineRenderer:
   serializedVersion: 2
