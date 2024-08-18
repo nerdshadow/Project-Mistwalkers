@@ -41,22 +41,24 @@ public class VehicleBehaviour : MonoBehaviour
     #region Parts
     [Header("Parts")]
     [Space(5)]
-    public GameObject vehicleBase;    
+    public GameObject currentVehicleBase;    
     public GameObject cabHolder;
-    public GameObject vehicleCab;    
+    public VehiclePartBehaviour cabBeh;
+    public GameObject currentVehicleCab;
+    public VehiclePartBehaviour bodyBeh;
     public GameObject bodyHolder;
-    public GameObject vehicleBody;
+    public GameObject currentVehicleBody;
     #endregion Parts
     private void OnValidate()
     {
-        UpdateComp();
-        UpdateParts();
+        if(!gameObject.activeInHierarchy)
+            return;
+
+        SerializeVehicle();
     }
-    private void Start()
+    private void OnEnable()
     {
-        UpdateComp();
-        UpdateParts();
-        FindWheels();
+        SerializeVehicle();
     }
     private void FixedUpdate()
     {
@@ -69,7 +71,10 @@ public class VehicleBehaviour : MonoBehaviour
     void FindWheels()
     {
         if (turnWheels.Count + staticWheels.Count != 0)
-            return;
+        {
+            turnWheels = new List<WheelCollider> ();
+            staticWheels = new List<WheelCollider>();
+        }        
 
         foreach (var potWheel in GetComponentsInChildren<WheelBehaviour>())
         {
@@ -83,6 +88,7 @@ public class VehicleBehaviour : MonoBehaviour
             }
         }
     }
+    [ContextMenu("Update Components")]
     void UpdateComp()
     {
         if (rigidBody == null)
@@ -92,27 +98,73 @@ public class VehicleBehaviour : MonoBehaviour
         if (followPointList == true)
             currentCheckpoint = checkpoints[0];
     }
+    int AmountOfTopChildren(Transform _parent)
+    {
+        int amount = 0;
+        for (int i = 0; i < _parent.childCount; i++)
+        {
+            if(_parent.GetChild(i) == null)
+                break;
+            //Debug.Log(_parent.GetChild(i) + " is " + amount + " child" + " in " + transform.root.name);
+            amount++;
+        }
+        return amount;
+    }
+    [ContextMenu("Update Parts")]
     public void UpdateParts()
     {
-        vehicleBase = this.gameObject;
-        if (cabHolder != null && cabHolder.transform.childCount == 1)
+        currentVehicleBase = this.gameObject;
+
+        if (cabHolder != null)
         {
-            vehicleCab = cabHolder.transform.GetChild(0).gameObject;
-        }
-        else if (cabHolder != null && cabHolder.transform.childCount > 1)
-        {
-            Debug.Log("Too many parts for " + cabHolder.name);
+            int amountOfCabChild = AmountOfTopChildren(cabHolder.transform);
+
+            if (amountOfCabChild == 1)
+            {
+                currentVehicleCab = cabHolder.transform.GetChild(0).gameObject;
+            }
+            else if (amountOfCabChild > 1)
+            {
+                currentVehicleCab = cabHolder.transform.GetChild(0).gameObject;
+                Debug.Log("Too many parts for " + cabHolder.name + " in " + transform.root.name);
+            }
         }
 
-        if (bodyHolder != null && bodyHolder.transform.childCount == 1)
+        if (bodyHolder != null)
         {
-            vehicleBody = bodyHolder.transform.GetChild(0).gameObject;
+            int amountOfBodyChild = AmountOfTopChildren(bodyHolder.transform);
+
+            if (amountOfBodyChild == 1)
+            {
+                currentVehicleBody = bodyHolder.transform.GetChild(0).gameObject;
+            }
+            else if (amountOfBodyChild > 1)
+            {
+                currentVehicleBody = bodyHolder.transform.GetChild(0).gameObject;
+                Debug.Log("Too many parts for " + bodyHolder.name + " in " + transform.root.name);
+            }
         }
-        else if (bodyHolder != null && bodyHolder.transform.childCount > 1)
-        {
-            Debug.Log("Too many parts for " + bodyHolder.name);
-        }
+
+        
     }
+    public void SerializeVehicle()
+    {
+        UpdateComp();
+        UpdateParts();
+        FindWheels();
+    }
+    //[ContextMenu("Reassemble from behs")]
+    //void ReassebleParts()
+    //{
+    //    if (cabBeh != null)
+    //    {
+    //        if (currentVehicleCab != cabBeh.gameObject)
+    //        {
+    //            Destroy(currentVehicleCab);
+    //            Instantiate(cabBeh.partStats.partPrefab, cabHolder.transform);
+    //        }
+    //    }
+    //}
     void FollowCheckpoints()
     {
         if (currentCheckpoint == null)

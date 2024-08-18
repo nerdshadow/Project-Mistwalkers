@@ -10,6 +10,8 @@ public class FollowObject : MonoBehaviour
     float speed = 2f;
     private void LateUpdate()
     {
+        if (target == null)
+            return;
         transform.position = Vector3.Lerp(transform.position, target.transform.position, Time.deltaTime * speed);
     }
 }

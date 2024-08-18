@@ -8,8 +8,8 @@ public class VehiclePartBehaviour : MonoBehaviour
 {
     [Header("Stats")]
     [Space(5)]
-    [SerializeField]
-    VehiclePartStats partStats = null;
+    
+    public VehiclePartStats partStats = null;
     public VehiclePartStats.PartType partType = VehiclePartStats.PartType.cab;
     [SerializeField]
     Rigidbody rigidBody;

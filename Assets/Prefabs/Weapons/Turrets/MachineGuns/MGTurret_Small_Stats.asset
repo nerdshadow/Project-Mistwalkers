@@ -25,6 +25,7 @@ MonoBehaviour:
   spreadWaitTime: 1
   horizontalSpeed: 1.5
   verticalSpeed: 1
-  verticalMaxAngle: 90
+  verticalMaxAngle_pos: 45
+  verticalMaxAngle_neg: -45
   mainColor: {r: 1, g: 1, b: 1, a: 1}
   turretPrefab: {fileID: 7569810767204491465, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}

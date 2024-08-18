@@ -15,15 +15,10 @@ public class WheelBehaviour : MonoBehaviour
     private void OnEnable()
     {
         //Debug.Log("Wheel enables");
-        TryGetWheelCollInParent();
+        ReManageWheelColliders();
         //currentWheelColl.ConfigureVehicleSubsteps(2, 2, 2);
-        IgnoreParent();
     }
 
-    //private void FixedUpdate()
-    //{
-    //    UpdateWheelVFX();
-    //}
     private void Update()
     {
         UpdateWheelVFX();
@@ -38,10 +33,19 @@ public class WheelBehaviour : MonoBehaviour
             transform.rotation = rot;
         }
     }
+    [ContextMenu("ReManage Wh Colls")]
+    public void ReManageWheelColliders()
+    {
+        TryGetWheelCollInParent();
+        IgnoreParent();
+    }
     [ContextMenu("Find colliders")]
     public void TryGetWheelCollInParent()
     {
-        if(currentWheelColl == null)
+        if(vehicleColliders.Count > 0)
+            vehicleColliders = new List<Collider>();
+
+        if (currentWheelColl == null)
         {
             currentWheelColl = GetComponentInParent<WheelCollider>();
         }

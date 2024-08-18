@@ -26,14 +26,15 @@ public class TurretStats : ScriptableObject
     public float reloadSpeed = 1f;
     public float maxRange = 10f;
     public bool spreadOn = true;
-    public Vector3 minSpreadAmount = new Vector3(0.1f, 0.1f, 0.1f); //No more than 1 at axis   
-    public Vector3 maxSpreadAmount = new Vector3(0.2f, 0.2f, 0.2f); //No more than 1 at axis && bigger than minSpread
+    public Vector3 minSpreadAmount = new Vector3(0.01f, 0.01f, 0.01f); //No more than 1 at axis   
+    public Vector3 maxSpreadAmount = new Vector3(0.02f, 0.02f, 0.02f); //No more than 1 at axis && bigger than minSpread
     public float spreadEnlargingSpeed = 1;
     public float spreadWaitTime = 1f;
     [Header("Aim")]
     public float horizontalSpeed = 1f;
     public float verticalSpeed = 1f;
-    public float verticalMaxAngle = 90f;
+    public float verticalMaxAngle_pos = 90f; // >= 0
+    public float verticalMaxAngle_neg = -90f; // <= 0
     [Header("VFX")]
     public Color mainColor = Color.white;
     //Trail color, shader etc

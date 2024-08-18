@@ -359,7 +359,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4147948000499981016}
-  m_Mesh: {fileID: 6535657363704685337, guid: b877d0ab27968e54d869403f4c774131, type: 3}
+  m_Mesh: {fileID: -4778757917883666013, guid: b877d0ab27968e54d869403f4c774131, type: 3}
 --- !u!23 &2268038568840117555
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -427,11 +427,12 @@ MonoBehaviour:
   rigidBody: {fileID: 6641565102744452899}
   currentCheckpoint: {fileID: 0}
   checkpoints: []
-  vehicleBase: {fileID: 4147948000499981016}
+  currentVehicleBase: {fileID: 4147948000499981016}
   cabHolder: {fileID: 7717899956627438259}
-  vehicleCab: {fileID: 3612599241733292088}
+  cabBeh: {fileID: 0}
+  currentVehicleCab: {fileID: 3612599241733292088}
   bodyHolder: {fileID: 7678377033677822845}
-  vehicleBody: {fileID: 9002076924879482870}
+  currentVehicleBody: {fileID: 9002076924879482870}
   accelerationSpeed: 4
   decelerationSpeed: 5
   vehicleIsBehind: 0

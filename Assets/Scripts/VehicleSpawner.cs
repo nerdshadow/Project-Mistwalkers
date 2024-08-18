@@ -48,19 +48,19 @@ public class VehicleSpawner : MonoBehaviour
         if (currentVehicle != null)
             Destroy(currentVehicle);
         currentVehicle = Instantiate(vehicleBaseSO.vehicleBasePrefab, spawnPosition.position, Quaternion.identity);
-        currentVehicle.SetActive(false);
+        //currentVehicle.SetActive(false);
         VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
 
-        Destroy(vehicleBehaviour.vehicleCab);
+        Destroy(vehicleBehaviour.currentVehicleCab);
         Instantiate(vehicleCabPartSO.partPrefab, vehicleBehaviour.cabHolder.transform);
 
         if (vehicleBodyPartSO != null)
         {
-            Destroy(vehicleBehaviour.vehicleBody);
+            Destroy(vehicleBehaviour.currentVehicleBody);
             Instantiate(vehicleBodyPartSO.partPrefab, vehicleBehaviour.bodyHolder.transform);
         }
-        
-        currentVehicle.SetActive(true);
+
+        StartCoroutine(AssebleNextFrame());        
     }
     [ContextMenu("Spawn vehicle")]
     void SpawnVehicle()
@@ -71,5 +71,21 @@ public class VehicleSpawner : MonoBehaviour
             return;
         }
         AssemblyVehicle();
+    }
+
+    IEnumerator AssebleNextFrame()
+    {
+        yield return new WaitForFixedUpdate();
+
+        List<WheelBehaviour> wBehs = new List<WheelBehaviour>();
+        wBehs.AddRange(currentVehicle.GetComponentsInChildren<WheelBehaviour>());
+
+        currentVehicle.GetComponent<VehicleBehaviour>().SerializeVehicle();
+        foreach (WheelBehaviour wheelBehaviour in wBehs)
+        {
+            wheelBehaviour.ReManageWheelColliders();
+        }
+
+        currentVehicle.SetActive(true);
     }
 }

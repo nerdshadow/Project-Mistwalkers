@@ -21,6 +21,7 @@ public class BasicTurretBehaviour : MonoBehaviour
     protected GameObject ghostHorRotator = null;
     [SerializeField]
     protected GameObject ghostVertRotator = null;
+    public bool limitVertRotation = false;
     [SerializeField]
     protected GameObject HorTurret = null;
     [SerializeField]
@@ -46,6 +47,7 @@ public class BasicTurretBehaviour : MonoBehaviour
     UnityAction MGShoot;
     UnityAction SShoot;
     UnityAction LShoot;
+
     private void OnValidate()
     {
         //Update things
@@ -158,9 +160,32 @@ public class BasicTurretBehaviour : MonoBehaviour
         Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
 
         ghostVertRotator.transform.rotation = Quaternion.RotateTowards(ghostVertRotator.transform.rotation, _lookRotation, turretStats.verticalSpeed);
-        VertTurret.transform.localEulerAngles = new Vector3(ghostVertRotator.transform.localEulerAngles.x, 0.0f, 0.0f);
-    }
+        float targetAngle = ghostVertRotator.transform.localEulerAngles.x;
+        //if (limitVertRotation == true)
+        //{
+            Debug.Log("Start targetAngel = " + targetAngle);
 
+            float diff = 180 - targetAngle;
+            if (diff < 0)
+            {
+                if (targetAngle < 360 - turretStats.verticalMaxAngle_pos)
+                {
+                    Debug.Log("Smaller");
+                    targetAngle = 360 - turretStats.verticalMaxAngle_pos;
+                }
+            }
+            else
+            {
+                if (targetAngle > -turretStats.verticalMaxAngle_neg)
+                {
+                    Debug.Log("Smaller");
+                    targetAngle = -turretStats.verticalMaxAngle_neg;
+                }
+            }
+            Debug.Log("After targetAngel = " + targetAngle);
+        //}
+        VertTurret.transform.localEulerAngles = new Vector3(targetAngle, 0.0f, 0.0f);
+    }
 
     void Fire()
     {

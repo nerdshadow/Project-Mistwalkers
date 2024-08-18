@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d749d74e0c846dd468ce6d0cd011eae0, type: 3}
-  m_Name: MGTurret_Med_Stats
+  m_Name: MGTurret_Large_Stats
   m_EditorClassIdentifier: 
-  turretName: MG Med
+  turretName: MG Turret Large
   TurretType: 0
-  TurretSize: 1
-  weight: 75
-  reloadSpeed: 1
+  TurretSize: 2
+  weight: 125
+  reloadSpeed: 0.01
   maxRange: 10
   spreadOn: 1
   minSpreadAmount: {x: 0.05, y: 0.05, z: 0.05}
@@ -27,4 +27,4 @@ MonoBehaviour:
   verticalSpeed: 1
   verticalMaxAngle: 90
   mainColor: {r: 1, g: 1, b: 1, a: 1}
-  turretPrefab: {fileID: 2554458913704090277, guid: 0b2230606ae04af49818c6608ef32595, type: 3}
+  turretPrefab: {fileID: 36941776306264537, guid: 6673c528948e8224f9d64de90fd587c5, type: 3}
