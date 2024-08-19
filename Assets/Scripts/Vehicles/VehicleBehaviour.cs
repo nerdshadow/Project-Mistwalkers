@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum FollowType
+{
+    Formation = 0,
+    EndPoint = 1
+}
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(ShowCenterOfMass))]
 public class VehicleBehaviour : MonoBehaviour
@@ -22,8 +28,11 @@ public class VehicleBehaviour : MonoBehaviour
     [Header("Stats")]
     [Space(5)]
     public bool canDrive = true;
+    public bool forceStop = false;
     public bool useForce = false;
     public bool followPointList = false;
+    public float stopDistance = 5f;
+    public float minAngleForTurn = 5f;
     [SerializeField]
     float currentTorque = 0f;
     [SerializeField]
@@ -32,9 +41,9 @@ public class VehicleBehaviour : MonoBehaviour
     float currentTurnAngle = 0f;    
     public Rigidbody rigidBody;
     [SerializeField]
-    GameObject currentCheckpoint;
+    GameObject currentMoveTarget;
     [SerializeField]
-    List<GameObject> checkpoints = new List<GameObject>();
+    List<GameObject> moveTargets = new List<GameObject>();
     Vector3 mainDifference;
     #endregion Stats
 
@@ -65,9 +74,10 @@ public class VehicleBehaviour : MonoBehaviour
         //TryMove();
         if (canDrive == false)
             return;
-        FollowCheckpoints();
+        FollowTarget();
 
     }
+    #region VehicleSer
     void FindWheels()
     {
         if (turnWheels.Count + staticWheels.Count != 0)
@@ -96,7 +106,7 @@ public class VehicleBehaviour : MonoBehaviour
         rigidBody.mass = currentVehicleStats.vehicleBaseMass;
 
         if (followPointList == true)
-            currentCheckpoint = checkpoints[0];
+            currentMoveTarget = moveTargets[0];
     }
     int AmountOfTopChildren(Transform _parent)
     {
@@ -165,24 +175,34 @@ public class VehicleBehaviour : MonoBehaviour
     //        }
     //    }
     //}
-    void FollowCheckpoints()
+    #endregion VehicleSer
+    void FollowTarget()
     {
-        if (currentCheckpoint == null)
-            return;
-        CheckDirections();
-        CheckDistances();
-        TryToMoveToCheckpoint();
+        if (currentMoveTarget == null || forceStop == true)
+        {
+            TryToStop();
+        }
+        else
+        {
+            CheckDirections();
+            CheckDistances();
+            TryToMove();        
+        }
+        ManageWheels();
     }
-    //TODO slow change of values
-    void TryToMoveToCheckpoint()
+    public void TryToStop()
+    {
+        Move(Movement.stop);
+        Turn(0f, 0f);
+    }
+    public void TryToMove()
     {
         //move vehicle
-        if (zDistance > 5f)
+        if (zDistance > stopDistance)
         {
             if (vehicleIsBehind == true)
             {
                 Move(Movement.forward);
-                //currentTorque = currentVehicleStats.forwardTorque;
             }
             else
             {
@@ -191,9 +211,8 @@ public class VehicleBehaviour : MonoBehaviour
         }
         else
         {
-            //int n = checkpoints.IndexOf(currentCheckpoint);
-            if (followPointList == true && (checkpoints.IndexOf(currentCheckpoint) < checkpoints.Count - 1))
-                currentCheckpoint = checkpoints[(checkpoints.IndexOf(currentCheckpoint) + 1)];
+            if (followPointList == true && (moveTargets.IndexOf(currentMoveTarget) < moveTargets.Count - 1))
+                currentMoveTarget = moveTargets[(moveTargets.IndexOf(currentMoveTarget) + 1)];
             else
             {
                 //if(followPointList == true)
@@ -203,8 +222,8 @@ public class VehicleBehaviour : MonoBehaviour
                 Move(Movement.stop);
             }
         }
-
-        Vector3 targetDir = currentCheckpoint.transform.position - transform.position;
+        //Turn
+        Vector3 targetDir = currentMoveTarget.transform.position - transform.position;
         float angleBetween = 0f;
         if (vehicleIsBehind == true)
         {
@@ -216,7 +235,7 @@ public class VehicleBehaviour : MonoBehaviour
         }
         //Debug.Log("Angle is " + angleBetween);
         //turn vehicle 
-        if (angleBetween >= 5f)
+        if (angleBetween >= minAngleForTurn)
         {
             float targetAngle = 0f;
             if (vehicleIsLeft == true)
@@ -235,8 +254,10 @@ public class VehicleBehaviour : MonoBehaviour
         {
             //currentTurnAngle = 0f;
             Turn(0f, angleBetween);
-        }
-
+        }        
+    }
+    void ManageWheels()
+    {
         //Check current values
         currentVelocity = rigidBody.velocity.z;
         currentSpeed = currentVelocity * 3.6f;
@@ -283,7 +304,7 @@ public class VehicleBehaviour : MonoBehaviour
             wheel.steerAngle = currentTurnAngle;
         }
     }
-    enum Movement
+    public enum Movement
     {
         backward = -1,
         stop = 0,
@@ -361,7 +382,7 @@ public class VehicleBehaviour : MonoBehaviour
     void CheckDirections()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 toOther = Vector3.Normalize(currentCheckpoint.transform.position - transform.position);
+        Vector3 toOther = Vector3.Normalize(currentMoveTarget.transform.position - transform.position);
 
         if (Vector3.Dot(forward, toOther) < 0)
         {
@@ -378,7 +399,7 @@ public class VehicleBehaviour : MonoBehaviour
             //print("Center");
         }
         Vector3 right = transform.TransformDirection(Vector3.right);
-        toOther = Vector3.Normalize(currentCheckpoint.transform.position - transform.position);
+        toOther = Vector3.Normalize(currentMoveTarget.transform.position - transform.position);
 
         if (Vector3.Dot(right, toOther) < 0)
         {
@@ -397,7 +418,7 @@ public class VehicleBehaviour : MonoBehaviour
     }
     void CheckDistances()
     {
-        mainDifference = currentCheckpoint.transform.position - transform.position;
+        mainDifference = currentMoveTarget.transform.position - transform.position;
         xDistance = Mathf.Abs(mainDifference.x);
         //Debug.Log("xDist = " + xDistance);
         var distanceInY = Mathf.Abs(mainDifference.y);
@@ -419,7 +440,7 @@ public class VehicleBehaviour : MonoBehaviour
             currentTurnAngle += currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
             if (_targetAngle < currentTurnAngle)
                 currentTurnAngle = _targetAngle;
-        }
+        }        
     }
     #region Checks
     [Space(10)]

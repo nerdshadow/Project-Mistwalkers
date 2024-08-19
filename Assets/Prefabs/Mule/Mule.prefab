@@ -418,19 +418,23 @@ MonoBehaviour:
   currentVehicleStats: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
   turnWheels: []
   staticWheels: []
-  canDrive: 1
+  canDrive: 0
+  forceStop: 0
   useForce: 0
   followPointList: 0
+  stopDistance: 5
+  minAngleForTurn: 5
   currentTorque: 0
   currentBrakeTorque: 0
   currentTurnAngle: 0
   rigidBody: {fileID: 6641565102744452899}
-  currentCheckpoint: {fileID: 0}
-  checkpoints: []
+  currentMoveTarget: {fileID: 0}
+  moveTargets: []
   currentVehicleBase: {fileID: 4147948000499981016}
   cabHolder: {fileID: 7717899956627438259}
   cabBeh: {fileID: 0}
   currentVehicleCab: {fileID: 3612599241733292088}
+  bodyBeh: {fileID: 0}
   bodyHolder: {fileID: 7678377033677822845}
   currentVehicleBody: {fileID: 9002076924879482870}
   accelerationSpeed: 4

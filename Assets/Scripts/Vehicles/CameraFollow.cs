@@ -14,7 +14,10 @@ public class CameraFollow : MonoBehaviour
     Vector3 offset;
     [SerializeField]
     Quaternion rotation;
-
+    private void OnValidate()
+    {
+        RefreshCameraEdit();
+    }
     private void LateUpdate()
     {
         Follow();

@@ -240,15 +240,18 @@ MonoBehaviour:
   staticWheels:
   - {fileID: 5549101356687783566}
   - {fileID: 1078413632095601753}
-  canDrive: 1
+  canDrive: 0
+  forceStop: 0
   useForce: 0
   followPointList: 0
+  stopDistance: 5
+  minAngleForTurn: 5
   currentTorque: 0
   currentBrakeTorque: 0
   currentTurnAngle: 0
   rigidBody: {fileID: 8867955842171602416}
-  currentCheckpoint: {fileID: 0}
-  checkpoints: []
+  currentMoveTarget: {fileID: 0}
+  moveTargets: []
   currentVehicleBase: {fileID: 1085706469303330404}
   cabHolder: {fileID: 5923640340903423519}
   cabBeh: {fileID: 0}

@@ -43,7 +43,7 @@ public class VehicleSpawner : MonoBehaviour
         }
         canSpawn = true;
     }
-    void AssemblyVehicle()
+    public void AssemblyVehicle()
     {
         if (currentVehicle != null)
             Destroy(currentVehicle);
@@ -72,7 +72,6 @@ public class VehicleSpawner : MonoBehaviour
         }
         AssemblyVehicle();
     }
-
     IEnumerator AssebleNextFrame()
     {
         yield return new WaitForFixedUpdate();

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9ce9802cad24647b2f7f0b38d422e0, type: 3}
   m_Name: _MuleBaseStats
   m_EditorClassIdentifier: 
-  vehicleBaseName: Simple Vehicle Base
+  vehicleBaseName: Mule Base
   vehicleBaseMass: 1000
   maxSpeed: 30
   maxRpm: 500
