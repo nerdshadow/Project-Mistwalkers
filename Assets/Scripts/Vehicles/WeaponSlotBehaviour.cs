@@ -5,19 +5,53 @@ using UnityEngine;
 
 public class WeaponSlotBehaviour : MonoBehaviour
 {
-    public BasicTurretBehaviour currentWeapon;
+    public TurretStats currentWeaponStats;
     public TurretSize SlotTurretSize = TurretSize.Small;
+    public BasicTurretBehaviour currentWeaponBeh;
+    [SerializeField]
+    TurretStats testWeapon;
     private void OnValidate()
     {
         if (transform.childCount == 0)
             return;
 
-        currentWeapon = transform.GetChild(0).GetComponent<BasicTurretBehaviour>();
-        if(currentWeapon == null)
+        currentWeaponStats = transform.GetChild(0).GetComponent<BasicTurretBehaviour>().turretStats;
+        if(currentWeaponStats == null)
             return;
 
-        if (currentWeapon.turretStats.TurretSize != SlotTurretSize && currentWeapon != null)
-            Debug.LogWarning("Missmatch of TurretsSize in " + this.name + " in " + gameObject.scene.name);
+        if (currentWeaponStats.TurretSize != SlotTurretSize && currentWeaponStats != null)
+            Debug.LogWarning("Missmatch of Turret Size in " + this.name + " in " + gameObject.scene.name);
 
+    }
+    public void SpawnWeaponInSlot(TurretStats _turret)
+    {
+        if (_turret == null)
+        {
+            if (transform.childCount > 0)
+            {
+                Destroy(transform.GetChild(0).gameObject);
+                currentWeaponBeh = null;
+                currentWeaponStats = null;
+            }
+            return;
+        }
+        if (_turret.TurretSize != SlotTurretSize)
+        {
+            Debug.Log("Incorrect weapon Size");
+            return;
+        }
+        if (currentWeaponBeh != null)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+            currentWeaponBeh = null;
+            currentWeaponStats = null;
+        }
+        currentWeaponBeh = Instantiate(_turret.turretPrefab, transform).GetComponent<BasicTurretBehaviour>();
+        currentWeaponStats = _turret;
+    }
+    [ContextMenu("TestSpawn")]
+    void Spawntest()
+    {
+        SpawnWeaponInSlot(testWeapon);
     }
 }

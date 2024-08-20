@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
+using System.Linq;
 
 public class UI_VehicleSpawner : MonoBehaviour
 {
@@ -26,6 +28,17 @@ public class UI_VehicleSpawner : MonoBehaviour
         RefreshBases();
         RefreshCabs();
         RefreshBodies();
+    }
+    private void OnEnable()
+    {
+        cabsDropDown.onValueChanged.AddListener(delegate { RefreshCabSlots(); });
+        RefreshBases();
+        RefreshCabs();
+        RefreshBodies();
+    }
+    private void OnDisable()
+    {
+        cabsDropDown.onValueChanged.RemoveListener(delegate { RefreshCabSlots(); });
     }
     [ContextMenu("Refresh Spawner")]
     void RefreshSpawner()
@@ -68,7 +81,7 @@ public class UI_VehicleSpawner : MonoBehaviour
             }
             cabsDropDown.options.Add(new TMP_Dropdown.OptionData(vehiclePartStats.partName, null));
         }
-        cabsDropDown.value = 0;
+        cabsDropDown.value = 0;        
         ChangeCab(0);
         cabsDropDown.RefreshShownValue();
     }
@@ -148,6 +161,7 @@ public class UI_VehicleSpawner : MonoBehaviour
             return;
         }
         currentVehicleSpawner.vehicleCabPartSO = potVehicleCab;
+        //RefreshCabSlots();
     }
     public void ChangeBody(Int32 _index)
     {
@@ -169,6 +183,35 @@ public class UI_VehicleSpawner : MonoBehaviour
             return;
         }
         currentVehicleSpawner.vehicleBodyPartSO = potVehicleBody;
+    }
+    [SerializeField]
+    VerticalLayoutGroup cabSlotsHolder;
+    public List<WeaponSlotBehaviour> cabSlots = new List<WeaponSlotBehaviour>();
+    [SerializeField]
+    WeaponSlotUI weaponSlotUI;
+    [ContextMenu("Refresh cab slots")]
+    void RefreshCabSlots()
+    {
+        if (cabSlotsHolder == null || weaponSlotUI == null)
+            return;
+        cabSlots.Clear();
+        for (int i = 0; i < cabSlotsHolder.transform.childCount; i++)
+            Destroy(cabSlotsHolder.transform.GetChild(i).gameObject);
+
+        cabSlots.AddRange(currentVehicleSpawner.vehicleCabPartSO.partPrefab.GetComponentsInChildren<WeaponSlotBehaviour>());
+
+        if (cabSlots.Count > 0)
+        {
+            foreach (WeaponSlotBehaviour slot in cabSlots)
+            {
+                WeaponSlotUI buffSlot = Instantiate(weaponSlotUI, cabSlotsHolder.transform);
+                buffSlot.weaponSlotSize.text = slot.SlotTurretSize.ToString();
+                if (slot.currentWeaponStats == null)
+                    buffSlot.weaponName.text = "Empty";
+                else
+                    buffSlot.weaponName.text = slot.currentWeaponStats.turretName;
+            }
+        }
     }
 
     [ContextMenu("SpawnVehicle")]
