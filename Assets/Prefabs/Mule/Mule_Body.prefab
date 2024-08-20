@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 6948779277148190747}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7742904, y: 1.8846698, z: 1.4521955}
+  m_LocalPosition: {x: -0.78074473, y: 1.8839505, z: 1.4499137}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c379832e4c1ac4e84f7bd008a4bf73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeapon: {fileID: 0}
+  currentWeaponStats: {fileID: 0}
   SlotTurretSize: 0
+  currentWeaponBeh: {fileID: 0}
+  testWeapon: {fileID: 0}
 --- !u!1 &8531808458537784834
 GameObject:
   m_ObjectHideFlags: 0
