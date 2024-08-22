@@ -259,7 +259,7 @@ public class UI_VehicleSpawner : MonoBehaviour
                 if (_turretStats.TurretSize.ToString() == slotSize)
                 {
                     UI_ItemHolder _buffItem = Instantiate(itemHolder, _list);
-                    _buffItem.ChangeItem(_turretStats);
+                    _buffItem.ChangeHoldItem(_turretStats);
                 }
             }
         }

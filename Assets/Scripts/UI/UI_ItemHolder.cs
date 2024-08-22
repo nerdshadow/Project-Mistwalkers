@@ -16,7 +16,7 @@ public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHa
     UI_ItemInfoPanel itemInfoPanel;
     [SerializeField]
     UI_ItemInfoPanel currentInfoPanel;
-    public void ChangeItem(TurretStats _turretStat)
+    public void ChangeHoldItem(TurretStats _turretStat)
     {
         currentItemStats = _turretStat;
         itemTextHolder.text = _turretStat.turretName;
@@ -28,7 +28,7 @@ public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHa
         if(itemInfoPanel == null)
             return;
         currentInfoPanel = Instantiate(itemInfoPanel, transform.root);
-        currentInfoPanel.gameObject.transform.position = Input.mousePosition;
+        _eventData.position = Input.mousePosition;
         currentInfoPanel.itemName.text = currentItemStats.turretName;
         currentInfoPanel.itemType.text = currentItemStats.TurretType.ToString();
         currentInfoPanel.itemSize.text = currentItemStats.TurretSize.ToString();
@@ -43,8 +43,10 @@ public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHa
         currentInfoPanel = null;
     }
 
-    public void OnPointerMove(PointerEventData eventData)
+    public void OnPointerMove(PointerEventData _eventData)
     {
-        //follow info
+        if (itemInfoPanel == null || currentInfoPanel == null)
+            return;
+        currentInfoPanel.transform.position = _eventData.position;
     }
 }
