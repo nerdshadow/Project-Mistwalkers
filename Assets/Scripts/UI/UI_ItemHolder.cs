@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler
+public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public TurretStats currentItemStats = null;
     [SerializeField]
@@ -22,9 +22,17 @@ public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHa
         itemTextHolder.text = _turretStat.turretName;
         //change item icon
     }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        //Create turret in slot
+        if (currentItemStats != null)
+            Debug.Log("Item = " + currentItemStats.turretName);
+    }
+
     public void OnPointerEnter(PointerEventData _eventData)
     {
-        Debug.Log("Mouse on item " + this.name + " " + currentItemStats.turretName);
+        //Debug.Log("Mouse on item " + this.name + " " + currentItemStats.turretName);
         if(itemInfoPanel == null)
             return;
         currentInfoPanel = Instantiate(itemInfoPanel, transform.root);
@@ -35,7 +43,7 @@ public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHa
     }
     public void OnPointerExit(PointerEventData _eventData)
     {
-        Debug.Log("Mouse off item " + this.name + " " + currentItemStats.turretName);
+        //Debug.Log("Mouse off item " + this.name + " " + currentItemStats.turretName);
         if (itemInfoPanel == null || currentInfoPanel == null)
             return;
         currentInfoPanel.gameObject.SetActive(false);

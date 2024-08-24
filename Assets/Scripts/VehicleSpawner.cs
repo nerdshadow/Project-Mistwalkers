@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
-    GameObject currentVehicle = null;
+    public GameObject currentVehicle = null;
     public Transform spawnPosition;
     public VehicleBaseStats vehicleBaseSO;
     public VehiclePartStats vehicleCabPartSO;
@@ -17,9 +17,9 @@ public class VehicleSpawner : MonoBehaviour
     void InitParts()
     {
         if (vehicleBodyPartSO != null && vehicleCabPartSO != null)
-        {         
-            if (vehicleBodyPartSO.partType != VehiclePartStats.PartType.body
-                || vehicleCabPartSO.partType != VehiclePartStats.PartType.cab
+        {
+            if (vehicleBodyPartSO.partType != PartType.Body
+                || vehicleCabPartSO.partType != PartType.Cab
                 || vehicleBodyPartSO.relatedBase != vehicleBaseSO
                 || vehicleCabPartSO.relatedBase != vehicleBaseSO)
             {
@@ -29,7 +29,7 @@ public class VehicleSpawner : MonoBehaviour
         }
         if (vehicleBodyPartSO == null && vehicleCabPartSO != null)
         {
-            if (vehicleCabPartSO.partType != VehiclePartStats.PartType.cab                
+            if (vehicleCabPartSO.partType != PartType.Cab
                 || vehicleCabPartSO.relatedBase != vehicleBaseSO)
             {
                 canSpawn = false;
@@ -60,11 +60,12 @@ public class VehicleSpawner : MonoBehaviour
             Instantiate(vehicleBodyPartSO.partPrefab, vehicleBehaviour.bodyHolder.transform);
         }
 
-        StartCoroutine(AssebleNextFrame());        
+        StartCoroutine(AssebleNextFrame());
     }
     [ContextMenu("Spawn vehicle")]
     void SpawnVehicle()
     {
+        InitParts();
         if (canSpawn == false)
         {
             Debug.Log("Cant spawn vehicle with that parametrs");
@@ -72,19 +73,51 @@ public class VehicleSpawner : MonoBehaviour
         }
         AssemblyVehicle();
     }
+
+    public void ChangeCab()
+    {
+        InitParts();
+        if (currentVehicle == null || canSpawn == false || Application.isPlaying == false)
+            return;
+
+        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+
+        Destroy(vehicleBehaviour.currentVehicleCab);
+        Instantiate(vehicleCabPartSO.partPrefab, vehicleBehaviour.cabHolder.transform);
+        StartCoroutine(UpdateWheels());
+
+    }
+    public void ChangeBody()
+    {
+        InitParts();
+        if (currentVehicle == null || canSpawn == false)
+            return;
+
+        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+
+        if (vehicleBodyPartSO != null)
+        {
+            Destroy(vehicleBehaviour.currentVehicleBody);
+            Instantiate(vehicleBodyPartSO.partPrefab, vehicleBehaviour.bodyHolder.transform);
+        }
+        StartCoroutine(UpdateWheels());
+    }
     IEnumerator AssebleNextFrame()
     {
         yield return new WaitForFixedUpdate();
-
+        //currentVehicle.GetComponent<VehicleBehaviour>().SerializeVehicle();
+        currentVehicle.SetActive(true);
+        StartCoroutine(UpdateWheels());
+        currentVehicle.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+    }
+    IEnumerator UpdateWheels()
+    {
+        yield return new WaitForFixedUpdate();
         List<WheelBehaviour> wBehs = new List<WheelBehaviour>();
         wBehs.AddRange(currentVehicle.GetComponentsInChildren<WheelBehaviour>());
-
-        currentVehicle.GetComponent<VehicleBehaviour>().SerializeVehicle();
         foreach (WheelBehaviour wheelBehaviour in wBehs)
         {
             wheelBehaviour.ReManageWheelColliders();
         }
-
-        currentVehicle.SetActive(true);
     }
 }

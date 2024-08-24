@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+    public enum PartType
+    {
+        Cab = 0,
+        Body = 1
+    }
 [CreateAssetMenu(fileName = "VehiclePartStats", menuName = "SO/CreateVehiclePartStatsSO")]
 public class VehiclePartStats : ScriptableObject
 {
@@ -9,12 +14,7 @@ public class VehiclePartStats : ScriptableObject
     [Header("Info")]
     [Space(5)]
     public string partName = "Simple Part";
-    public enum PartType
-    {
-        cab = 0,
-        body = 1
-    }
-    public PartType partType = PartType.cab;
+    public PartType partType = PartType.Cab;
     public float partMass = 300f;
     public GameObject partPrefab;
     [SerializeField]
@@ -28,5 +28,5 @@ public class VehiclePartStats : ScriptableObject
             return;
 
         weaponsSlots.AddRange(partPrefab.GetComponentsInChildren<WeaponSlotBehaviour>());
-    }
+    }    
 }

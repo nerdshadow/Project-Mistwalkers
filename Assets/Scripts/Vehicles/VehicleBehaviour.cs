@@ -60,7 +60,7 @@ public class VehicleBehaviour : MonoBehaviour
     #endregion Parts
     private void OnValidate()
     {
-        if(!gameObject.activeInHierarchy)
+        if(!gameObject.activeInHierarchy || Application.isPlaying == true)
             return;
 
         SerializeVehicle();

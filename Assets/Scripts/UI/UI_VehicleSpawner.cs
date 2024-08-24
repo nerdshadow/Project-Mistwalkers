@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class UI_VehicleSpawner : MonoBehaviour
 {
     [SerializeField]
     VehicleSpawner currentVehicleSpawner;
-
+    public bool stayInPlace = true;
     [SerializeField]
     TMP_Dropdown basesDropDown;
     public List<VehicleBaseStats> possibleVehiclesBases = new List<VehicleBaseStats>();
@@ -23,12 +21,12 @@ public class UI_VehicleSpawner : MonoBehaviour
     TMP_Dropdown bodiesDropDown;
     public List<VehiclePartStats> possibleVehiclesBodies = new List<VehiclePartStats>();
 
-    private void OnValidate()
-    {
-        RefreshBases();
-        RefreshCabs();
-        RefreshBodies();
-    }
+    //private void OnValidate()
+    //{
+    //    RefreshBases();
+    //    RefreshCabs();
+    //    RefreshBodies();
+    //}
     private void OnEnable()
     {
         cabsDropDown.onValueChanged.AddListener(delegate { RefreshCabSlots(); });
@@ -69,7 +67,7 @@ public class UI_VehicleSpawner : MonoBehaviour
         cabsDropDown.ClearOptions();
         foreach (VehiclePartStats vehiclePartStats in possibleVehiclesCabs)
         {
-            if (vehiclePartStats.partType != VehiclePartStats.PartType.cab)
+            if (vehiclePartStats.partType != PartType.Cab)
             {
                 Debug.Log("There is !Cab part as " + vehiclePartStats.partName);
                 continue;
@@ -97,7 +95,7 @@ public class UI_VehicleSpawner : MonoBehaviour
         bodiesDropDown.ClearOptions();
         foreach (VehiclePartStats vehiclePartStats in possibleVehiclesBodies)
         {
-            if (vehiclePartStats.partType != VehiclePartStats.PartType.body)
+            if (vehiclePartStats.partType != PartType.Body)
             {
                 Debug.Log("There is !Body part as " + vehiclePartStats.partName);
                 continue;
@@ -142,10 +140,11 @@ public class UI_VehicleSpawner : MonoBehaviour
         currentVehicleSpawner.vehicleBaseSO = potVehicleBase;
         RefreshCabs();
         RefreshBodies();
+        TrySpawnVehicle();
     }
     public void ChangeCab(Int32 _index)
     {
-        //Debug.Log("Returning cab index is " + _index);
+        //Debug.Log("Returning Cab index is " + _index);
 
         if (currentVehicleSpawner == null)
             return;
@@ -157,15 +156,21 @@ public class UI_VehicleSpawner : MonoBehaviour
         }
         if (potVehicleCab == null)
         {
-            Debug.Log("No such cab");
+            Debug.Log("No such Cab");
             return;
         }
         currentVehicleSpawner.vehicleCabPartSO = potVehicleCab;
-        //RefreshCabSlots();
+
+        currentVehicleSpawner.ChangeCab();
+
+        if (Application.isPlaying)
+        {
+            RefreshCabSlots();
+        }
     }
     public void ChangeBody(Int32 _index)
     {
-        //Debug.Log("Returning body index is " + _index);
+        //Debug.Log("Returning Body index is " + _index);
 
         if (currentVehicleSpawner == null)
             return;
@@ -179,10 +184,12 @@ public class UI_VehicleSpawner : MonoBehaviour
         }
         if (potVehicleBody == null)
         {
-            Debug.Log("No such body");
+            Debug.Log("No such Body");
             return;
         }
         currentVehicleSpawner.vehicleBodyPartSO = potVehicleBody;
+
+        //currentVehicleSpawner.ChangeBody();
     }
     [SerializeField]
     RectTransform cabSlotsMenu = null;
@@ -193,7 +200,7 @@ public class UI_VehicleSpawner : MonoBehaviour
     WeaponSlotUI weaponSlotUI;
     [SerializeField]
     GameObject itemList;
-    [ContextMenu("Refresh cab slots")]
+    [ContextMenu("Refresh Cab slots")]
     void RefreshCabSlots()
     {
         if (cabSlotsHolder == null || weaponSlotUI == null || cabSlotsMenu == null)
@@ -214,6 +221,7 @@ public class UI_VehicleSpawner : MonoBehaviour
             foreach (WeaponSlotBehaviour slot in cabSlots)
             {
                 WeaponSlotUI buffSlot = Instantiate(weaponSlotUI, cabSlotsHolder.transform);
+                buffSlot.slotBeh = slot;
                 buffSlot.weaponSlotSize.text = slot.SlotTurretSize.ToString();
                 if (slot.currentWeaponStats == null)
                     buffSlot.weaponName.text = "Empty";
@@ -233,9 +241,9 @@ public class UI_VehicleSpawner : MonoBehaviour
     List<TurretStats> turretsInStock;
     [SerializeField]
     UI_ItemHolder itemHolder;
-    public void ShowItemList(string slotSize)
+    public void ShowItemList(TurretSize slotSize)
     {
-        Debug.Log("Entered SHOWITEMLIST");
+        //Debug.Log("Entered SHOWITEMLIST");
         if (itemList == null)
             return;
         if (itemList.activeSelf == true)
@@ -256,7 +264,7 @@ public class UI_VehicleSpawner : MonoBehaviour
             UI_ItemHolder _nullItem = Instantiate(itemHolder, _list);
             foreach (TurretStats _turretStats in turretsInStock)
             {
-                if (_turretStats.TurretSize.ToString() == slotSize)
+                if (_turretStats.TurretSize == slotSize)
                 {
                     UI_ItemHolder _buffItem = Instantiate(itemHolder, _list);
                     _buffItem.ChangeHoldItem(_turretStats);

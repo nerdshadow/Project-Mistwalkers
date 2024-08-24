@@ -8,24 +8,25 @@ using UnityEngine.UI;
 
 public class WeaponSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    public WeaponSlotBehaviour slotBeh;
     public TMP_Text weaponSlotSize;
     public TMP_Text weaponName;
     public Image weaponImage;
-    public UnityEvent<string> onWeaponSlotClicked = new UnityEvent<string>();
+    public UnityEvent<TurretSize> onWeaponSlotClicked = new UnityEvent<TurretSize>();
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Mouse clicked slot " + this.name);
-        onWeaponSlotClicked.Invoke(weaponSlotSize.text);
+        //Debug.Log("Mouse clicked slot " + this.name);
+        onWeaponSlotClicked.Invoke(slotBeh.SlotTurretSize);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Mouse on slot " + this.name);
+        //Debug.Log("Mouse on slot " + this.name);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Mouse off slot " + this.name);        
+        //Debug.Log("Mouse off slot " + this.name);        
     }
     private void OnDestroy()
     {

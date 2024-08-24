@@ -64,11 +64,21 @@ public class WheelBehaviour : MonoBehaviour
     }
     public void IgnoreParent()
     {
-        foreach (Collider collider in vehicleColliders) 
+        //foreach (Collider collider in vehicleColliders) 
+        //{
+        //    if(collider == null)
+        //        vehicleColliders.Remove(collider);
+        //    Physics.IgnoreCollision(currentWheelColl, collider);
+        //}
+
+        for (int i = 0; i < vehicleColliders.Count; i++)
         {
-            if(collider == null)
-                vehicleColliders.Remove(collider);
-            Physics.IgnoreCollision(currentWheelColl, collider);
+            if (vehicleColliders[i] == null)
+            {
+                vehicleColliders.RemoveAt(i);
+                continue;
+            }
+            Physics.IgnoreCollision(currentWheelColl, vehicleColliders[i]);
         }
     }
 }

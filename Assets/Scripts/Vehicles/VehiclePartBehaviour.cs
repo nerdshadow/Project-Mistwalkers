@@ -10,7 +10,7 @@ public class VehiclePartBehaviour : MonoBehaviour
     [Space(5)]
     
     public VehiclePartStats partStats = null;
-    public VehiclePartStats.PartType partType = VehiclePartStats.PartType.cab;
+    public PartType partType = PartType.Cab;
     [SerializeField]
     Rigidbody rigidBody;
     [SerializeField]
@@ -31,8 +31,6 @@ public class VehiclePartBehaviour : MonoBehaviour
     {
         if (rigidBody == null)
             rigidBody = GetComponent<Rigidbody>();
-        if(currentBase == null)
-            currentBase = GetComponentInParent<VehicleBehaviour>();
         if (rigidBody != null && partStats != null)
         {
             rigidBody.mass = partStats.partMass;
@@ -40,6 +38,21 @@ public class VehiclePartBehaviour : MonoBehaviour
         if(partStats != null)
         {
             partType = partStats.partType;
+        }
+        if (currentBase == null) 
+        {
+            currentBase = GetComponentInParent<VehicleBehaviour>();
+        }
+        if (currentBase != null)
+        {
+            if (partType == PartType.Cab)
+            {
+                currentBase.currentVehicleCab = this.gameObject;
+            }
+            else if (partType == PartType.Body)
+            {
+                currentBase.currentVehicleBody = this.gameObject;
+            }
         }
         if (currentBase != null)
         {
