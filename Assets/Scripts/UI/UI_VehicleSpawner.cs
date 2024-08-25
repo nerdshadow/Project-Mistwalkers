@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -166,6 +167,7 @@ public class UI_VehicleSpawner : MonoBehaviour
         if (Application.isPlaying)
         {
             RefreshCabSlots();
+            //RefreshCabSlots_AfterFrame();
         }
     }
     public void ChangeBody(Int32 _index)
@@ -192,86 +194,120 @@ public class UI_VehicleSpawner : MonoBehaviour
         //currentVehicleSpawner.ChangeBody();
     }
     [SerializeField]
-    RectTransform cabSlotsMenu = null;
+    RectTransform ui_cabSlotsMenu = null;
     [SerializeField]
-    VerticalLayoutGroup cabSlotsHolder;
-    public List<WeaponSlotBehaviour> cabSlots = new List<WeaponSlotBehaviour>();
+    VerticalLayoutGroup ui_cabSlotsHolder;
+    public List<WeaponSlotBehaviour> ui_cabSlots = new List<WeaponSlotBehaviour>();
     [SerializeField]
-    WeaponSlotUI weaponSlotUI;
+    UI_WeaponSlot ui_weaponSlot;
     [SerializeField]
-    GameObject itemList;
+    GameObject ui_itemList;
+    [SerializeField]
+    TurretStats nullTurret;
     [ContextMenu("Refresh Cab slots")]
     void RefreshCabSlots()
     {
-        if (cabSlotsHolder == null || weaponSlotUI == null || cabSlotsMenu == null)
+        Debug.Log("Ent RefreshCabSlots");
+        if (ui_cabSlotsHolder == null || ui_weaponSlot == null || ui_cabSlotsMenu == null)
             return;
-        
-        cabSlots.Clear();
 
-        for (int i = 0; i < cabSlotsHolder.transform.childCount; i++)
-            Destroy(cabSlotsHolder.transform.GetChild(i).gameObject);        
-
-        cabSlots.AddRange(currentVehicleSpawner.vehicleCabPartSO.partPrefab.GetComponentsInChildren<WeaponSlotBehaviour>());
-
-        if (cabSlots.Count > 0)
+        if (currentVehicleSpawner.currentVehicle == null)
         {
-            if (cabSlotsMenu.gameObject.activeSelf == false)
-                cabSlotsMenu.gameObject.SetActive(true);
+            StartCoroutine(RefreshCabSlots_AfterFrame());
+            return;
+        }
 
-            foreach (WeaponSlotBehaviour slot in cabSlots)
+
+        ui_cabSlots.Clear();
+
+        for (int i = 0; i < ui_cabSlotsHolder.transform.childCount; i++)
+            Destroy(ui_cabSlotsHolder.transform.GetChild(i).gameObject);        
+
+        //ui_cabSlots.AddRange(currentVehicleSpawner.vehicleCabPartSO.partPrefab.GetComponentsInChildren<WeaponSlotBehaviour>());
+        ui_cabSlots.AddRange(currentVehicleSpawner.currentVehicle.GetComponent<VehicleBehaviour>().currentVehicleCab.GetComponentsInChildren<WeaponSlotBehaviour>());
+
+        if (ui_cabSlots.Count > 0)
+        {
+            if (ui_cabSlotsMenu.gameObject.activeSelf == false)
+                ui_cabSlotsMenu.gameObject.SetActive(true);
+
+            foreach (WeaponSlotBehaviour slot in ui_cabSlots)
             {
-                WeaponSlotUI buffSlot = Instantiate(weaponSlotUI, cabSlotsHolder.transform);
+                UI_WeaponSlot buffSlot = Instantiate(ui_weaponSlot, ui_cabSlotsHolder.transform);
                 buffSlot.slotBeh = slot;
                 buffSlot.weaponSlotSize.text = slot.SlotTurretSize.ToString();
                 if (slot.currentWeaponStats == null)
-                    buffSlot.weaponName.text = "Empty";
-                else
-                    buffSlot.weaponName.text = slot.currentWeaponStats.turretName;
+                {
+                    slot.currentWeaponStats = nullTurret;
+                    //buffSlot.currentTurretStats = nullTurret;
+                    //buffSlot.weaponName.text = "Empty";
+                }
+                //else
+                    buffSlot.RefreshUI(slot.currentWeaponStats.turretName);
 
                 buffSlot.onWeaponSlotClicked.AddListener(ShowItemList);
+                buffSlot.changeWeaponSlot.AddListener(ChangeSlotItem);
             }
         }
         else
         {
-            if (cabSlotsMenu.gameObject.activeSelf == true)
-                cabSlotsMenu.gameObject.SetActive(false);
+            if (ui_cabSlotsMenu.gameObject.activeSelf == true)
+                ui_cabSlotsMenu.gameObject.SetActive(false);
         }
+    }
+    public void ChangeSlotItem(TurretStats _turret, UI_WeaponSlot _ui_slot)
+    {
+        if (_ui_slot == null || _turret == null || _ui_slot.slotBeh == null)
+            return;
+        //UI change
+        _ui_slot.currentTurretStats = _turret;
+        _ui_slot.RefreshUI(_turret.turretName);
+
+        //OnModel change
+        _ui_slot.slotBeh.SpawnWeaponInSlot(_turret);
     }
     [SerializeField]
     List<TurretStats> turretsInStock;
     [SerializeField]
     UI_ItemHolder itemHolder;
-    public void ShowItemList(TurretSize slotSize)
+    public void ShowItemList(UI_WeaponSlot _uiSlot)
     {
         //Debug.Log("Entered SHOWITEMLIST");
-        if (itemList == null)
+        if (ui_itemList == null)
             return;
-        if (itemList.activeSelf == true)
+        WeaponSlotBehaviour _slotBeh = _uiSlot.slotBeh;
+        if (ui_itemList.activeSelf == true)
         {
-            UI_ItemHolder[] _buffList = itemList.GetComponentsInChildren<UI_ItemHolder>();
+            UI_ItemHolder[] _buffList = ui_itemList.GetComponentsInChildren<UI_ItemHolder>();
             foreach (UI_ItemHolder _buff in _buffList)
             {
                 Destroy(_buff.gameObject);
             }
-            itemList.SetActive(false);
+            ui_itemList.SetActive(false);
         }
         else
         {
-            itemList.SetActive(true);
+            ui_itemList.SetActive(true);
             if (itemHolder == null)
                 return;
-            Transform _list = itemList.transform.GetChild(0);
+            Transform _list = ui_itemList.transform.GetChild(0);
+
             UI_ItemHolder _nullItem = Instantiate(itemHolder, _list);
+            _nullItem.ui_SlotRef = _uiSlot;
+
+
             foreach (TurretStats _turretStats in turretsInStock)
             {
-                if (_turretStats.TurretSize == slotSize)
+                if (_turretStats.TurretSize == _slotBeh.SlotTurretSize)
                 {
                     UI_ItemHolder _buffItem = Instantiate(itemHolder, _list);
                     _buffItem.ChangeHoldItem(_turretStats);
+                    _buffItem.ui_SlotRef = _uiSlot;
                 }
             }
         }
     }
+
     [ContextMenu("SpawnVehicle")]
     public void TrySpawnVehicle()
     {
@@ -280,5 +316,9 @@ public class UI_VehicleSpawner : MonoBehaviour
 
         currentVehicleSpawner.AssemblyVehicle();
     }
-
+    IEnumerator RefreshCabSlots_AfterFrame()
+    {
+        yield return new WaitForFixedUpdate();
+        RefreshCabSlots_AfterFrame();
+    }
 }

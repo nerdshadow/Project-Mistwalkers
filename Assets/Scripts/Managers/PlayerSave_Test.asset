@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67f9ccc42b27a2419828c202947b69b, type: 3}
+  m_Name: PlayerSave_Test
+  m_EditorClassIdentifier: 
+  playerName: Player
+  playerRandSeed: 451
+  playerLastCityIndex: 0
+  playerMoney: 100
+  inventoryMaxSize: 20
+  playerInventory:
+  - {fileID: 11400000, guid: 838f56587a106eb418fd52b816e58244, type: 2}
+  - {fileID: 11400000, guid: 301144887ca5f6d45a5b58e3c29b3250, type: 2}
+  playerVehicles: []

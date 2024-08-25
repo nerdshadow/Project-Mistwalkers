@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public TurretStats currentItemStats = null;
+    public UI_WeaponSlot ui_SlotRef = null;
     [SerializeField]
     TMP_Text itemTextHolder;
     [SerializeField]
@@ -26,8 +28,11 @@ public class UI_ItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHa
     public void OnPointerClick(PointerEventData eventData)
     {
         //Create turret in slot
-        if (currentItemStats != null)
-            Debug.Log("Item = " + currentItemStats.turretName);
+        if(currentItemStats == null)
+            return;
+        
+        Debug.Log("Item = " + currentItemStats.turretName);
+        ui_SlotRef.changeWeaponSlot.Invoke(currentItemStats, ui_SlotRef);
     }
 
     public void OnPointerEnter(PointerEventData _eventData)

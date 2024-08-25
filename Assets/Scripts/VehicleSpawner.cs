@@ -14,6 +14,10 @@ public class VehicleSpawner : MonoBehaviour
     {
         InitParts();
     }
+    private void Start()
+    {
+        AssemblyVehicle();
+    }
     void InitParts()
     {
         if (vehicleBodyPartSO != null && vehicleCabPartSO != null)
@@ -118,6 +122,20 @@ public class VehicleSpawner : MonoBehaviour
         foreach (WheelBehaviour wheelBehaviour in wBehs)
         {
             wheelBehaviour.ReManageWheelColliders();
+        }
+    }
+    IEnumerator UpdateParts()
+    {
+        yield return new WaitForFixedUpdate();
+        VehicleBehaviour vehicleBeh = currentVehicle.GetComponent<VehicleBehaviour>();
+
+        VehiclePartBehaviour[] potParts = vehicleBeh.GetComponentsInChildren<VehiclePartBehaviour>();
+        foreach (VehiclePartBehaviour part in potParts)
+        {
+            if (part.partType == PartType.Cab)
+                vehicleBeh.currentVehicleCab = part.gameObject;
+            if(part.partType == PartType.Body)
+                vehicleBeh.currentVehicleBody = part.gameObject;
         }
     }
 }

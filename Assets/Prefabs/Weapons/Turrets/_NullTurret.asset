@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d749d74e0c846dd468ce6d0cd011eae0, type: 3}
-  m_Name: NullTurret
+  m_Name: _NullTurret
   m_EditorClassIdentifier: 
   turretName: Null Turret
   TurretType: 0
@@ -28,4 +28,4 @@ MonoBehaviour:
   verticalMaxAngle_pos: 90
   verticalMaxAngle_neg: -90
   mainColor: {r: 1, g: 1, b: 1, a: 1}
-  turretPrefab: {fileID: 7569810767204491465, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
+  turretPrefab: {fileID: 7569810767204491465, guid: 5b92485bf93939248aea362b8ef3880b, type: 3}

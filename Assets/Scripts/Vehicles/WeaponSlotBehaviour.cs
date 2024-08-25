@@ -12,16 +12,19 @@ public class WeaponSlotBehaviour : MonoBehaviour
     TurretStats testWeapon;
     private void OnValidate()
     {
+        RefreshWeaponInSlot();
+    }
+    public void RefreshWeaponInSlot()
+    {
         if (transform.childCount == 0)
             return;
 
         currentWeaponStats = transform.GetChild(0).GetComponent<BasicTurretBehaviour>().turretStats;
-        if(currentWeaponStats == null)
+        if (currentWeaponStats == null)
             return;
 
-        if (currentWeaponStats.TurretSize != SlotTurretSize && currentWeaponStats != null)
+        if(currentWeaponStats.TurretSize != SlotTurretSize && currentWeaponStats != null)
             Debug.LogWarning("Missmatch of Turret Size in " + this.name + " in " + gameObject.scene.name);
-
     }
     public void SpawnWeaponInSlot(TurretStats _turret)
     {
@@ -46,9 +49,12 @@ public class WeaponSlotBehaviour : MonoBehaviour
             currentWeaponBeh = null;
             currentWeaponStats = null;
         }
-        currentWeaponBeh = Instantiate(_turret.turretPrefab, transform).GetComponent<BasicTurretBehaviour>();
+        GameObject buffWeapon = Instantiate(_turret.turretPrefab, transform);
+        currentWeaponBeh = buffWeapon.GetComponent<BasicTurretBehaviour>();
         currentWeaponStats = _turret;
     }
+
+
     [ContextMenu("TestSpawn")]
     void Spawntest()
     {
