@@ -39,7 +39,7 @@ public class PlayerManager : MonoBehaviour
         }
         //Load player money
         playerCurrentMoney = playerSave.playerMoney;
-        //Load player last level/position
+        //Load player last levelScene/position
 
         //Load player vehicles
 
@@ -57,7 +57,7 @@ public class PlayerManager : MonoBehaviour
         }
         //Save player money
         playerSave.playerMoney = playerCurrentMoney;
-        //Save player last level/position
+        //Save player last levelScene/position
 
         //Save player vehicles
 
