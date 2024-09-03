@@ -20,4 +20,9 @@ public class TestPlayerSaveData : ScriptableObject
 
     //    playerInventory.Add(_item);
     //}
+
+    public void SaveVehicle(GameObject _vehicle)
+    {
+        
+    }
 }

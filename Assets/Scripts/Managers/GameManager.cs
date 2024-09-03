@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     bool managerIsCreatedThisScene = false;
     List<Level_SO> levels = new List<Level_SO>();
-    bool gameIsPaused = false;
+    public bool gameIsPaused = false;
     [SerializeField]
     GameObject loadingScreen;
     private void Awake()
@@ -113,7 +113,6 @@ public class GameManager : MonoBehaviour
             DoOnLoadingScene();
         }
     }
-
     void DoOnLoadingScene()
     {
         Time.timeScale = 1f;
@@ -129,19 +128,11 @@ public class GameManager : MonoBehaviour
             Debug.Log(scene.name);
         }
     }
-
     public void PauseGame()
     {
         //pause game
         //Debug.Log("Pausinggame");
         gameIsPaused = true;
         Time.timeScale = 0f;
-    }
-    public void ResumeGame()
-    {
-        //resume game
-        //Debug.Log("UnPausinggame");
-        gameIsPaused = false;
-        Time.timeScale = 1f;
     }
 }
