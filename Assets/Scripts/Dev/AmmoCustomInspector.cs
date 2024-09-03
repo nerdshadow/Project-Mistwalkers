@@ -18,20 +18,20 @@ public class AmmoCustomInspector : Editor
         //ammoStatsBuffer.ammoType = (AmmoStats.AmmoType)EditorGUILayout.EnumPopup("CurrentAmmoType", ammoStatsBuffer.ammoType);
         switch (ammoStatsBuffer.ammoType)
         {
-            case AmmoStats.AmmoType.Bullet:
+            case AmmoType.Bullet:
                 {
                     ammoStatsBuffer.bulletTrailVfx_Prefab = (GameObject)EditorGUILayout.ObjectField("Bullet TrailVFX",ammoStatsBuffer.bulletTrailVfx_Prefab, typeof(GameObject), true);
                     ammoStatsBuffer.trailLifetime = EditorGUILayout.FloatField("Trail Life Time", ammoStatsBuffer.trailLifetime);
                     break;
                 }
-            case AmmoStats.AmmoType.CannonShell:
+            case AmmoType.CannonShell:
                 {
                     ammoStatsBuffer.shellPrefab = (GameObject)EditorGUILayout.ObjectField("Shell Prefab", ammoStatsBuffer.shellPrefab, typeof(GameObject), true);
                     ammoStatsBuffer.shellSpeed = EditorGUILayout.FloatField("Shell speed", ammoStatsBuffer.shellSpeed);
                     ammoStatsBuffer.shellLifeTime= EditorGUILayout.FloatField("Shell lifetime", ammoStatsBuffer.shellLifeTime);
                     break;
                 }
-            case AmmoStats.AmmoType.LaserBatteries:
+            case AmmoType.LaserBatteries:
                 {
                     ammoStatsBuffer.laserTrailVfx_Prefab = (GameObject)EditorGUILayout.ObjectField("Laser TrailVFX", ammoStatsBuffer.laserTrailVfx_Prefab, typeof(GameObject), true);
                     ammoStatsBuffer.trailLifetime = EditorGUILayout.FloatField("Trail Life Time", ammoStatsBuffer.trailLifetime);

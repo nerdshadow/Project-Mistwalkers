@@ -31,9 +31,7 @@ public class UI_VehicleSpawner : MonoBehaviour
     private void OnEnable()
     {
         cabsDropDown.onValueChanged.AddListener(delegate { RefreshCabSlots(); });
-        RefreshBases();
-        RefreshCabs();
-        RefreshBodies();
+        RefreshSpawner();
     }
     private void OnDisable()
     {

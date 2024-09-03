@@ -1,23 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[CreateAssetMenu(fileName = "AmmoStats", menuName = "SO/CreateAmmoStatsSO")]
-public class AmmoStats : ScriptableObject
-{
-    [Header("Info")]
-    public string ammmoName = "BasicAmmo";
     public enum AmmoType
     {
         Bullet = 0,
         CannonShell = 1,
         LaserBatteries = 2
     }
+
+[CreateAssetMenu(fileName = "AmmoStats", menuName = "SO/CreateAmmoStatsSO")]
+public class AmmoStats : ScriptableObject, IItemInfo
+{
+    [Header("Info")]
+    public string ammoName = "BasicAmmo";
+    public string ammoDesc = "Ammo for war";
     public AmmoType ammoType = AmmoType.Bullet;
     [Header("CombatStats")]
     public int ammoDamage = 1;
     public float onHitImpulsePower = 1f;
     public float recoilImpulsePower = 1f;
+    #region Interface
+    public string ItemName { get; set; }
+    public ItemType ItemType { get; set; } = ItemType.Ammo;
+    public int ItemValue { get; set; } = 1;
+    public int ItemSize { get; set; } = 0;
+    public string ItemDescription { get; set; }
+    private void OnEnable()
+    {
+        RefreshValues();
+    }
+    private void OnValidate()
+    {
+        RefreshValues();
+    }
+    void RefreshValues()
+    {
+        ItemName = ammoName;
+        ItemDescription = ammoDesc;
+    }
+    #endregion Interface
     [Space(10)]
     #region AmmoSpecifics
 
@@ -40,6 +61,7 @@ public class AmmoStats : ScriptableObject
     #region Laser
     [HideInInspector]
     public GameObject laserTrailVfx_Prefab;
+
     #endregion Laser
 
     #endregion AmmoSpecifics

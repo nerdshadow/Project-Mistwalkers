@@ -203,13 +203,13 @@ public class BasicTurretBehaviour : MonoBehaviour
             burstCurrentSize = burstMaxSize;
         switch (ammoStats.ammoType)
         {
-            case AmmoStats.AmmoType.Bullet:
+            case AmmoType.Bullet:
                 ShootBullet();
                 break;
-            case AmmoStats.AmmoType.CannonShell:
+            case AmmoType.CannonShell:
                 ShootShell();
                 break;
-            case AmmoStats.AmmoType.LaserBatteries:
+            case AmmoType.LaserBatteries:
                 ShootLaser();
                 break;
             default:
