@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     int playerCurrentMoney = 0;
     [SerializeField]
-    List<Item_Base> playerCurrentInventory = new List<Item_Base>();
+    List<ScriptableObject> playerCurrentInventory = new List<ScriptableObject>();
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -64,5 +64,32 @@ public class PlayerManager : MonoBehaviour
         //Save player playerInventory
         playerSave.playerInventory = playerCurrentInventory;
         //Save player statistics
+    }
+
+    void RefreshInv()
+    {
+        playerCurrentInventory = new List<ScriptableObject>();
+        playerCurrentInventory.AddRange(playerSave.playerInventory);
+    }
+
+    [SerializeField]
+    ScriptableObject testItem = null;
+    [ContextMenu("Test Add item")]
+    void AddItemToInv()
+    {
+        playerSave.AddItemToInv(testItem);
+        RefreshInv();
+    }
+    void AddItemToInv(ScriptableObject _item)
+    {
+        if (playerSave.AddItemToInv(_item) == false)
+        {
+            Debug.Log(_item + " added to player inv");
+            RefreshInv();
+        }
+        else
+        {
+            return;
+        }
     }
 }

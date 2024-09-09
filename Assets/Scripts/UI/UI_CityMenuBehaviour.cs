@@ -15,10 +15,26 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         cityCamera.transform.position = (_targetTransform.position);
         cityCamera.transform.rotation = (_targetTransform.rotation);
     }
-    
+
+    private void OnEnable()
+    {
+        
+    }
+
     #region Shop
     public Transform shopCameraPos;
+    public RectTransform shopItemList;
 
+    public RectTransform playerInvItemList;
+    void RefreshShop()
+    {
+        //for (int i = 0; i < ui_cabSlotsHolder.transform.childCount; i++)
+        //    Destroy(ui_cabSlotsHolder.transform.GetChild(i).gameObject);
+    }
+    void RefreshPlayerInvUI()
+    {
+        
+    }
 
     #endregion Shop
 

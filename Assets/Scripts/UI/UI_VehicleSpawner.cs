@@ -237,7 +237,7 @@ public class UI_VehicleSpawner : MonoBehaviour
                 if (slot.currentWeaponStats == null)
                 {
                     slot.currentWeaponStats = nullTurret;
-                    //buffSlot.currentTurretStats = nullTurret;
+                    //buffSlot.currentItemInfo = nullTurret;
                     //buffSlot.weaponName.text = "Empty";
                 }
                 //else
@@ -267,7 +267,7 @@ public class UI_VehicleSpawner : MonoBehaviour
     [SerializeField]
     List<TurretStats> turretsInStock;
     [SerializeField]
-    UI_ItemHolder itemHolder;
+    UI_TurretHolder itemHolder;
     public void ShowItemList(UI_WeaponSlot _uiSlot)
     {
         //Debug.Log("Entered SHOWITEMLIST");
@@ -276,8 +276,8 @@ public class UI_VehicleSpawner : MonoBehaviour
         WeaponSlotBehaviour _slotBeh = _uiSlot.slotBeh;
         if (ui_itemList.activeSelf == true)
         {
-            UI_ItemHolder[] _buffList = ui_itemList.GetComponentsInChildren<UI_ItemHolder>();
-            foreach (UI_ItemHolder _buff in _buffList)
+            UI_TurretHolder[] _buffList = ui_itemList.GetComponentsInChildren<UI_TurretHolder>();
+            foreach (UI_TurretHolder _buff in _buffList)
             {
                 Destroy(_buff.gameObject);
             }
@@ -290,7 +290,7 @@ public class UI_VehicleSpawner : MonoBehaviour
                 return;
             Transform _list = ui_itemList.transform.GetChild(0);
 
-            UI_ItemHolder _nullItem = Instantiate(itemHolder, _list);
+            UI_TurretHolder _nullItem = Instantiate(itemHolder, _list);
             _nullItem.ui_SlotRef = _uiSlot;
 
 
@@ -298,7 +298,7 @@ public class UI_VehicleSpawner : MonoBehaviour
             {
                 if (_turretStats.TurretSize == _slotBeh.SlotTurretSize)
                 {
-                    UI_ItemHolder _buffItem = Instantiate(itemHolder, _list);
+                    UI_TurretHolder _buffItem = Instantiate(itemHolder, _list);
                     _buffItem.ChangeHoldItem(_turretStats);
                     _buffItem.ui_SlotRef = _uiSlot;
                 }
