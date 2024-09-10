@@ -19,4 +19,5 @@ public interface IItemInfo
     int ItemValue { get; set; }
     int ItemSize { get; set; }
     string ItemDescription { get; set; }
+    void RefreshValues();
 }

@@ -33,7 +33,7 @@ public class AmmoStats : ScriptableObject, IItemInfo
     {
         RefreshValues();
     }
-    void RefreshValues()
+    public void RefreshValues()
     {
         ItemName = ammoName;
         ItemDescription = ammoDesc;

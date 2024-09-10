@@ -44,7 +44,7 @@ public class UI_TurretHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnter
         _eventData.position = Input.mousePosition;
         currentInfoPanel.itemName.text = currentTurretStats.turretName;
         currentInfoPanel.itemType.text = currentTurretStats.TurretType.ToString();
-        currentInfoPanel.itemAddInfo.text = currentTurretStats.TurretSize.ToString();
+        currentInfoPanel.itemSize.text = currentTurretStats.TurretSize.ToString();
     }
     public void OnPointerExit(PointerEventData _eventData)
     {

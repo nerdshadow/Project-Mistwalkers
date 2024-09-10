@@ -8,6 +8,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 {
     public Camera cityCamera;
     public Canvas cityCanvas;
+    public PlayerManager playerManager;
     void MoveCameraTo(Transform _targetTransform)
     {
         if(_targetTransform == null || cityCamera.transform.position == _targetTransform.position)
@@ -18,14 +19,20 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        playerManager = PlayerManager.instance;
+        RefreshPlayerInvUI();
+    }
+    private void OnDisable()
+    {
+        playerManager = null;
     }
 
     #region Shop
     public Transform shopCameraPos;
     public RectTransform shopItemList;
-
     public RectTransform playerInvItemList;
+    [SerializeField]
+    UI_BaseItemHolder UI_BaseItemHolder;
     void RefreshShop()
     {
         //for (int i = 0; i < ui_cabSlotsHolder.transform.childCount; i++)
@@ -33,7 +40,14 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     }
     void RefreshPlayerInvUI()
     {
-        
+        for (int i = 0; i < playerInvItemList.transform.childCount; i++)
+            Destroy(playerInvItemList.transform.GetChild(i).gameObject);
+
+        foreach (ScriptableObject item in playerManager.playerSave.playerInventory)
+        {
+            var buffInfo = Instantiate(UI_BaseItemHolder, playerInvItemList);            
+            buffInfo.ChangeHoldItemInfo(item);
+        }
     }
 
     #endregion Shop

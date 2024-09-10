@@ -18,5 +18,8 @@ MonoBehaviour:
   playerMoney: 100
   inventoryBaseSize: 20
   "inventory\u0421urrentSize": 20
-  playerInventory: []
+  playerInventory:
+  - {fileID: 11400000, guid: 301144887ca5f6d45a5b58e3c29b3250, type: 2}
+  - {fileID: 11400000, guid: 838f56587a106eb418fd52b816e58244, type: 2}
+  - {fileID: 11400000, guid: 4c6df938b72fab34b8e5fa6850591320, type: 2}
   playerVehicles: []

@@ -61,9 +61,10 @@ public class TurretStats : ScriptableObject, IItemInfo
     {
         RefreshValues();
     }
-    void RefreshValues()
+    public void RefreshValues()
     {
         ItemName = turretName;
     }
+
     #endregion Interface
 }

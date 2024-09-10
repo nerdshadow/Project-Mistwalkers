@@ -7,11 +7,11 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
     [SerializeField]
-    TestPlayerSaveData playerSave = null;
+    public TestPlayerSaveData playerSave = null;
     [SerializeField]
     int playerCurrentMoney = 0;
     [SerializeField]
-    List<ScriptableObject> playerCurrentInventory = new List<ScriptableObject>();
+    public List<ScriptableObject> playerCurrentInventory = new List<ScriptableObject>();
     private void Awake()
     {
         if (instance != null && instance != this)
