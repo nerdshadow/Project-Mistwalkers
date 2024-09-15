@@ -9,7 +9,8 @@ public enum ItemType
     Military = 2,
     Scientific = 3,
     Ammo = 4,
-    Turret = 5
+    Turret = 5,
+    VehiclePart =6
 }
 
 public interface IItemInfo 

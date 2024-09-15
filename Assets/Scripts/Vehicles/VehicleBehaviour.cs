@@ -17,7 +17,7 @@ public class VehicleBehaviour : MonoBehaviour
     [Space(5)]
     public bool isAllWheelDrive = false;
     [SerializeField]
-    VehicleBaseStats currentVehicleStats = null;
+    public VehicleBaseStats currentVehicleStats = null;
     [SerializeField]
     List<WheelCollider> turnWheels = new List<WheelCollider>();
     [SerializeField]

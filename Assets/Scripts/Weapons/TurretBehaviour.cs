@@ -10,7 +10,7 @@ public enum FireRateType
     Automatic = 0,
     Burst = 1
 }
-public class BasicTurretBehaviour : MonoBehaviour
+public class TurretBehaviour : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField]

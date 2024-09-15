@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     int playerCurrentMoney = 0;
     [SerializeField]
     public List<ScriptableObject> playerCurrentInventory = new List<ScriptableObject>();
+    public VehicleSaveVar[] playerCurrentVehicleVars = new VehicleSaveVar[5];
+    public GameObject[] playerCurrentVehicles = new GameObject[5];
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -28,6 +31,8 @@ public class PlayerManager : MonoBehaviour
     private void InitManager()
     {
         LoadPlayerData();
+        CheckPlayerZeroVehicle();
+        //CheckPlayerZeroVehicle(standartVehicle, 0);
     }
     [ContextMenu("Load data")]
     private void LoadPlayerData()
@@ -42,7 +47,7 @@ public class PlayerManager : MonoBehaviour
         //Load player last levelScene/position
 
         //Load player vehicles
-
+        playerCurrentVehicleVars = playerSave.playerVehiclesVar;
         //Load player playerInventory
         playerCurrentInventory.AddRange(playerSave.playerInventory);
         //Load player statistics
@@ -60,7 +65,7 @@ public class PlayerManager : MonoBehaviour
         //Save player last levelScene/position
 
         //Save player vehicles
-
+        playerSave.playerVehiclesVar = playerCurrentVehicleVars;
         //Save player playerInventory
         playerSave.playerInventory = playerCurrentInventory;
         //Save player statistics
@@ -80,7 +85,7 @@ public class PlayerManager : MonoBehaviour
         playerSave.AddItemToInv(testItem);
         RefreshInv();
     }
-    void AddItemToInv(ScriptableObject _item)
+    public void AddItemToInv(ScriptableObject _item)
     {
         if (playerSave.AddItemToInv(_item) == false)
         {
@@ -91,5 +96,35 @@ public class PlayerManager : MonoBehaviour
         {
             return;
         }
+    }
+    public void RemoveItemFromInv(ScriptableObject _item)
+    {
+        if (playerSave.RemoveItemFromInv(_item) == false)
+        {
+            Debug.Log(_item + " removed from player inv");
+            RefreshInv();
+        }
+        else
+        {
+            return;
+        }
+    }
+    [SerializeField]
+    GameObject standartVehicle;
+    void CheckPlayerZeroVehicle()
+    {
+        if (playerSave.playerVehiclesVar[0].vehicleBaseStats == null)
+        {
+            VehicleBehaviour vehBeh = standartVehicle.GetComponent<VehicleBehaviour>();
+            playerSave.playerVehiclesVar[0] = new VehicleSaveVar(vehBeh.currentVehicleStats,
+                                                                vehBeh.currentVehicleCab.GetComponent<VehiclePartBehaviour>().partStats,
+                                                                new List<TurretStats>(),
+                                                                vehBeh.currentVehicleBody.GetComponent<VehiclePartBehaviour>().partStats,
+                                                                new List<TurretStats>());
+        }
+    }
+    void CheckPlayerZeroVehicle(GameObject _vehicle, int _index)
+    {
+        playerSave.ChangeVehicle(_vehicle, _index);
     }
 }

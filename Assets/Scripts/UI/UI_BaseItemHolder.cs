@@ -22,9 +22,16 @@ public class UI_BaseItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnt
     UI_ItemInfoPanel itemInfoPanel;
     [SerializeField]
     UI_ItemInfoPanel currentInfoPanel;
+    public UnityEvent<UI_BaseItemHolder> itemHolderClicked = new UnityEvent<UI_BaseItemHolder>();
     private void OnEnable()
     {
+        if(itemHolderClicked == null)
+            itemHolderClicked = new UnityEvent<UI_BaseItemHolder> ();
         ChangeHoldItemInfo(currentItemStats);
+    }
+    private void OnDisable()
+    {
+        itemHolderClicked = null;
     }
     public void ChangeHoldItemInfo(ScriptableObject _itemStats)
     {
@@ -50,7 +57,8 @@ public class UI_BaseItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnt
         if (currentItemStats == null)
             return;
 
-        Debug.Log("Item = " + ((IItemInfo)currentItemStats).ItemName);
+        Debug.Log("Item = " + ((IItemInfo)currentItemStats).ItemName + " in " + transform.parent.name);
+        itemHolderClicked.Invoke(this);
         //ui_SlotRef.changeWeaponSlot.Invoke(currentItemInfo, ui_SlotRef);
     }
 

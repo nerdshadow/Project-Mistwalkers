@@ -15,11 +15,11 @@ MonoBehaviour:
   playerName: Player
   playerRandSeed: 451
   playerLastCityIndex: 0
-  playerMoney: 100
+  playerMoney: 3102
   inventoryBaseSize: 20
   "inventory\u0421urrentSize": 20
   playerInventory:
-  - {fileID: 11400000, guid: 301144887ca5f6d45a5b58e3c29b3250, type: 2}
-  - {fileID: 11400000, guid: 838f56587a106eb418fd52b816e58244, type: 2}
   - {fileID: 11400000, guid: 4c6df938b72fab34b8e5fa6850591320, type: 2}
+  - {fileID: 11400000, guid: 838f56587a106eb418fd52b816e58244, type: 2}
+  - {fileID: 11400000, guid: 301144887ca5f6d45a5b58e3c29b3250, type: 2}
   playerVehicles: []

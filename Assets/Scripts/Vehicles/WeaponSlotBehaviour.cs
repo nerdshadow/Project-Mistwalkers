@@ -7,7 +7,7 @@ public class WeaponSlotBehaviour : MonoBehaviour
 {
     public TurretStats currentWeaponStats;
     public TurretSize SlotTurretSize = TurretSize.Small;
-    public BasicTurretBehaviour currentWeaponBeh;
+    public TurretBehaviour currentWeaponBeh;
     [SerializeField]
     TurretStats testWeapon;
     private void OnValidate()
@@ -19,7 +19,7 @@ public class WeaponSlotBehaviour : MonoBehaviour
         if (transform.childCount == 0)
             return;
 
-        currentWeaponStats = transform.GetChild(0).GetComponent<BasicTurretBehaviour>().turretStats;
+        currentWeaponStats = transform.GetChild(0).GetComponent<TurretBehaviour>().turretStats;
         if (currentWeaponStats == null)
             return;
 
@@ -50,7 +50,7 @@ public class WeaponSlotBehaviour : MonoBehaviour
             currentWeaponStats = null;
         }
         GameObject buffWeapon = Instantiate(_turret.turretPrefab, transform);
-        currentWeaponBeh = buffWeapon.GetComponent<BasicTurretBehaviour>();
+        currentWeaponBeh = buffWeapon.GetComponent<TurretBehaviour>();
         currentWeaponStats = _turret;
     }
 

@@ -18,7 +18,7 @@ public class VehiclePartBehaviour : MonoBehaviour
     [Header("Weapons")]
     [Space(5)]
     List<GameObject> weaponHolders = new List<GameObject>();
-    List<BasicTurretBehaviour> basicTurrets = new List<BasicTurretBehaviour>();
+    List<TurretBehaviour> basicTurrets = new List<TurretBehaviour>();
     private void OnValidate()
     {
         UpdateComp();  
@@ -62,10 +62,10 @@ public class VehiclePartBehaviour : MonoBehaviour
         {
             foreach (GameObject wHolder in weaponHolders)
             {
-                if (wHolder.GetComponent<BasicTurretBehaviour>() != null 
-                    &&  !basicTurrets.Contains(wHolder.GetComponent<BasicTurretBehaviour>()))
+                if (wHolder.GetComponent<TurretBehaviour>() != null 
+                    &&  !basicTurrets.Contains(wHolder.GetComponent<TurretBehaviour>()))
                 {
-                    basicTurrets.Add(wHolder.GetComponent<BasicTurretBehaviour>());
+                    basicTurrets.Add(wHolder.GetComponent<TurretBehaviour>());
                 }
             }            
         }

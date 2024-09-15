@@ -1,14 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI.Extensions;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UI;
+
 
 public class UI_CityMenuBehaviour : MonoBehaviour
 {
+    public enum CityPart
+    {
+        Shop = 0,
+        Garage = 1, 
+        Map = 2 
+    }
     public Camera cityCamera;
     public Canvas cityCanvas;
     public PlayerManager playerManager;
+    CityPart currentCityPart = CityPart.Shop;
+    public RectTransform currentUIPanel;
+    public RectTransform shopUIPanel;
+    public RectTransform garageUIPanel;
+    public RectTransform mapUIPanel;
     void MoveCameraTo(Transform _targetTransform)
     {
         if(_targetTransform == null || cityCamera.transform.position == _targetTransform.position)
@@ -16,83 +29,224 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         cityCamera.transform.position = (_targetTransform.position);
         cityCamera.transform.rotation = (_targetTransform.rotation);
     }
-
+    private void Start()
+    {
+        currentCityPart = CityPart.Shop;
+        currentUIPanel = shopUIPanel;
+    }
     private void OnEnable()
     {
         playerManager = PlayerManager.instance;
-        RefreshPlayerInvUI();
+        RefreshUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+        RefreshUIList(shopItemList, shopStock);
+
+
     }
     private void OnDisable()
     {
         playerManager = null;
     }
 
+    public void ChangeCityPart(int _partNum)
+    {
+        if (((int)currentCityPart) == _partNum)
+            return;
+        else
+            currentCityPart = (CityPart)_partNum;
+        //Debug.Log("curr city part is " + currentCityPart.ToString());
+        switch (currentCityPart)
+        {
+            case CityPart.Shop:
+                MoveCameraTo(shopCameraPos);
+                ChangeUIPanel(shopUIPanel);
+                RefreshUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+                RefreshUIList(shopItemList, shopStock);
+                break;
+            case CityPart.Garage:
+                MoveCameraTo(garageCameraPos);
+                ChangeUIPanel(garageUIPanel);
+                break;
+            case CityPart.Map:
+                MoveCameraTo(mapCameraPos);
+                ChangeUIPanel(mapUIPanel);
+                break;
+            default:
+                break;
+        }
+    }
+    public void ChangeUIPanel(RectTransform _UIPanel)
+    {
+        if (currentUIPanel == _UIPanel)
+            return;
+        if(currentUIPanel != null)
+            currentUIPanel.gameObject.SetActive(false);
+        currentUIPanel = _UIPanel;
+        currentUIPanel.gameObject.SetActive(true);
+    }
+
     #region Shop
+    [Space(10)]
     public Transform shopCameraPos;
     public RectTransform shopItemList;
+    public List< ScriptableObject> shopStock = new List<ScriptableObject>();
     public RectTransform playerInvItemList;
     [SerializeField]
     UI_BaseItemHolder UI_BaseItemHolder;
-    void RefreshShop()
-    {
-        //for (int i = 0; i < ui_cabSlotsHolder.transform.childCount; i++)
-        //    Destroy(ui_cabSlotsHolder.transform.GetChild(i).gameObject);
-    }
-    void RefreshPlayerInvUI()
-    {
-        for (int i = 0; i < playerInvItemList.transform.childCount; i++)
-            Destroy(playerInvItemList.transform.GetChild(i).gameObject);
 
-        foreach (ScriptableObject item in playerManager.playerSave.playerInventory)
+    //public List<Tuple<GameObject, ScriptableObject>> tempPlayerItemsList = new List<Tuple<GameObject, ScriptableObject>>(); 
+    void RefreshUIList(RectTransform _listRectTransform, List<ScriptableObject> _listItems)
+    {
+        for (int i = 0; i < _listRectTransform.transform.childCount; i++)
+            Destroy(_listRectTransform.transform.GetChild(i).gameObject);
+
+        foreach (ScriptableObject item in _listItems)
         {
-            var buffInfo = Instantiate(UI_BaseItemHolder, playerInvItemList);            
+            var buffInfo = Instantiate(UI_BaseItemHolder, _listRectTransform);
             buffInfo.ChangeHoldItemInfo(item);
+            if (buffInfo.currentItemStats == null)
+                Destroy(buffInfo.gameObject);
+            else
+            {
+                buffInfo.itemHolderClicked.AddListener(HighlightItem);
+            }
         }
+        playerMoney.text = playerManager.playerSave.playerMoney.ToString();
     }
-
+    List<UI_BaseItemHolder> highlightedItems = new List<UI_BaseItemHolder>();
+    public void HighlightItem(UI_BaseItemHolder _baseItemHolder)
+    {
+        if (highlightedItems.Contains(_baseItemHolder) == true)
+        {
+            highlightedItems.Remove(_baseItemHolder);
+            _baseItemHolder.GetComponentInChildren<TMP_Text>().color = Color.white;
+        }
+        else
+        {
+            highlightedItems.Add(_baseItemHolder);
+            _baseItemHolder.GetComponentInChildren<TMP_Text>().color = Color.green;
+        }
+        RefreshTradeCost();
+    }
+    public TMP_Text tradeCostText;
+    int tradeCost = 0;
+    public TMP_Text playerMoney;
+    void RefreshTradeCost()
+    {
+        int potCost = 0;
+        foreach (UI_BaseItemHolder item in highlightedItems)
+        {
+            if (item.transform.parent == playerInvItemList)
+                potCost += ((IItemInfo)item.currentItemStats).ItemValue;
+            else if (item.transform.parent == shopItemList)
+                potCost -= ((IItemInfo)item.currentItemStats).ItemValue;
+            else
+            {
+                Debug.LogWarning("Cannot find parent list for " + item.name);
+            }
+        }
+        tradeCost = potCost;
+        tradeCostText.text = tradeCost.ToString();
+    }
+    
+    public void Trade()
+    {
+        if (playerManager.playerSave.playerMoney + tradeCost < 0)
+        {
+            Debug.Log("no money(");
+            return;
+        }
+        playerManager.playerSave.playerMoney += tradeCost;
+        foreach (UI_BaseItemHolder item in highlightedItems)
+        {
+            if (item.transform.parent == playerInvItemList)
+            {
+                playerManager.RemoveItemFromInv(item.currentItemStats);
+                shopStock.Add(item.currentItemStats);
+            }
+            else if (item.transform.parent == shopItemList)
+            {
+                shopStock.Remove(item.currentItemStats);
+                playerManager.AddItemToInv(item.currentItemStats);
+            }
+        }
+        highlightedItems = new List<UI_BaseItemHolder>();
+        RefreshUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+        RefreshUIList(shopItemList, shopStock);
+        RefreshTradeCost();        
+    }
     #endregion Shop
 
     #region Garage
+    [Space(10)]
     public Transform garageCameraPos;
-    public Transform turretTestTransform;
-    //public RectTransform slotTestPos;
-    //public UILineRenderer lineTestRenderer;
-    public RectTransform panelTestRectTranform;
-    //[ContextMenu("DrawLine")]
-    //void DrawLineOnCanvas()
-    //{
-    //    var pos1 = new Vector2(Camera.main.WorldToViewportPoint(turretTestTransform.position).x, Camera.main.WorldToViewportPoint(turretTestTransform.position).y);
-    //    Debug.Log(pos1);
-    //    var pos2 = new Vector2(slotTestPos.position.x, slotTestPos.position.y);
-    //    Debug.Log(pos2);
-    //    lineTestRenderer.Points[0] = pos1;
-    //    lineTestRenderer.Points[1] = pos2;
-    //}
-    void MoveUIElemToWorldPos(Transform _worldObjPos, RectTransform _UIObjToMove)
+    public Transform vehicleSpawnPoint;
+    public int currentVehicleIndex = -1;
+    public GameObject currentVehicle;
+    void SpawnVehicle(int _indexOfVehicle)
     {
-        if (_worldObjPos == null || _UIObjToMove == null)
+        if(_indexOfVehicle > playerManager.playerCurrentVehicleVars.Length || _indexOfVehicle  < 0)
         {
-            Debug.LogWarning("There is no ref provided");
-            return;
+            Debug.LogWarning("index out of array size");
+            return; 
         }
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(_worldObjPos.position);        
-        //float h = Screen.height;
-        //float w = Screen.width;
-        //float x = screenPos.x - (w / 2);
-        //float y = screenPos.y - (h / 2);
-        float s = cityCanvas.scaleFactor;
-        //panelTestRectTranform.anchoredPosition = new Vector2(x, y) / s;
-        _UIObjToMove.anchoredPosition = new Vector2(screenPos.x, screenPos.y) / s; //Kinda works
+        if (currentVehicle != null)
+            Destroy(currentVehicle);
+        currentVehicle = Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats.vehicleBasePrefab, vehicleSpawnPoint.position, Quaternion.identity);
+        //currentVehicle.SetActive(false);
+        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+
+        Destroy(vehicleBehaviour.currentVehicleCab);
+        Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].cabStats.partPrefab, vehicleBehaviour.cabHolder.transform);
+
+        if (playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats.partPrefab != null)
+        {
+            Destroy(vehicleBehaviour.currentVehicleBody);
+            Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats.partPrefab, vehicleBehaviour.bodyHolder.transform);
+        }
+
+        StartCoroutine(AssebleNextFrame());
     }
-    [ContextMenu("Move infoPanel")]
-    void MoveToWorldToUI()
+    IEnumerator AssebleNextFrame()
     {
-        MoveUIElemToWorldPos(turretTestTransform, panelTestRectTranform);
+        yield return new WaitForFixedUpdate();
+        //currentVehicle.GetComponent<VehicleBehaviour>().SerializeVehicle();
+        currentVehicle.SetActive(true);
+        StartCoroutine(UpdateWheels());
+        currentVehicle.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
     }
+    IEnumerator UpdateWheels()
+    {
+        yield return new WaitForFixedUpdate();
+        List<WheelBehaviour> wBehs = new List<WheelBehaviour>();
+        wBehs.AddRange(currentVehicle.GetComponentsInChildren<WheelBehaviour>());
+        foreach (WheelBehaviour wheelBehaviour in wBehs)
+        {
+            wheelBehaviour.ReManageWheelColliders();
+        }
+    }
+    void SwitchVehicle()
+    {
+
+    }
+    void DespawnVehicle()
+    {
+    }
+
     #endregion Garage
 
     #region Map
+    [Space(10)]
     public Transform mapCameraPos;
+    public RectTransform acceptMapMoveWindow;
+    public List<Button> posDestinations;
+    void ChooseDestination()
+    {
+        
+    }
+    void SpawnAcceptWindow()
+    {
+        Instantiate(acceptMapMoveWindow, mapUIPanel);
+    }
     #endregion Map
 
     #region Test
