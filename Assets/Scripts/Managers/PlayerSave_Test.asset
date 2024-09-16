@@ -22,4 +22,29 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4c6df938b72fab34b8e5fa6850591320, type: 2}
   - {fileID: 11400000, guid: 838f56587a106eb418fd52b816e58244, type: 2}
   - {fileID: 11400000, guid: 301144887ca5f6d45a5b58e3c29b3250, type: 2}
-  playerVehicles: []
+  playerVehiclesVar:
+  - vehicleBaseStats: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
+    cabStats: {fileID: 11400000, guid: 5b73aa18f2b00f94e85046c609e9062e, type: 2}
+    cabTurrets: []
+    bodyStats: {fileID: 11400000, guid: 59ff8c661c7977b4fadd71eb38f79c6a, type: 2}
+    bodyTurrets: []
+  - vehicleBaseStats: {fileID: 0}
+    cabStats: {fileID: 0}
+    cabTurrets: []
+    bodyStats: {fileID: 0}
+    bodyTurrets: []
+  - vehicleBaseStats: {fileID: 0}
+    cabStats: {fileID: 0}
+    cabTurrets: []
+    bodyStats: {fileID: 0}
+    bodyTurrets: []
+  - vehicleBaseStats: {fileID: 0}
+    cabStats: {fileID: 0}
+    cabTurrets: []
+    bodyStats: {fileID: 0}
+    bodyTurrets: []
+  - vehicleBaseStats: {fileID: 0}
+    cabStats: {fileID: 0}
+    cabTurrets: []
+    bodyStats: {fileID: 0}
+    bodyTurrets: []

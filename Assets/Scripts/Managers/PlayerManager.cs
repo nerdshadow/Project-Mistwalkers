@@ -31,8 +31,8 @@ public class PlayerManager : MonoBehaviour
     private void InitManager()
     {
         LoadPlayerData();
-        CheckPlayerZeroVehicle();
-        //CheckPlayerZeroVehicle(standartVehicle, 0);
+        //CheckPlayerZeroVehicle();
+        CheckPlayerZeroVehicle(standartVehicle, 0);
     }
     [ContextMenu("Load data")]
     private void LoadPlayerData()
