@@ -6,7 +6,7 @@ using UnityEngine;
 public class WeaponSlotBehaviour : MonoBehaviour
 {
     public TurretStats currentWeaponStats;
-    public TurretSize SlotTurretSize = TurretSize.Small;
+    public TurretSize slotTurretSize = TurretSize.Small;
     public TurretBehaviour currentWeaponBeh;
     [SerializeField]
     TurretStats testWeapon;
@@ -23,7 +23,7 @@ public class WeaponSlotBehaviour : MonoBehaviour
         if (currentWeaponStats == null)
             return;
 
-        if(currentWeaponStats.TurretSize != SlotTurretSize && currentWeaponStats != null)
+        if(currentWeaponStats.TurretSize != slotTurretSize && currentWeaponStats != null)
             Debug.LogWarning("Missmatch of Turret Size in " + this.name + " in " + gameObject.scene.name);
     }
     public void SpawnWeaponInSlot(TurretStats _turret)
@@ -38,7 +38,7 @@ public class WeaponSlotBehaviour : MonoBehaviour
             }
             return;
         }
-        if (_turret.TurretSize != SlotTurretSize)
+        if (_turret.TurretSize != slotTurretSize)
         {
             Debug.Log("Incorrect weapon Size");
             return;

@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 1583044186969663366}
   - component: {fileID: 1662831142184942799}
   m_Layer: 5
-  m_Name: WeaponSlot
+  m_Name: UI_TurretSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,10 +187,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4413cdf8c0554aabc507c6f9ed247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotBeh: {fileID: 0}
+  currentTurretStats: {fileID: 0}
   weaponSlotSize: {fileID: 2705714589004076276}
   weaponName: {fileID: 3040170642196945478}
   weaponImage: {fileID: 2012770108440541129}
   onWeaponSlotClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  changeWeaponSlot:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6030536233713264374

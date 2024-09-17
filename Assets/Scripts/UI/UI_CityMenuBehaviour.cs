@@ -40,7 +40,8 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         RefreshUIList(playerInvItemList, playerManager.playerSave.playerInventory);
         RefreshUIList(shopItemList, shopStock);
 
-
+        //Test
+        SwitchVehicle(0);
     }
     private void OnDisable()
     {
@@ -181,7 +182,11 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public Transform garageCameraPos;
     public Transform vehicleSpawnPoint;
     public int currentVehicleIndex = -1;
+    public TMP_Text currentVehiclePlace;
     public GameObject currentVehicle;
+    public UI_VehicleCompHolder vehicleBaseHolder;
+    public UI_VehicleCompHolder vehicleCabHolder;
+    public UI_VehicleCompHolder vehicleBodyHolder;
     void SpawnVehicle(int _indexOfVehicle)
     {
         if(_indexOfVehicle > playerManager.playerCurrentVehicleVars.Length || _indexOfVehicle  < 0)
@@ -191,7 +196,14 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         }
         if (currentVehicle != null)
             Destroy(currentVehicle);
-        currentVehicle = Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats.vehicleBasePrefab, vehicleSpawnPoint.position, Quaternion.identity);
+
+        if (playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats == null)
+        {
+            Debug.Log("No vehicle data at index");
+            return ;
+        }
+
+        currentVehicle = Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats.vehicleBasePrefab, vehicleSpawnPoint.position, vehicleSpawnPoint.rotation);
         //currentVehicle.SetActive(false);
         VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
 
@@ -224,13 +236,54 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             wheelBehaviour.ReManageWheelColliders();
         }
     }
-    void SwitchVehicle()
+    public void SwitchVehicle(bool _dir)
     {
+        int potIndex = 0;
+        if (_dir == true)
+            potIndex = currentVehicleIndex + 1;
+        else
+            potIndex = currentVehicleIndex - 1;
+        if (potIndex >= playerManager.playerCurrentVehicleVars.Length)
+            potIndex = 0;
+        if (potIndex < 0)
+            potIndex = playerManager.playerCurrentVehicleVars.Length - 1;
 
+        DespawnVehicle();
+        currentVehicleIndex = potIndex;
+        currentVehiclePlace.text = "Vehicle #" + (potIndex + 1);
+        SpawnVehicle(potIndex);
+    }
+    public void SwitchVehicle(int _toIndex)
+    {
+        if (_toIndex >= 0 && _toIndex < playerManager.playerCurrentVehicleVars.Length)
+        {
+            DespawnVehicle();
+            currentVehicleIndex = _toIndex;
+            currentVehiclePlace.text = "Vehicle #" + (currentVehicleIndex + 1);
+            SpawnVehicle(currentVehicleIndex);
+        }
+        else Debug.Log("Index out of range");
     }
     void DespawnVehicle()
     {
+        if (currentVehicle == null)
+        {
+            Debug.LogWarning("No current vehicle");
+            return;
+        }
+        Destroy(currentVehicle);
+        
+        currentVehicle = null;
     }
+
+    void CreateListOfParts()
+    {
+        
+    }
+    void CreateListOfTurrets()
+    {
+    
+    }   
 
     #endregion Garage
 

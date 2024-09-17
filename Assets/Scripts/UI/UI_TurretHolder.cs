@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class UI_TurretHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public TurretStats currentTurretStats = null;
-    public UI_WeaponSlot ui_SlotRef = null;
+    public UI_TurretSlot ui_SlotRef = null;
     [SerializeField]
     TMP_Text turretTextHolder;
     [SerializeField]
@@ -32,7 +32,7 @@ public class UI_TurretHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnter
             return;
         
         Debug.Log("Item = " + currentTurretStats.turretName);
-        ui_SlotRef.changeWeaponSlot.Invoke(currentTurretStats, ui_SlotRef);
+        ui_SlotRef.changeTurretSlot.Invoke(currentTurretStats, ui_SlotRef);
     }
 
     public void OnPointerEnter(PointerEventData _eventData)

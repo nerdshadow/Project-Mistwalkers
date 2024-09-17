@@ -59,7 +59,7 @@ public class UI_BaseItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnt
 
         Debug.Log("Item = " + ((IItemInfo)currentItemStats).ItemName + " in " + transform.parent.name);
         itemHolderClicked.Invoke(this);
-        //ui_SlotRef.changeWeaponSlot.Invoke(currentItemInfo, ui_SlotRef);
+        //ui_SlotRef.changeTurretSlot.Invoke(currentItemInfo, ui_SlotRef);
     }
 
     public void OnPointerEnter(PointerEventData _eventData)
