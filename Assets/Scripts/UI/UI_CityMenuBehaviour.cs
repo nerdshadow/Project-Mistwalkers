@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,8 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public enum CityPart
     {
         Shop = 0,
-        Garage = 1, 
-        Map = 2 
+        Garage = 1,
+        Map = 2
     }
     public Camera cityCamera;
     public Canvas cityCanvas;
@@ -24,7 +25,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public RectTransform mapUIPanel;
     void MoveCameraTo(Transform _targetTransform)
     {
-        if(_targetTransform == null || cityCamera.transform.position == _targetTransform.position)
+        if (_targetTransform == null || cityCamera.transform.position == _targetTransform.position)
             return;
         cityCamera.transform.position = (_targetTransform.position);
         cityCamera.transform.rotation = (_targetTransform.rotation);
@@ -37,8 +38,11 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     private void OnEnable()
     {
         playerManager = PlayerManager.instance;
-        RefreshUIList(playerInvItemList, playerManager.playerSave.playerInventory);
-        RefreshUIList(shopItemList, shopStock);
+        if(currentUIPanel == shopUIPanel)
+        {
+            RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+            RefreshShopUIList(shopItemList, shopStock);
+        }
 
         //Test
         SwitchVehicle(0);
@@ -60,8 +64,8 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             case CityPart.Shop:
                 MoveCameraTo(shopCameraPos);
                 ChangeUIPanel(shopUIPanel);
-                RefreshUIList(playerInvItemList, playerManager.playerSave.playerInventory);
-                RefreshUIList(shopItemList, shopStock);
+                RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+                RefreshShopUIList(shopItemList, shopStock);
                 break;
             case CityPart.Garage:
                 MoveCameraTo(garageCameraPos);
@@ -79,7 +83,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     {
         if (currentUIPanel == _UIPanel)
             return;
-        if(currentUIPanel != null)
+        if (currentUIPanel != null)
             currentUIPanel.gameObject.SetActive(false);
         currentUIPanel = _UIPanel;
         currentUIPanel.gameObject.SetActive(true);
@@ -89,20 +93,20 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     [Space(10)]
     public Transform shopCameraPos;
     public RectTransform shopItemList;
-    public List< ScriptableObject> shopStock = new List<ScriptableObject>();
+    public List<ScriptableObject> shopStock = new List<ScriptableObject>();
     public RectTransform playerInvItemList;
     [SerializeField]
-    UI_BaseItemHolder UI_BaseItemHolder;
+    UI_BaseItemHolder baseItemHolder;
 
     //public List<Tuple<GameObject, ScriptableObject>> tempPlayerItemsList = new List<Tuple<GameObject, ScriptableObject>>(); 
-    void RefreshUIList(RectTransform _listRectTransform, List<ScriptableObject> _listItems)
+    void RefreshShopUIList(RectTransform _listRectTransform, List<ScriptableObject> _listItems)
     {
         for (int i = 0; i < _listRectTransform.transform.childCount; i++)
             Destroy(_listRectTransform.transform.GetChild(i).gameObject);
 
         foreach (ScriptableObject item in _listItems)
         {
-            var buffInfo = Instantiate(UI_BaseItemHolder, _listRectTransform);
+            var buffInfo = Instantiate(baseItemHolder, _listRectTransform);
             buffInfo.ChangeHoldItemInfo(item);
             if (buffInfo.currentItemStats == null)
                 Destroy(buffInfo.gameObject);
@@ -148,7 +152,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         tradeCost = potCost;
         tradeCostText.text = tradeCost.ToString();
     }
-    
+
     public void Trade()
     {
         if (playerManager.playerSave.playerMoney + tradeCost < 0)
@@ -171,9 +175,9 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             }
         }
         highlightedItems = new List<UI_BaseItemHolder>();
-        RefreshUIList(playerInvItemList, playerManager.playerSave.playerInventory);
-        RefreshUIList(shopItemList, shopStock);
-        RefreshTradeCost();        
+        RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+        RefreshShopUIList(shopItemList, shopStock);
+        RefreshTradeCost();
     }
     #endregion Shop
 
@@ -184,15 +188,18 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public int currentVehicleIndex = -1;
     public TMP_Text currentVehiclePlace;
     public GameObject currentVehicle;
-    public UI_VehicleCompHolder vehicleBaseHolder;
-    public UI_VehicleCompHolder vehicleCabHolder;
-    public UI_VehicleCompHolder vehicleBodyHolder;
+
+    public UI_VehicleCompHolder UIvehicleBaseHolder;
+    public UI_VehicleCompHolder UIvehicleCabHolder;
+    public UI_VehicleCompHolder UIvehicleBodyHolder;
+
+    public List<TurretSlotBehaviour> TESTSLOTLIST = new List<TurretSlotBehaviour>();
     void SpawnVehicle(int _indexOfVehicle)
     {
-        if(_indexOfVehicle > playerManager.playerCurrentVehicleVars.Length || _indexOfVehicle  < 0)
+        if (_indexOfVehicle > playerManager.playerCurrentVehicleVars.Length || _indexOfVehicle < 0)
         {
             Debug.LogWarning("index out of array size");
-            return; 
+            return;
         }
         if (currentVehicle != null)
             Destroy(currentVehicle);
@@ -200,21 +207,51 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         if (playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats == null)
         {
             Debug.Log("No vehicle data at index");
-            return ;
+            return;
         }
 
         currentVehicle = Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats.vehicleBasePrefab, vehicleSpawnPoint.position, vehicleSpawnPoint.rotation);
         //currentVehicle.SetActive(false);
         VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
 
-        Destroy(vehicleBehaviour.currentVehicleCab);
+        //Destroy(vehicleBehaviour.currentVehicleCab.gameObject);
+        DestroyImmediate(vehicleBehaviour.currentVehicleCab, false); //A bit of danger to use
         Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].cabStats.partPrefab, vehicleBehaviour.cabHolder.transform);
+        List<TurretSlotBehaviour> cabSlots = new List<TurretSlotBehaviour>();
+        cabSlots.AddRange(vehicleBehaviour.cabHolder.GetComponentsInChildren<TurretSlotBehaviour>(false));
+        for (int i = 0; i < cabSlots.Count; i++)
+        {
+            cabSlots[i].SpawnTurretInSlot(playerManager.playerCurrentVehicleVars[_indexOfVehicle].cabTurrets[i]);
+        }
 
         if (playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats.partPrefab != null)
         {
-            Destroy(vehicleBehaviour.currentVehicleBody);
+            DestroyImmediate(vehicleBehaviour.currentVehicleBody, false);
             Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats.partPrefab, vehicleBehaviour.bodyHolder.transform);
+            List<TurretSlotBehaviour> bodySlots = new List<TurretSlotBehaviour>();
+            bodySlots.AddRange(vehicleBehaviour.bodyHolder.GetComponentsInChildren<TurretSlotBehaviour>(false));
+            for (int i = 0; i < bodySlots.Count; i++)
+            {
+                bodySlots[i].SpawnTurretInSlot(playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyTurrets[i]);
+            }
         }
+
+        StartCoroutine(AssebleNextFrame());
+    }
+    void SpawnVehicle(VehicleBaseStats _VehicleBase)
+    {
+        if (_VehicleBase == null)
+        {
+            Debug.LogWarning("vehicle is null");
+            return;
+        }
+        if (currentVehicle != null)
+            Destroy(currentVehicle);
+
+
+        currentVehicle = Instantiate(_VehicleBase.vehicleBasePrefab, vehicleSpawnPoint.position, vehicleSpawnPoint.rotation);
+        //currentVehicle.SetActive(false);
+        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();        
 
         StartCoroutine(AssebleNextFrame());
     }
@@ -252,6 +289,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         currentVehicleIndex = potIndex;
         currentVehiclePlace.text = "Vehicle #" + (potIndex + 1);
         SpawnVehicle(potIndex);
+        StartCoroutine(RefreshVehicleCompAfterFrame());
     }
     public void SwitchVehicle(int _toIndex)
     {
@@ -261,6 +299,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             currentVehicleIndex = _toIndex;
             currentVehiclePlace.text = "Vehicle #" + (currentVehicleIndex + 1);
             SpawnVehicle(currentVehicleIndex);
+            StartCoroutine(RefreshVehicleCompAfterFrame());
         }
         else Debug.Log("Index out of range");
     }
@@ -268,22 +307,188 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     {
         if (currentVehicle == null)
         {
-            Debug.LogWarning("No current vehicle");
+            Debug.Log("No current vehicle");
             return;
         }
         Destroy(currentVehicle);
-        
+
         currentVehicle = null;
     }
+    [ContextMenu("RefreshVehicleComp")]
+    void RefreshCurrentVehicleComp()
+    {
+        if (currentVehicle == null)
+        {
+            Debug.Log("No vehicle");
 
-    void CreateListOfParts()
+            UIvehicleBaseHolder.ChangeComp(null);
+            UIvehicleCabHolder.ChangeComp(null);
+            UIvehicleBodyHolder.ChangeComp(null);
+            return ;
+        }
+        VehicleBehaviour buffVehBeh = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehiclePartBehaviour buffCabBeh = buffVehBeh.cabHolder.GetComponentInChildren<VehiclePartBehaviour>();
+        VehiclePartBehaviour buffBodyBeh = null;
+        if (buffVehBeh.bodyHolder != null)
+        {
+            buffBodyBeh = buffVehBeh.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>();
+        }
+
+        UIvehicleBaseHolder.ChangeComp(buffVehBeh);
+        UIvehicleBaseHolder.compHolder.itemHolderClicked.AddListener(CreateListOfBases);
+
+        UIvehicleCabHolder.ChangeComp(buffCabBeh);
+        UIvehicleCabHolder.compHolder.itemHolderClicked.AddListener(CreateListOfCabs);
+
+        UIvehicleBodyHolder.ChangeComp(buffBodyBeh);
+        if(buffBodyBeh != null)
+            UIvehicleBodyHolder.compHolder.itemHolderClicked.AddListener(CreateListOfBodies);
+    }
+    public RectTransform bufferList;
+    void CreateListOf(ItemType _itemType)
+    {    
+        switch (_itemType)
+        {
+            case ItemType.Turret:
+                break;
+            case ItemType.VehicleBase:                
+                break;
+            case ItemType.VehiclePart:
+                break;
+            default:
+                break;
+        }
+    }
+    [ContextMenu("Refresh List of Bases")]
+    public void CreateListOfBases(UI_BaseItemHolder _uI_BaseItemHolder)
+    {
+        if (bufferList == null)
+        { Debug.LogWarning("no list"); return; }
+
+        //Clear list
+        for (int i = 0; i < bufferList.transform.childCount; i++)
+            Destroy(bufferList.transform.GetChild(i).gameObject);
+
+        foreach (ScriptableObject item in shopStock)
+        {
+            Debug.Log(item + " - " + (item is VehicleBaseStats));
+            if (item is VehicleBaseStats == true)
+            {
+                UI_BaseItemHolder buffItem = Instantiate(baseItemHolder, bufferList);
+                buffItem.ChangeHoldItemInfo((VehicleBaseStats)item);
+                buffItem.itemHolderClicked.AddListener(ChangeBase);
+            }
+        }
+    }
+    [ContextMenu("Refresh List of Cabs")]
+    public void CreateListOfCabs(UI_BaseItemHolder _uI_BaseItemHolder)
+    {
+        if (bufferList == null)
+        { Debug.LogWarning("no list"); return; }
+
+        //Clear list
+        for (int i = 0; i < bufferList.transform.childCount; i++)
+            Destroy(bufferList.transform.GetChild(i).gameObject);
+
+        foreach (ScriptableObject item in shopStock)
+        {
+            if (item is VehiclePartStats == true 
+                && ((VehiclePartStats)item).partType == PartType.Cab
+                && ((VehiclePartStats)item).relatedBase == ((VehicleBaseStats)UIvehicleBaseHolder.compHolder.currentItemStats))
+            {
+                UI_BaseItemHolder buffItem = Instantiate(baseItemHolder, bufferList);
+                buffItem.ChangeHoldItemInfo((VehiclePartStats)item);
+                buffItem.itemHolderClicked.AddListener(ChangePart);
+                //buffItem.itemHolderClicked.AddListener(ChangeBase);
+            }
+        }
+    }
+    [ContextMenu("Refresh List of Bodies")]
+    public void CreateListOfBodies(UI_BaseItemHolder _uI_BaseItemHolder)
+    {
+        if (bufferList == null)
+        { Debug.LogWarning("no list"); return; }
+
+        //Clear list
+        for (int i = 0; i < bufferList.transform.childCount; i++)
+            Destroy(bufferList.transform.GetChild(i).gameObject);
+
+        foreach (ScriptableObject item in shopStock)
+        {
+            if (item is VehiclePartStats == true 
+                && ((VehiclePartStats)item).partType == PartType.Body
+                && ((VehiclePartStats)item).relatedBase == ((VehicleBaseStats)UIvehicleBaseHolder.compHolder.currentItemStats))
+            {
+                UI_BaseItemHolder buffItem = Instantiate(baseItemHolder, bufferList);
+                buffItem.ChangeHoldItemInfo((VehiclePartStats)item);
+                buffItem.itemHolderClicked.AddListener(ChangePart);
+                //buffItem.itemHolderClicked.AddListener(ChangeBase);
+            }
+        }
+    }
+    public void CreateListOfTurrets(UI_TurretSlot _uI_TurretSlot)
+    {
+        if (bufferList == null)
+        { Debug.LogWarning("no list"); return; }
+
+        //Clear list
+        for (int i = 0; i < bufferList.transform.childCount; i++)
+            Destroy(bufferList.transform.GetChild(i).gameObject);
+
+        foreach (ScriptableObject item in shopStock)
+        {
+            if (item is TurretStats == true
+                && ((TurretStats)item).TurretSize == _uI_TurretSlot.currentTurretSize)
+            {
+                UI_BaseItemHolder buffItem = Instantiate(baseItemHolder, bufferList);
+                buffItem.ChangeHoldItemInfo((TurretStats)item);
+                buffItem.itemHolderClicked.AddListener(_uI_TurretSlot.ChangeSlotTurret);
+                //_uI_TurretSlot.changeTurretStats.AddListener
+            }
+        }
+    }
+    void ChangeBase(UI_BaseItemHolder _potBase)
+    {
+        VehicleBaseStats _potBaseStats = (VehicleBaseStats)_potBase.currentItemStats;
+        if (_potBaseStats == null)
+        {
+            Debug.LogWarning("there is no base");
+            return;
+        }
+        SpawnVehicle(_potBaseStats);
+        StartCoroutine(RefreshVehicleCompAfterFrame());
+    }
+    void ChangePart(UI_BaseItemHolder _potPart)
+    {
+        VehiclePartStats vehiclePartStats = (VehiclePartStats)_potPart.currentItemStats;
+        if (vehiclePartStats == null)
+        {
+            Debug.LogWarning("part is null");
+            return;
+        }
+        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        if (vehiclePartStats.partType == PartType.Cab)
+        {
+            Destroy(vehicleBehaviour.currentVehicleCab);
+            Instantiate(vehiclePartStats.partPrefab, vehicleBehaviour.cabHolder.transform);
+        }
+        else if (vehiclePartStats.partType == PartType.Body)
+        {
+            Destroy(vehicleBehaviour.currentVehicleBody);
+            Instantiate(vehiclePartStats.partPrefab, vehicleBehaviour.bodyHolder.transform);
+        }
+        StartCoroutine(UpdateWheels());
+        StartCoroutine(RefreshVehicleCompAfterFrame());
+    }
+    void ChangeTurret(UI_TurretSlot _uI_TurretSlot, TurretStats _turretStats)
     {
         
     }
-    void CreateListOfTurrets()
+    IEnumerator RefreshVehicleCompAfterFrame()
     {
-    
-    }   
+        yield return new WaitForFixedUpdate();
+        RefreshCurrentVehicleComp();
+    }
 
     #endregion Garage
 

@@ -23,7 +23,7 @@ public class VehiclePartStats : ScriptableObject, IItemInfo
     public GameObject partPrefab;
     [SerializeField]
     public VehicleBaseStats relatedBase;
-    public List<WeaponSlotBehaviour> weaponsSlots = new List<WeaponSlotBehaviour>();
+    public List<TurretSlotBehaviour> weaponsSlots = new List<TurretSlotBehaviour>();
     public string ItemName { get; set; }
     public ItemType ItemType { get; set; }
     public int ItemValue { get; set; }
@@ -44,7 +44,7 @@ public class VehiclePartStats : ScriptableObject, IItemInfo
         weaponsSlots.Clear();
         if (partPrefab == null)
             return;
-        weaponsSlots.AddRange(partPrefab.GetComponentsInChildren<WeaponSlotBehaviour>());
+        weaponsSlots.AddRange(partPrefab.GetComponentsInChildren<TurretSlotBehaviour>());
 
     }
     private void OnEnable()

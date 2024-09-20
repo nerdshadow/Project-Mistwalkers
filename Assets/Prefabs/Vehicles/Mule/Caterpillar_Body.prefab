@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c379832e4c1ac4e84f7bd008a4bf73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponStats: {fileID: 0}
-  SlotTurretSize: 2
-  currentWeaponBeh: {fileID: 0}
+  currentTurretStats: {fileID: 0}
+  slotTurretSize: 2
+  currentTurretBeh: {fileID: 0}
   testWeapon: {fileID: 0}

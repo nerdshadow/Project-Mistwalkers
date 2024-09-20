@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c379832e4c1ac4e84f7bd008a4bf73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponStats: {fileID: 0}
-  SlotTurretSize: 1
-  currentWeaponBeh: {fileID: 0}
+  currentTurretStats: {fileID: 0}
+  slotTurretSize: 1
+  currentTurretBeh: {fileID: 0}
   testWeapon: {fileID: 0}
 --- !u!1 &3372169249773128649
 GameObject:
@@ -92,9 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c379832e4c1ac4e84f7bd008a4bf73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponStats: {fileID: 0}
-  SlotTurretSize: 0
-  currentWeaponBeh: {fileID: 0}
+  currentTurretStats: {fileID: 0}
+  slotTurretSize: 0
+  currentTurretBeh: {fileID: 0}
   testWeapon: {fileID: 0}
 --- !u!1 &5246553456072928407
 GameObject:

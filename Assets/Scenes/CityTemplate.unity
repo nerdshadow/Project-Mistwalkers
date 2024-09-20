@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 5930710}
   - component: {fileID: 5930709}
   m_Layer: 5
-  m_Name: List
+  m_Name: BufferList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -750,12 +750,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 38
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 38
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -859,7 +859,7 @@ PrefabInstance:
     - target: {fileID: 4140937879789438813, guid: 2dda7c88514cb7a4fa1872932e625c6b, type: 3}
       propertyPath: standartVehicle
       value: 
-      objectReference: {fileID: 4147948000499981016, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      objectReference: {fileID: 1085706469303330404, guid: 4ac315bf2e05fe447976f4ffc159c395, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1067,12 +1067,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.9
+  m_fontSize: 32
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 32
   m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2333,8 +2333,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01d0f913fdec1f4e82d5d9d78b9532a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partName: {fileID: 159828018}
   compType: 7
+  compHolder: {fileID: 2012025700}
+  turretSlots: {fileID: 1860707498}
   UI_TurretSlotPrefab: {fileID: 1662831142184942799, guid: 857b3f6624ab49c48ae626a49e07ab04, type: 3}
+  UI_CurrentSlots: []
 --- !u!1 &313538435
 GameObject:
   m_ObjectHideFlags: 0
@@ -4310,6 +4314,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4829449863935897176, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
   m_PrefabInstance: {fileID: 303690304}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &711363092 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1621080251367370069, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
+  m_PrefabInstance: {fileID: 303690304}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a046271bce6a8244bbcb959afa52a6f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &766343192
 GameObject:
   m_ObjectHideFlags: 0
@@ -4634,12 +4649,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.7
+  m_fontSize: 32
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 32
   m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -4935,8 +4950,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01d0f913fdec1f4e82d5d9d78b9532a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partName: {fileID: 1805740588}
   compType: 7
+  compHolder: {fileID: 711363092}
+  turretSlots: {fileID: 313538436}
   UI_TurretSlotPrefab: {fileID: 1662831142184942799, guid: 857b3f6624ab49c48ae626a49e07ab04, type: 3}
+  UI_CurrentSlots: []
 --- !u!1 &861263270
 GameObject:
   m_ObjectHideFlags: 0
@@ -5424,8 +5443,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 301144887ca5f6d45a5b58e3c29b3250, type: 2}
   - {fileID: 11400000, guid: 838f56587a106eb418fd52b816e58244, type: 2}
   - {fileID: 11400000, guid: c9056027060212240aa7e7e8fd045985, type: 2}
+  - {fileID: 11400000, guid: 85721aa2eda8d144d89a5ed43483bfbb, type: 2}
+  - {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
+  - {fileID: 11400000, guid: b9796bf61a2568f4db140801aae56495, type: 2}
+  - {fileID: 11400000, guid: c9056027060212240aa7e7e8fd045985, type: 2}
+  - {fileID: 11400000, guid: 5fb40118446c96441b5e2ed9fd672ffd, type: 2}
+  - {fileID: 11400000, guid: e18d54f73c7b859498b01e1697abf0b3, type: 2}
+  - {fileID: 11400000, guid: 13aa7df5119da6343af36fd875be69da, type: 2}
+  - {fileID: 11400000, guid: 5b73aa18f2b00f94e85046c609e9062e, type: 2}
+  - {fileID: 11400000, guid: 59ff8c661c7977b4fadd71eb38f79c6a, type: 2}
+  - {fileID: 11400000, guid: 5d06c410cc80c0f40ad4189d4f382338, type: 2}
+  - {fileID: 11400000, guid: 80911f1d00550e1439b1172d8071620a, type: 2}
+  - {fileID: 11400000, guid: ab2400bba5dfe434ba99299f2bf1bddb, type: 2}
+  - {fileID: 11400000, guid: fa420480d77cb6248afa8bb94dc2bd1f, type: 2}
+  - {fileID: 11400000, guid: cbe91eba88fb5354fa99268c9076da75, type: 2}
+  - {fileID: 11400000, guid: 4c6df938b72fab34b8e5fa6850591320, type: 2}
   playerInvItemList: {fileID: 1108506228}
-  UI_BaseItemHolder: {fileID: 1621080251367370069, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
+  baseItemHolder: {fileID: 1621080251367370069, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
   tradeCostText: {fileID: 1146482435}
   playerMoney: {fileID: 1878034927}
   garageCameraPos: {fileID: 195839385}
@@ -5433,9 +5467,11 @@ MonoBehaviour:
   currentVehicleIndex: -1
   currentVehiclePlace: {fileID: 1953761498}
   currentVehicle: {fileID: 0}
-  vehicleBaseHolder: {fileID: 0}
-  vehicleCabHolder: {fileID: 0}
-  vehicleBodyHolder: {fileID: 0}
+  UIvehicleBaseHolder: {fileID: 1617677323}
+  UIvehicleCabHolder: {fileID: 310687777}
+  UIvehicleBodyHolder: {fileID: 846378556}
+  TESTSLOTLIST: []
+  bufferList: {fileID: 1397111409}
   mapCameraPos: {fileID: 625442599}
   acceptMapMoveWindow: {fileID: 0}
   posDestinations: []
@@ -7566,8 +7602,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01d0f913fdec1f4e82d5d9d78b9532a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partName: {fileID: 819451269}
   compType: 6
+  compHolder: {fileID: 1686248144}
+  turretSlots: {fileID: 0}
   UI_TurretSlotPrefab: {fileID: 1662831142184942799, guid: 857b3f6624ab49c48ae626a49e07ab04, type: 3}
+  UI_CurrentSlots: []
 --- !u!1 &1620058455
 GameObject:
   m_ObjectHideFlags: 0
@@ -8422,6 +8462,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4829449863935897176, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
   m_PrefabInstance: {fileID: 1686248142}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1686248144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1621080251367370069, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
+  m_PrefabInstance: {fileID: 1686248142}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a046271bce6a8244bbcb959afa52a6f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1702562891
 GameObject:
   m_ObjectHideFlags: 0
@@ -9101,12 +9152,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.95
+  m_fontSize: 32
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 32
   m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10777,6 +10828,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4829449863935897176, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
   m_PrefabInstance: {fileID: 1544296199}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2012025700 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1621080251367370069, guid: 77e2c7e34fc5bde49a0b6f25ad9b19b1, type: 3}
+  m_PrefabInstance: {fileID: 1544296199}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a046271bce6a8244bbcb959afa52a6f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2092609341 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1583044186969663366, guid: 857b3f6624ab49c48ae626a49e07ab04, type: 3}
