@@ -345,13 +345,14 @@ MonoBehaviour:
   ammoStats: {fileID: 11400000, guid: 4cc70ac66e474d0428b522ebbe07a7ef, type: 2}
   ghostHorRotator: {fileID: 4414235235112756956}
   ghostVertRotator: {fileID: 7539155656788605513}
+  limitVertRotation: 0
   HorTurret: {fileID: 5434392639122265058}
   VertTurret: {fileID: 4571044829099575866}
   canFire: 0
   fireRateType: 0
   burstMaxSize: 3
   currentSpread: {x: 0, y: 0, z: 0}
-  targetTrans: {fileID: 0}
+  targetTrans: {fileID: 4960076663713409809}
   bodyRb: {fileID: 0}
   shootPoints:
   - {fileID: 4960076663713409809}

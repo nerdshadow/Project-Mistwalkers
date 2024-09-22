@@ -32,7 +32,7 @@ public class UI_TurretHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnter
             return;
         
         Debug.Log("Item = " + currentTurretStats.turretName);
-        ui_SlotRef.changeTurretSlot.Invoke(currentTurretStats, ui_SlotRef);
+        ui_SlotRef.onTurretSlotChanged.Invoke(currentTurretStats, ui_SlotRef);
     }
 
     public void OnPointerEnter(PointerEventData _eventData)

@@ -232,7 +232,7 @@ public class UI_VehicleSpawner : MonoBehaviour
             foreach (TurretSlotBehaviour slot in ui_cabSlots)
             {
                 UI_TurretSlot buffSlot = Instantiate(ui_weaponSlot, ui_cabSlotsHolder.transform);
-                buffSlot.slotBeh = slot;
+                buffSlot.currentslotBeh = slot;
                 buffSlot.turretSlotSizeText.text = slot.slotTurretSize.ToString();
                 if (slot.currentTurretStats == null)
                 {
@@ -244,7 +244,7 @@ public class UI_VehicleSpawner : MonoBehaviour
                     buffSlot.RefreshUI(slot.currentTurretStats.turretName);
 
                 buffSlot.onTurretSlotClicked.AddListener(ShowItemList);
-                buffSlot.changeTurretSlot.AddListener(ChangeSlotItem);
+                buffSlot.onTurretSlotChanged.AddListener(ChangeSlotItem);
             }
         }
         else
@@ -255,14 +255,14 @@ public class UI_VehicleSpawner : MonoBehaviour
     }
     public void ChangeSlotItem(TurretStats _turret, UI_TurretSlot _ui_slot)
     {
-        if (_ui_slot == null || _turret == null || _ui_slot.slotBeh == null)
+        if (_ui_slot == null || _turret == null || _ui_slot.currentslotBeh == null)
             return;
         //UI change
         _ui_slot.currentTurretStats = _turret;
         _ui_slot.RefreshUI(_turret.turretName);
 
         //OnModel change
-        _ui_slot.slotBeh.SpawnTurretInSlot(_turret);
+        _ui_slot.currentslotBeh.SpawnTurretInSlot(_turret);
     }
     [SerializeField]
     List<TurretStats> turretsInStock;
@@ -273,7 +273,7 @@ public class UI_VehicleSpawner : MonoBehaviour
         //Debug.Log("Entered SHOWITEMLIST");
         if (ui_itemList == null)
             return;
-        TurretSlotBehaviour _slotBeh = _uiSlot.slotBeh;
+        TurretSlotBehaviour _slotBeh = _uiSlot.currentslotBeh;
         if (ui_itemList.activeSelf == true)
         {
             UI_TurretHolder[] _buffList = ui_itemList.GetComponentsInChildren<UI_TurretHolder>();

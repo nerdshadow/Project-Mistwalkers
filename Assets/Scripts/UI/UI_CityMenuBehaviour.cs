@@ -255,6 +255,11 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
         StartCoroutine(AssebleNextFrame());
     }
+    public void ChangeTurret(TurretSlotBehaviour _turretSlot, TurretStats _turretStats)
+    {
+        Debug.Log("Tried to spawn turret");
+        _turretSlot.SpawnTurretInSlot(_turretStats);
+    }
     IEnumerator AssebleNextFrame()
     {
         yield return new WaitForFixedUpdate();
@@ -443,7 +448,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
                 UI_BaseItemHolder buffItem = Instantiate(baseItemHolder, bufferList);
                 buffItem.ChangeHoldItemInfo((TurretStats)item);
                 buffItem.itemHolderClicked.AddListener(_uI_TurretSlot.ChangeSlotTurret);
-                //_uI_TurretSlot.changeTurretStats.AddListener
+                //_uI_TurretSlot.onTurretStatsChanged.AddListener(ChangeTurret);
             }
         }
     }
@@ -479,10 +484,6 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         }
         StartCoroutine(UpdateWheels());
         StartCoroutine(RefreshVehicleCompAfterFrame());
-    }
-    void ChangeTurret(UI_TurretSlot _uI_TurretSlot, TurretStats _turretStats)
-    {
-        
     }
     IEnumerator RefreshVehicleCompAfterFrame()
     {

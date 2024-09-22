@@ -111,6 +111,7 @@ public class UI_VehicleCompHolder : MonoBehaviour
                         UI_TurretSlot buffUISlot = Instantiate(UI_TurretSlotPrefab, turretSlots);
                         buffUISlot.ChangeSlotTurret(slot);
                         buffUISlot.onTurretSlotClicked.AddListener(GetComponentInParent<UI_CityMenuBehaviour>().CreateListOfTurrets);
+                        buffUISlot.onTurretStatsChanged.AddListener(GetComponentInParent<UI_CityMenuBehaviour>().ChangeTurret);
                     }
                     return true;
                 }

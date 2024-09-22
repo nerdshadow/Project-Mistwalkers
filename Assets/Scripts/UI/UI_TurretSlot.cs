@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class UI_TurretSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public TurretSlotBehaviour slotBeh;
+    public TurretSlotBehaviour currentslotBeh;
     public TurretStats currentTurretStats;
     public TurretSize currentTurretSize = TurretSize.Small;
     public TMP_Text turretSlotSizeText;
     public TMP_Text turretName;
     public Image turretImage;
     public UnityEvent<UI_TurretSlot> onTurretSlotClicked = new UnityEvent<UI_TurretSlot>();
-    public UnityEvent<TurretStats, UI_TurretSlot> changeTurretSlot = new UnityEvent<TurretStats, UI_TurretSlot>();
-    public UnityEvent<TurretStats> changeTurretStats = new UnityEvent<TurretStats>();
+    public UnityEvent<TurretStats, UI_TurretSlot> onTurretSlotChanged = new UnityEvent<TurretStats, UI_TurretSlot>();
+    public UnityEvent<TurretSlotBehaviour,TurretStats> onTurretStatsChanged = new UnityEvent<TurretSlotBehaviour, TurretStats>();
     public void RefreshUI(string _weaponName)
     {
         turretName.text = _weaponName;
@@ -36,6 +36,7 @@ public class UI_TurretSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void ChangeSlotTurret(TurretSlotBehaviour _slotBehaviour)
     {
+        currentslotBeh = _slotBehaviour;
         currentTurretSize = _slotBehaviour.slotTurretSize;
         turretSlotSizeText.text = currentTurretSize.ToString();
         if (_slotBehaviour.currentTurretStats == null)
@@ -67,18 +68,19 @@ public class UI_TurretSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             turretName.text = currentTurretStats.ItemName;
             turretImage.sprite = null;
         }
-        changeTurretStats.Invoke(currentTurretStats);
+        onTurretStatsChanged.Invoke(currentslotBeh, currentTurretStats);
     }
+
     private void OnDestroy()
     {
         onTurretSlotClicked.RemoveAllListeners();
-        changeTurretSlot.RemoveAllListeners();
-        changeTurretStats.RemoveAllListeners();
+        onTurretSlotChanged.RemoveAllListeners();
+        onTurretStatsChanged.RemoveAllListeners();
     }
     private void OnDisable()
     {
         onTurretSlotClicked.RemoveAllListeners();
-        changeTurretSlot.RemoveAllListeners();
-        changeTurretStats.RemoveAllListeners();
+        onTurretSlotChanged.RemoveAllListeners();
+        onTurretStatsChanged.RemoveAllListeners();
     }
 }
