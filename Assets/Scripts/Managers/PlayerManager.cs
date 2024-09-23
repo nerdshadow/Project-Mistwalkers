@@ -30,8 +30,8 @@ public class PlayerManager : MonoBehaviour
     private void InitManager()
     {
         LoadPlayerData();
-        //CheckPlayerZeroVehicle();
-        CheckPlayerZeroVehicle(standartVehicle, 0);
+        CheckPlayerZeroVehicle();
+        //CheckPlayerZeroVehicle(standartVehicle, 0);
     }
     [ContextMenu("Load data")]
     private void LoadPlayerData()
@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour
         //Load player statistics
     }
     [ContextMenu("Save data")]
-    private void SavePlayerData()
+    public void SavePlayerData()
     {
         if (playerSave == null)
         {

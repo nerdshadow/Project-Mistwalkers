@@ -308,6 +308,10 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         }
         else Debug.Log("Index out of range");
     }
+    public void ResetVehicle()
+    {
+        SwitchVehicle(currentVehicleIndex);
+    }
     void DespawnVehicle()
     {
         if (currentVehicle == null)
@@ -320,7 +324,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         currentVehicle = null;
     }
     [ContextMenu("RefreshVehicleComp")]
-    void RefreshCurrentVehicleComp()
+    void RefreshCurrentVehicleUIComp()
     {
         if (currentVehicle == null)
         {
@@ -488,7 +492,31 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     IEnumerator RefreshVehicleCompAfterFrame()
     {
         yield return new WaitForFixedUpdate();
-        RefreshCurrentVehicleComp();
+        RefreshCurrentVehicleUIComp();
+    }
+    public void SaveCurrentVehicle()
+    {
+        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleBaseStats baseVehicleStats = vehicleBehaviour.currentVehicleStats;
+        VehiclePartStats cabStats = vehicleBehaviour.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats;
+        List<TurretSlotBehaviour> buffTurretSlots = new List<TurretSlotBehaviour>();
+        buffTurretSlots.AddRange(vehicleBehaviour.cabHolder.GetComponentsInChildren<TurretSlotBehaviour>());
+        List<TurretStats> cabTurrets = new List<TurretStats>();
+        foreach (TurretSlotBehaviour cabTurrSlot in buffTurretSlots)
+        {
+            cabTurrets.Add(cabTurrSlot.currentTurretStats);
+        }
+        VehiclePartStats bodyStats = vehicleBehaviour.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats;
+        buffTurretSlots = new List<TurretSlotBehaviour>();
+        buffTurretSlots.AddRange(vehicleBehaviour.bodyHolder.GetComponentsInChildren<TurretSlotBehaviour>());
+        List<TurretStats> bodyTurrets = new List<TurretStats>();
+        foreach (TurretSlotBehaviour bodyTurrSlot in buffTurretSlots)
+        {
+            bodyTurrets.Add(bodyTurrSlot.currentTurretStats);
+        }
+
+        playerManager.playerCurrentVehicleVars[currentVehicleIndex] = new VehicleSaveVar(baseVehicleStats, cabStats, cabTurrets, bodyStats, bodyTurrets);
+        playerManager.SavePlayerData();
     }
 
     #endregion Garage
