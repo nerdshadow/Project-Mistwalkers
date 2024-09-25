@@ -70,9 +70,12 @@ public class UI_VehicleCompHolder : MonoBehaviour
 
         if (_potComp == null)
         {
-            Debug.Log(this.name + " hided");
-            this.gameObject.SetActive(false);
-            return true;
+            if (compType != ItemType.VehicleBase)
+            {
+                Debug.Log(this.name + " hided");
+                this.gameObject.SetActive(false);
+                return true;
+            }
         }
         else
         {
@@ -83,6 +86,16 @@ public class UI_VehicleCompHolder : MonoBehaviour
         switch (compType)
         {
             case ItemType.VehicleBase:
+                if (_potComp == null)
+                {
+                    Debug.Log("Base is null");
+                    ChangeName("None");
+                    compHolder.ChangeHoldItemInfo(null);
+
+                    if (turretSlots != null)
+                        Destroy(turretSlots);
+                    return true;
+                }
                 if (_potComp is VehicleBehaviour)
                 {
                     VehicleBehaviour buffBase = (VehicleBehaviour)_potComp;

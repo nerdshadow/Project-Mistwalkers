@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 
 public class UI_CityMenuBehaviour : MonoBehaviour
@@ -207,6 +208,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         if (playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats == null)
         {
             Debug.Log("No vehicle data at index");
+            currentVehicle = null;
             return;
         }
 
@@ -224,7 +226,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             cabSlots[i].SpawnTurretInSlot(playerManager.playerCurrentVehicleVars[_indexOfVehicle].cabTurrets[i]);
         }
 
-        if (playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats.partPrefab != null)
+        if ( playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats != null)
         {
             DestroyImmediate(vehicleBehaviour.currentVehicleBody, false);
             Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats.partPrefab, vehicleBehaviour.bodyHolder.transform);
@@ -353,7 +355,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         if(buffBodyBeh != null)
             UIvehicleBodyHolder.compHolder.itemHolderClicked.AddListener(CreateListOfBodies);
     }
-    public RectTransform bufferList;
+    public RectTransform bufferList;    
     void CreateListOf(ItemType _itemType)
     {    
         switch (_itemType)
@@ -368,19 +370,37 @@ public class UI_CityMenuBehaviour : MonoBehaviour
                 break;
         }
     }
-    [ContextMenu("Refresh List of Bases")]
-    public void CreateListOfBases(UI_BaseItemHolder _uI_BaseItemHolder)
+    ScriptableObject lastListType = null;
+    public void ManageList(ScriptableObject _scriptable)
     {
         if (bufferList == null)
         { Debug.LogWarning("no list"); return; }
-
+        if (bufferList.gameObject.activeInHierarchy == true && _scriptable == lastListType)
+        {
+            bufferList.transform.parent.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            bufferList.transform.parent.gameObject.SetActive(true);
+            lastListType = _scriptable;
+        }
         //Clear list
         for (int i = 0; i < bufferList.transform.childCount; i++)
             Destroy(bufferList.transform.GetChild(i).gameObject);
+    }
+    [ContextMenu("Refresh List of Bases")]
+    public void CreateListOfBases(UI_BaseItemHolder _uI_BaseItemHolder)
+    {
+        ManageList(_uI_BaseItemHolder.currentItemStats);
+
+        //UI_BaseItemHolder buffNullItem = Instantiate(baseItemHolder, bufferList);
+        //buffNullItem.ChangeHoldItemInfo(null);
+        //buffNullItem.itemHolderClicked.AddListener(ChangeBase);
 
         foreach (ScriptableObject item in shopStock)
         {
-            Debug.Log(item + " - " + (item is VehicleBaseStats));
+            //Debug.Log(item + " - " + (item is VehicleBaseStats));
             if (item is VehicleBaseStats == true)
             {
                 UI_BaseItemHolder buffItem = Instantiate(baseItemHolder, bufferList);
@@ -392,12 +412,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     [ContextMenu("Refresh List of Cabs")]
     public void CreateListOfCabs(UI_BaseItemHolder _uI_BaseItemHolder)
     {
-        if (bufferList == null)
-        { Debug.LogWarning("no list"); return; }
-
-        //Clear list
-        for (int i = 0; i < bufferList.transform.childCount; i++)
-            Destroy(bufferList.transform.GetChild(i).gameObject);
+        ManageList(_uI_BaseItemHolder.currentItemStats);
 
         foreach (ScriptableObject item in shopStock)
         {
@@ -415,12 +430,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     [ContextMenu("Refresh List of Bodies")]
     public void CreateListOfBodies(UI_BaseItemHolder _uI_BaseItemHolder)
     {
-        if (bufferList == null)
-        { Debug.LogWarning("no list"); return; }
-
-        //Clear list
-        for (int i = 0; i < bufferList.transform.childCount; i++)
-            Destroy(bufferList.transform.GetChild(i).gameObject);
+        ManageList(_uI_BaseItemHolder.currentItemStats);
 
         foreach (ScriptableObject item in shopStock)
         {
@@ -437,12 +447,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     }
     public void CreateListOfTurrets(UI_TurretSlot _uI_TurretSlot)
     {
-        if (bufferList == null)
-        { Debug.LogWarning("no list"); return; }
-
-        //Clear list
-        for (int i = 0; i < bufferList.transform.childCount; i++)
-            Destroy(bufferList.transform.GetChild(i).gameObject);
+        ManageList(_uI_TurretSlot.currentTurretStats);
 
         foreach (ScriptableObject item in shopStock)
         {
@@ -506,16 +511,26 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         {
             cabTurrets.Add(cabTurrSlot.currentTurretStats);
         }
-        VehiclePartStats bodyStats = vehicleBehaviour.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats;
-        buffTurretSlots = new List<TurretSlotBehaviour>();
-        buffTurretSlots.AddRange(vehicleBehaviour.bodyHolder.GetComponentsInChildren<TurretSlotBehaviour>());
+        VehiclePartStats bodyStats = null;
         List<TurretStats> bodyTurrets = new List<TurretStats>();
-        foreach (TurretSlotBehaviour bodyTurrSlot in buffTurretSlots)
+        if (vehicleBehaviour.bodyHolder != null)
         {
-            bodyTurrets.Add(bodyTurrSlot.currentTurretStats);
+            bodyStats = vehicleBehaviour.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats;
+            buffTurretSlots = new List<TurretSlotBehaviour>();
+            buffTurretSlots.AddRange(vehicleBehaviour.bodyHolder.GetComponentsInChildren<TurretSlotBehaviour>());
+            foreach (TurretSlotBehaviour bodyTurrSlot in buffTurretSlots)
+            {
+                bodyTurrets.Add(bodyTurrSlot.currentTurretStats);
+            }
         }
 
         playerManager.playerCurrentVehicleVars[currentVehicleIndex] = new VehicleSaveVar(baseVehicleStats, cabStats, cabTurrets, bodyStats, bodyTurrets);
+        playerManager.SavePlayerData();
+    }
+    public void DeleteCurrentVehicle()
+    {
+        playerManager.playerCurrentVehicleVars[currentVehicleIndex] = new VehicleSaveVar();
+        ResetVehicle();
         playerManager.SavePlayerData();
     }
 

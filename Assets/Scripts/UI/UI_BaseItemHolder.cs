@@ -38,26 +38,33 @@ public class UI_BaseItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnt
         if (_itemStats != null && _itemStats is IItemInfo)
         {
             currentItemStats = _itemStats;
+            itemTextHolder.text = ((IItemInfo)currentItemStats).ItemName;
+            //change item icon
+            itemValue.text = ((IItemInfo)currentItemStats).ItemValue.ToString();
+        }
+        else if (_itemStats == null)
+        {
+            //Debug.LogWarning("ItemStats empty or wrong cast");
+            currentItemStats = null;
+            itemTextHolder.text = "None";
+            itemValue.text = "0";
         }
         else
         {
             Debug.LogWarning("ItemStats empty or wrong cast");
-            currentItemStats = null;
-            return;
         }
-        
-        itemTextHolder.text = ((IItemInfo)currentItemStats).ItemName;
-        //change item icon
-        itemValue.text = ((IItemInfo)currentItemStats).ItemValue.ToString();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         //Create turret in slot
         if (currentItemStats == null)
-            return;
+        {
+            Debug.Log("Item = " + "None" + " in " + transform.parent.name);
+        }
+        else
+            Debug.Log("Item = " + ((IItemInfo)currentItemStats).ItemName + " in " + transform.parent.name);
 
-        Debug.Log("Item = " + ((IItemInfo)currentItemStats).ItemName + " in " + transform.parent.name);
         itemHolderClicked.Invoke(this);
         //ui_SlotRef.onTurretSlotChanged.Invoke(currentItemInfo, ui_SlotRef);
     }
@@ -67,6 +74,7 @@ public class UI_BaseItemHolder : MonoBehaviour, IPointerMoveHandler, IPointerEnt
         //Debug.Log("Mouse on item " + this.name + " " + currentItemInfo.turretName);
         if (itemInfoPanel == null || ((IItemInfo)currentItemStats) == null)
             return;
+
         currentInfoPanel = Instantiate(itemInfoPanel, transform.root);
         _eventData.position = Input.mousePosition;
         currentInfoPanel.itemName.text = ((IItemInfo)currentItemStats).ItemName;
