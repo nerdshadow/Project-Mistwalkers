@@ -20,7 +20,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public Canvas cityCanvas;
     public PlayerManager playerManager;
     CityPart currentCityPart = CityPart.Shop;
-    public RectTransform currentUIPanel;
+    public RectTransform currentUIPanel = null;
     public RectTransform shopUIPanel;
     public RectTransform garageUIPanel;
     public RectTransform mapUIPanel;
@@ -31,28 +31,21 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         cityCamera.transform.position = (_targetTransform.position);
         cityCamera.transform.rotation = (_targetTransform.rotation);
     }
-    private void Start()
-    {
-        currentCityPart = CityPart.Shop;
-        currentUIPanel = shopUIPanel;
-    }
+    //private void Start()
+    //{
+    //    //Choose initial menu
+    //    currentCityPart = CityPart.Shop;
+    //    currentUIPanel = shopUIPanel;
+    //}
     private void OnEnable()
     {
         playerManager = PlayerManager.instance;
-        if(currentUIPanel == shopUIPanel)
-        {
-            RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
-            RefreshShopUIList(shopItemList, shopStock);
-        }
-
-        //Test
-        SwitchVehicle(0);
+        ChangeCityPart(DEVSTARTMENU);
     }
     private void OnDisable()
     {
         playerManager = null;
     }
-
     public void ChangeCityPart(int _partNum)
     {
         if (((int)currentCityPart) == _partNum)
@@ -71,6 +64,31 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             case CityPart.Garage:
                 MoveCameraTo(garageCameraPos);
                 ChangeUIPanel(garageUIPanel);
+                SwitchVehicle(0);
+                break;
+            case CityPart.Map:
+                MoveCameraTo(mapCameraPos);
+                ChangeUIPanel(mapUIPanel);
+                break;
+            default:
+                break;
+        }
+    }
+    public void ChangeCityPart(CityPart _part)
+    {
+        //Debug.Log("curr city part is " + currentCityPart.ToString());
+        switch (_part)
+        {
+            case CityPart.Shop:
+                MoveCameraTo(shopCameraPos);
+                ChangeUIPanel(shopUIPanel);
+                RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+                RefreshShopUIList(shopItemList, shopStock);
+                break;
+            case CityPart.Garage:
+                MoveCameraTo(garageCameraPos);
+                ChangeUIPanel(garageUIPanel);
+                SwitchVehicle(0);
                 break;
             case CityPart.Map:
                 MoveCameraTo(mapCameraPos);
@@ -375,7 +393,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     {
         if (bufferList == null)
         { Debug.LogWarning("no list"); return; }
-        if (bufferList.gameObject.activeInHierarchy == true && _scriptable == lastListType)
+        if (bufferList.transform.parent.gameObject.activeInHierarchy == true && _scriptable == lastListType)
         {
             bufferList.transform.parent.gameObject.SetActive(false);
             return;
@@ -388,6 +406,10 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         //Clear list
         for (int i = 0; i < bufferList.transform.childCount; i++)
             Destroy(bufferList.transform.GetChild(i).gameObject);
+    }
+    public void CloseList()
+    {
+        bufferList.transform.parent.gameObject.SetActive(false);
     }
     [ContextMenu("Refresh List of Bases")]
     public void CreateListOfBases(UI_BaseItemHolder _uI_BaseItemHolder)
@@ -552,6 +574,8 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     #endregion Map
 
     #region Test
+    [SerializeField]
+    CityPart DEVSTARTMENU = CityPart.Garage;
     [ContextMenu("Move to shop")]
     void MoveCameraToShop()
     {
