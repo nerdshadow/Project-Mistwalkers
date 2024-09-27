@@ -563,6 +563,11 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public Transform mapCameraPos;
     public RectTransform acceptMapMoveWindow;
     public List<Button> posDestinations;
+    public List<SceneField> testSceneField = new List<SceneField>();
+    void CreateDestinations()
+    {
+        
+    }
     void ChooseDestination()
     {
         

@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
             DoOnLoadingScene();
         }
     }
-
     public void LoadLevel(string sceneName)
     {
         StopAllCoroutines();
