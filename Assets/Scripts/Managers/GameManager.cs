@@ -134,4 +134,9 @@ public class GameManager : MonoBehaviour
         gameIsPaused = true;
         Time.timeScale = 0f;
     }
+    [ContextMenu("Generate path")]
+    public void GeneratePath()
+    {
+        PlayerManager.instance.playerSave.ChangePath(PathGenerator.GeneratePath());
+    }
 }

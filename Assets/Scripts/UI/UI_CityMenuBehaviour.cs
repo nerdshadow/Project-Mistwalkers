@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 
 public class UI_CityMenuBehaviour : MonoBehaviour
@@ -40,11 +39,18 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     private void OnEnable()
     {
         playerManager = PlayerManager.instance;
+        OnTownEnter();
         ChangeCityPart(DEVSTARTMENU);
     }
     private void OnDisable()
     {
         playerManager = null;
+    }
+    void OnTownEnter()
+    {
+        //Create town stock
+        InitializeTravelPoints();
+        //Create next Travel points
     }
     public void ChangeCityPart(int _partNum)
     {
@@ -69,6 +75,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             case CityPart.Map:
                 MoveCameraTo(mapCameraPos);
                 ChangeUIPanel(mapUIPanel);
+                UpdateMap();
                 break;
             default:
                 break;
@@ -93,6 +100,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             case CityPart.Map:
                 MoveCameraTo(mapCameraPos);
                 ChangeUIPanel(mapUIPanel);
+                UpdateMap();
                 break;
             default:
                 break;
@@ -110,6 +118,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
     #region Shop
     [Space(10)]
+    [Header("Shop")]
     public Transform shopCameraPos;
     public RectTransform shopItemList;
     public List<ScriptableObject> shopStock = new List<ScriptableObject>();
@@ -202,6 +211,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
     #region Garage
     [Space(10)]
+    [Header("Garage")]
     public Transform garageCameraPos;
     public Transform vehicleSpawnPoint;
     public int currentVehicleIndex = -1;
@@ -560,17 +570,74 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
     #region Map
     [Space(10)]
+    [Header("Map")]
     public Transform mapCameraPos;
+    public RectTransform mapSpace;
     public RectTransform acceptMapMoveWindow;
-    public List<Button> posDestinations;
+    public UI_DestinationHolder destinationHolderPrefab;
+    public List<UI_DestinationHolder> posDestinations;
     public List<SceneField> testSceneField = new List<SceneField>();
-    void CreateDestinations()
+    public Vector2 initialCityPosition = Vector2.zero;
+    public List<Vector2> posDestTEST = new List<Vector2>();
+    public int placeDeepLevel = 1200; // > 1000
+    public int deepFactor = 100;
+    void InitializeTravelPoints()
     {
-        
+        //Initial current city
+        if (initialCityPosition == Vector2.zero)
+        {
+            //Find position for city on map
+            Vector2 randPos = UnityEngine.Random.insideUnitCircle.normalized * placeDeepLevel;
+            initialCityPosition = randPos;
+        }
+        for (int i = 0; i < playerManager.playerSave.pathPoints.Count; i++)
+        {
+            if (i == 0)
+            { 
+                CreateDestination(initialCityPosition, 1);
+                continue;
+            }
+            CreateDestination(posDestTEST[i - 1], i);
+        }
+    }
+    void CreateDestination(Vector2 _refPos, int _deepFactorMod)
+    {
+        Vector2 randPos = UnityEngine.Random.insideUnitCircle.normalized * (placeDeepLevel - deepFactor * _deepFactorMod);
+        float dist = Vector2.Distance(randPos, _refPos);
+        if (dist > 200)
+            CreateDestination(_refPos, _deepFactorMod);
+        else
+            posDestTEST.Add(randPos);
     }
     void ChooseDestination()
     {
         
+    }
+    void UpdateMap()
+    {
+        if (mapSpace == null)
+            return;
+        UI_DestinationHolder buffDest;
+        foreach (Vector2 posDest in posDestTEST)
+        {
+            if (posDest == posDestTEST[0])
+            {
+                buffDest = Instantiate(destinationHolderPrefab, mapSpace);
+                buffDest.transform.localPosition = initialCityPosition;
+                buffDest.ChangeDestination("Test city", MapType.City, null);
+                FocusOnDestination(buffDest);
+                continue;
+            }
+            buffDest = null;
+            buffDest = Instantiate(destinationHolderPrefab, mapSpace);
+            buffDest.transform.localPosition = posDest;
+            buffDest.ChangeDestination("Test dest " + posDest, MapType.City, null);
+            buffDest.onDestinationClicked.AddListener(SpawnAcceptWindow);
+        }
+    }
+    void FocusOnDestination(UI_DestinationHolder _uI_DestinationHolder)
+    {
+        mapSpace.transform.localPosition = -_uI_DestinationHolder.transform.localPosition;
     }
     void SpawnAcceptWindow()
     {

@@ -2,12 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MapType
-{
-    Sand = 0,
-    Stone = 1,
-}
-
 public class LevelManager : MonoBehaviour
 {
     public MapType mapType = MapType.Sand;

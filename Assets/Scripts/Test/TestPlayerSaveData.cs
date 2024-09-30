@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class TestPlayerSaveData : ScriptableObject
     public short inventoryBaseSize = 20;
     public int inventory—urrentSize = 20;
     public List<ScriptableObject> playerInventory = new List<ScriptableObject>();
-
+    public List<PathPoint> pathPoints = new List<PathPoint>();
     public VehicleSaveVar[] playerVehiclesVar = new VehicleSaveVar[5];
     public bool AddItemToInv(ScriptableObject _item)
     {
@@ -106,5 +107,10 @@ public class TestPlayerSaveData : ScriptableObject
         }
 
         playerVehiclesVar[_indexInArr] = new VehicleSaveVar(vehicleBaseStats, cabStats, cabTurrets, bodyStats, bodyTurrets);
+    }
+    public void ChangePath(List<PathPoint> _pathPoints)
+    {
+        pathPoints = new List<PathPoint>();
+        pathPoints.AddRange(_pathPoints);
     }
 }

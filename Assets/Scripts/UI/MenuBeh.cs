@@ -14,6 +14,7 @@ public class MenuBeh : MonoBehaviour
     public void StartNewGame()
     {
         Debug.Log("Started new game");
+        gameManager.GeneratePath();
         gameManager.LoadLevel(baseSceneLevel);
     }
     public void LoadGame()
