@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
     [SerializeField]
-    public TestPlayerSaveData playerSave = null;
+    public RuntimePlayerSaveData playerSave = null;
     [SerializeField]
     int playerCurrentMoney = 0;
     [SerializeField]
@@ -26,7 +26,6 @@ public class PlayerManager : MonoBehaviour
 
         InitManager();
     }
-
     private void InitManager()
     {
         LoadPlayerData();

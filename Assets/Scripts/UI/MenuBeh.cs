@@ -14,6 +14,8 @@ public class MenuBeh : MonoBehaviour
     public void StartNewGame()
     {
         Debug.Log("Started new game");
+        //Create new savefile
+        //Generate seed
         gameManager.GeneratePath();
         gameManager.LoadLevel(baseSceneLevel);
     }

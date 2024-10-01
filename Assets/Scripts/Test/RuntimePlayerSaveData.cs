@@ -3,27 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct VehicleSaveVar
-{
-    public VehicleBaseStats vehicleBaseStats;
-    public VehiclePartStats cabStats;
-    public List<TurretStats> cabTurrets;
-    public VehiclePartStats bodyStats;
-    public List<TurretStats> bodyTurrets;
-
-    public VehicleSaveVar(VehicleBaseStats _vhBS, VehiclePartStats _cSt, List<TurretStats> _cTSt, VehiclePartStats _bSt, List<TurretStats> _bTSt)
-    {
-        vehicleBaseStats = _vhBS;
-        cabStats = _cSt;
-        cabTurrets = _cTSt;
-        bodyStats = _bSt;
-        bodyTurrets = _bTSt;
-    }
-}
-
-[CreateAssetMenu(fileName = "PlayerSave_Test", menuName = "SO/PlayerSave_TEST")]
-public class TestPlayerSaveData : ScriptableObject
+[CreateAssetMenu(fileName = "PlayerSave_Runtime", menuName = "SO/PlayerSave_Runtime")]
+public class RuntimePlayerSaveData : ScriptableObject
 {
     public string playerName = "Player";
     public int playerRandSeed = 451;
@@ -112,5 +93,29 @@ public class TestPlayerSaveData : ScriptableObject
     {
         pathPoints = new List<PathPoint>();
         pathPoints.AddRange(_pathPoints);
+    }
+    public void ChangeData(SaveData saveData)
+    {
+        playerName = saveData.playerName;
+        playerRandSeed = saveData.playerRandSeed;
+        playerLastCityIndex = saveData.playerLastCityIndex;
+        playerMoney = saveData.playerMoney;
+        inventoryBaseSize = saveData.inventoryBaseSize;
+        inventory—urrentSize = saveData.inventoryCurrentSize;
+        playerInventory = saveData.playerInventory;
+        pathPoints = saveData.pathPoints;
+        playerVehiclesVar = saveData.playerVehiclesVar;
+    }
+    [ContextMenu("Try to save")]
+    public void SaveDataToMachine()
+    {
+        SaveData saveData = new SaveData(playerName, playerRandSeed, playerLastCityIndex, playerMoney, 
+            inventoryBaseSize, inventory—urrentSize, playerInventory, pathPoints, playerVehiclesVar);
+        SaveLoadSystem.SaveData(saveData);
+    }
+    [ContextMenu("Try to load")]
+    public void LoadDataFromMachine()
+    {
+        SaveLoadSystem.LoadData(this);
     }
 }
