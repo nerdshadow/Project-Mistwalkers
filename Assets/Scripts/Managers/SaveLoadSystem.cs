@@ -21,7 +21,7 @@ public struct VehicleSaveVar
         bodyTurrets = _bTSt;
     }
 }
-public struct SaveData
+public struct PlayerSaveData
 {
     public string playerName;
     public int playerRandSeed;
@@ -33,7 +33,7 @@ public struct SaveData
     public List<PathPoint> pathPoints;
     public VehicleSaveVar[] playerVehiclesVar;
 
-    public SaveData(string playerName, int playerRandSeed, short playerLastCityIndex, 
+    public PlayerSaveData(string playerName, int playerRandSeed, short playerLastCityIndex, 
         int playerMoney, short inventoryBaseSize, int inventory—urrentSize, 
         List<ScriptableObject> playerInventory, List<PathPoint> pathPoints, VehicleSaveVar[] playerVehiclesVar)
     {
@@ -48,21 +48,42 @@ public struct SaveData
         this.playerVehiclesVar = playerVehiclesVar;
     }
 }
+public struct SettingsSaveData
+{
+    //graphic
+    public bool fullscreenMode;
+    //audio
+    public float masterVolume;
+    public float sfxVolume;
+    public float musicVolume;
+    public float voicevolume;
 
-public class SaveLoadSystem : MonoBehaviour
+    public SettingsSaveData(bool fscreen, float mastervolume, float sfxvolume, float musicvolume, float voicevolume)
+    {
+        this.fullscreenMode = fscreen;
+        this.masterVolume = mastervolume;
+        this.sfxVolume = sfxvolume;
+        this.musicVolume = musicvolume;
+        this.voicevolume = voicevolume;
+    }
+}
+
+public static class SaveLoadSystem
 {
     public static string saveFilePath = Application.persistentDataPath + "/playerSave.json";
-    public static void SaveData(SaveData saveData)
+    public static string settingsFilePath = Application.persistentDataPath + "/Settings.json";
+    public static SettingsSaveData defaultSettings = new SettingsSaveData(true, 1, 1, 1, 1);
+    public static void SavePlayerData(PlayerSaveData saveData)
     {
         string savePlayerData = JsonUtility.ToJson(saveData);
         File.WriteAllText(saveFilePath, savePlayerData);
     }
-    public static bool LoadData(RuntimePlayerSaveData _runtimeSave)
+    public static bool LoadPlayerData(RuntimePlayerSaveData _runtimeSave)
     {
         if (File.Exists(saveFilePath))
         {
             string loadPlayerData = File.ReadAllText(saveFilePath);
-            _runtimeSave.ChangeData(JsonUtility.FromJson<SaveData>(loadPlayerData));
+            _runtimeSave.ChangeData(JsonUtility.FromJson<PlayerSaveData>(loadPlayerData));
             return true;
         }
         else
@@ -71,7 +92,7 @@ public class SaveLoadSystem : MonoBehaviour
             return false;
         }
     }
-    public static bool DeleteSaveData()
+    public static bool DeletePlayerSaveData()
     {
         if (File.Exists(saveFilePath))
         {
@@ -83,5 +104,38 @@ public class SaveLoadSystem : MonoBehaviour
             Debug.LogWarning("No save file");
             return false;
         }
+    }
+
+    public static void SaveSettingsData(SettingsSaveData _settingsData)
+    {
+        string saveSettingsData = JsonUtility.ToJson(_settingsData);
+        File.WriteAllText(settingsFilePath, saveSettingsData);
+    }
+    public static bool LoadSeetingsData()
+    {
+        if (File.Exists(settingsFilePath))
+        {
+            string loadSettingsData = File.ReadAllText(settingsFilePath);
+            SettingsSaveData settingsPot = JsonUtility.FromJson<SettingsSaveData>(loadSettingsData);
+            Screen.fullScreen = settingsPot.fullscreenMode;
+            //try at risk of blowing up
+            AudioManager.instance.SetMasterVolume(settingsPot.masterVolume);
+            AudioManager.instance.SetMusicVolume(settingsPot.musicVolume);
+            AudioManager.instance.SetSFXVolume(settingsPot.sfxVolume);
+            AudioManager.instance.SetVoiceVolume(settingsPot.voicevolume);
+            //
+            return true;
+        }
+        else
+        {
+            Debug.LogWarning("no settings data");
+            return false;
+        }
+    }
+    public static void ResetSettingsData()
+    {
+        string saveSettingsData = JsonUtility.ToJson(defaultSettings);
+        File.WriteAllText(settingsFilePath, saveSettingsData);
+        LoadSeetingsData();
     }
 }

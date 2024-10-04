@@ -94,7 +94,7 @@ public class RuntimePlayerSaveData : ScriptableObject
         pathPoints = new List<PathPoint>();
         pathPoints.AddRange(_pathPoints);
     }
-    public void ChangeData(SaveData saveData)
+    public void ChangeData(PlayerSaveData saveData)
     {
         playerName = saveData.playerName;
         playerRandSeed = saveData.playerRandSeed;
@@ -109,13 +109,13 @@ public class RuntimePlayerSaveData : ScriptableObject
     [ContextMenu("Try to save")]
     public void SaveDataToMachine()
     {
-        SaveData saveData = new SaveData(playerName, playerRandSeed, playerLastCityIndex, playerMoney, 
+        PlayerSaveData saveData = new PlayerSaveData(playerName, playerRandSeed, playerLastCityIndex, playerMoney, 
             inventoryBaseSize, inventory—urrentSize, playerInventory, pathPoints, playerVehiclesVar);
-        SaveLoadSystem.SaveData(saveData);
+        SaveLoadSystem.SavePlayerData(saveData);
     }
     [ContextMenu("Try to load")]
     public void LoadDataFromMachine()
     {
-        SaveLoadSystem.LoadData(this);
+        SaveLoadSystem.LoadPlayerData(this);
     }
 }
