@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -22,7 +24,25 @@ public class MenuBeh : MonoBehaviour
     }
     private void OnEnable()
     {
+    }
 
+    #region GameStates
+    [Space(10)]
+    [Header("Game")]
+    public RectTransform newGameWindow;
+    
+    public void ToggleStartNewGameWindow()
+    {
+        if (newGameWindow.gameObject.activeInHierarchy == true)
+        {
+            newGameWindow.gameObject.SetActive(false);
+        }
+        else
+        {
+            newGameWindow.gameObject.SetActive(true);
+            randSeedInput.text = UnityEngine.Random.Range(451, 9999999).ToString();
+            //randSeedInput.onValueChanged.Invoke(randSeedInput.text);
+        }
     }
     public void StartNewGame()
     {
@@ -41,6 +61,14 @@ public class MenuBeh : MonoBehaviour
         Debug.Log("exited game");
         gameManager.CloseGame();
     }
+    public TMP_InputField randSeedInput;
+    [SerializeField]
+    int rSeed = 1;
+    public void ChangeSeed(string _rSeed)
+    {
+        Int32.TryParse(_rSeed, out rSeed);
+    }
+    #endregion GameStates
     #region Settings
     public void SaveSettings()
     {
@@ -159,4 +187,6 @@ public class MenuBeh : MonoBehaviour
         Debug.Log("changing big hats " + _b);    
     }
     #endregion Settings
+    #region Dev
+    #endregion Dev
 }
