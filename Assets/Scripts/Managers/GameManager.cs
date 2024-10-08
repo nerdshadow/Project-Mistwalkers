@@ -137,6 +137,6 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Generate path")]
     public void GeneratePath()
     {
-        PlayerManager.instance.playerSave.ChangePath(PathGenerator.GeneratePath());
+        PlayerManager.instance.runtimeSave.ChangePath(PathGenerator.GeneratePath());
     }
 }

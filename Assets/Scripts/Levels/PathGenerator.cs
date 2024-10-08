@@ -7,7 +7,8 @@ public enum MapType
 {
     Sand = 0,
     Stone = 1,
-    City = 2
+    City = 2,
+    Void = 3
 }
 [Serializable]
 public enum PathPointType
@@ -48,10 +49,33 @@ public static class PathGenerator
             //End point
             if (i == pathLength - 1)
             {
-                pathPoints.Add(new PathPoint(PathPointType.End, MapType.City, i, 10));
+                pathPoints.Add(new PathPoint(PathPointType.End, MapType.Void, i, 10));
                 continue;
             }
             //Mid point
+            pathPoints.Add(new PathPoint(PathPointType.MidPath, MapType.Sand, i, i + 1));
+        }
+        return pathPoints;
+    }
+    public static List<PathPoint> GeneratePath(int seed)
+    {
+        List<PathPoint> pathPoints = new List<PathPoint>();
+        for (int i = 0; i < pathLength; i++)
+        {
+            //Start point
+            if (i == 0)
+            {
+                pathPoints.Add(new PathPoint(PathPointType.Start, MapType.City, i, 1));
+                continue;
+            }
+            //End point
+            if (i == pathLength - 1)
+            {
+                pathPoints.Add(new PathPoint(PathPointType.End, MapType.Void, i, 10));
+                continue;
+            }
+            //Mid point
+
             pathPoints.Add(new PathPoint(PathPointType.MidPath, MapType.Sand, i, i + 1));
         }
         return pathPoints;

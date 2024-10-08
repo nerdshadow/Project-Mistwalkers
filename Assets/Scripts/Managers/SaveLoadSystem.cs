@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +22,7 @@ public struct VehicleSaveVar
         bodyTurrets = _bTSt;
     }
 }
+[Serializable]
 public struct PlayerSaveData
 {
     public string playerName;
@@ -72,7 +74,8 @@ public static class SaveLoadSystem
 {
     public static string saveFilePath = Application.persistentDataPath + "/playerSave.json";
     public static string settingsFilePath = Application.persistentDataPath + "/Settings.json";
-    public static SettingsSaveData defaultSettings = new SettingsSaveData(true, 1, 1, 1, 1);
+    public static SettingsSaveData defaultSettings = new SettingsSaveData(true, 1, 1, 1, 1);    
+    
     public static void SavePlayerData(PlayerSaveData saveData)
     {
         string savePlayerData = JsonUtility.ToJson(saveData);

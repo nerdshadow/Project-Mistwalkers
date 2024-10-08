@@ -6,15 +6,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
-public class UI_CityMenuBehaviour : MonoBehaviour
-{
     public enum CityPart
     {
         Shop = 0,
         Garage = 1,
         Map = 2
     }
+
+public class UI_CityMenuBehaviour : MonoBehaviour
+{
     public Camera cityCamera;
     public Canvas cityCanvas;
     public PlayerManager playerManager;
@@ -23,6 +23,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public RectTransform shopUIPanel;
     public RectTransform garageUIPanel;
     public RectTransform mapUIPanel;
+    RuntimePlayerSaveData runtimeSave;
     void MoveCameraTo(Transform _targetTransform)
     {
         if (_targetTransform == null || cityCamera.transform.position == _targetTransform.position)
@@ -38,6 +39,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     //}
     private void OnEnable()
     {
+        runtimeSave = RuntimePlayerSaveData.Instance;
         playerManager = PlayerManager.instance;
         OnTownEnter();
         ChangeCityPart(DEVSTARTMENU);
@@ -64,7 +66,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             case CityPart.Shop:
                 MoveCameraTo(shopCameraPos);
                 ChangeUIPanel(shopUIPanel);
-                RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+                RefreshShopUIList(playerInvItemList, playerManager.runtimeSave.currentPlayerSaveData.playerInventory);
                 RefreshShopUIList(shopItemList, shopStock);
                 break;
             case CityPart.Garage:
@@ -89,7 +91,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             case CityPart.Shop:
                 MoveCameraTo(shopCameraPos);
                 ChangeUIPanel(shopUIPanel);
-                RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+                RefreshShopUIList(playerInvItemList, playerManager.runtimeSave.currentPlayerSaveData.playerInventory);
                 RefreshShopUIList(shopItemList, shopStock);
                 break;
             case CityPart.Garage:
@@ -143,7 +145,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
                 buffInfo.itemHolderClicked.AddListener(HighlightItem);
             }
         }
-        playerMoney.text = playerManager.playerSave.playerMoney.ToString();
+        playerMoney.text = playerManager.runtimeSave.currentPlayerSaveData.playerMoney.ToString();
     }
     List<UI_BaseItemHolder> highlightedItems = new List<UI_BaseItemHolder>();
     public void HighlightItem(UI_BaseItemHolder _baseItemHolder)
@@ -183,12 +185,12 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
     public void Trade()
     {
-        if (playerManager.playerSave.playerMoney + tradeCost < 0)
+        if (playerManager.runtimeSave.currentPlayerSaveData.playerMoney + tradeCost < 0)
         {
             Debug.Log("no money(");
             return;
         }
-        playerManager.playerSave.playerMoney += tradeCost;
+        playerManager.runtimeSave.currentPlayerSaveData.playerMoney += tradeCost;
         foreach (UI_BaseItemHolder item in highlightedItems)
         {
             if (item.transform.parent == playerInvItemList)
@@ -203,7 +205,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             }
         }
         highlightedItems = new List<UI_BaseItemHolder>();
-        RefreshShopUIList(playerInvItemList, playerManager.playerSave.playerInventory);
+        RefreshShopUIList(playerInvItemList, playerManager.runtimeSave.currentPlayerSaveData.playerInventory);
         RefreshShopUIList(shopItemList, shopStock);
         RefreshTradeCost();
     }
@@ -225,7 +227,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     public List<TurretSlotBehaviour> TESTSLOTLIST = new List<TurretSlotBehaviour>();
     void SpawnVehicle(int _indexOfVehicle)
     {
-        if (_indexOfVehicle > playerManager.playerCurrentVehicleVars.Length || _indexOfVehicle < 0)
+        if (_indexOfVehicle > runtimeSave.currentPlayerSaveData.playerVehiclesVar.Length || _indexOfVehicle < 0)
         {
             Debug.LogWarning("index out of array size");
             return;
@@ -233,36 +235,44 @@ public class UI_CityMenuBehaviour : MonoBehaviour
         if (currentVehicle != null)
             Destroy(currentVehicle);
 
-        if (playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats == null)
+        if (runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].vehicleBaseStats == null)
         {
             Debug.Log("No vehicle data at index");
             currentVehicle = null;
             return;
         }
 
-        currentVehicle = Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].vehicleBaseStats.vehicleBasePrefab, vehicleSpawnPoint.position, vehicleSpawnPoint.rotation);
+        currentVehicle = Instantiate(runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].vehicleBaseStats.vehicleBasePrefab, vehicleSpawnPoint.position, vehicleSpawnPoint.rotation);
         //currentVehicle.SetActive(false);
         VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
 
         //Destroy(vehicleBehaviour.currentVehicleCab.gameObject);
         DestroyImmediate(vehicleBehaviour.currentVehicleCab, false); //A bit of danger to use
-        Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].cabStats.partPrefab, vehicleBehaviour.cabHolder.transform);
+        Instantiate(runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].cabStats.partPrefab, vehicleBehaviour.cabHolder.transform);
         List<TurretSlotBehaviour> cabSlots = new List<TurretSlotBehaviour>();
         cabSlots.AddRange(vehicleBehaviour.cabHolder.GetComponentsInChildren<TurretSlotBehaviour>(false));
         for (int i = 0; i < cabSlots.Count; i++)
         {
-            cabSlots[i].SpawnTurretInSlot(playerManager.playerCurrentVehicleVars[_indexOfVehicle].cabTurrets[i]);
+            if (runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].cabTurrets.Count <= i)
+            {
+                break;
+            }
+            cabSlots[i].SpawnTurretInSlot(runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].cabTurrets[i]);
         }
 
-        if ( playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats != null)
+        if (runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].bodyStats != null)
         {
             DestroyImmediate(vehicleBehaviour.currentVehicleBody, false);
-            Instantiate(playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyStats.partPrefab, vehicleBehaviour.bodyHolder.transform);
+            Instantiate(runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].bodyStats.partPrefab, vehicleBehaviour.bodyHolder.transform);
             List<TurretSlotBehaviour> bodySlots = new List<TurretSlotBehaviour>();
             bodySlots.AddRange(vehicleBehaviour.bodyHolder.GetComponentsInChildren<TurretSlotBehaviour>(false));
             for (int i = 0; i < bodySlots.Count; i++)
             {
-                bodySlots[i].SpawnTurretInSlot(playerManager.playerCurrentVehicleVars[_indexOfVehicle].bodyTurrets[i]);
+                if (runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].bodyTurrets.Count <= i)
+                {
+                    break;
+                }
+                bodySlots[i].SpawnTurretInSlot(runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].bodyTurrets[i]);
             }
         }
 
@@ -315,10 +325,10 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             potIndex = currentVehicleIndex + 1;
         else
             potIndex = currentVehicleIndex - 1;
-        if (potIndex >= playerManager.playerCurrentVehicleVars.Length)
+        if (potIndex >= runtimeSave.currentPlayerSaveData.playerVehiclesVar.Length)
             potIndex = 0;
         if (potIndex < 0)
-            potIndex = playerManager.playerCurrentVehicleVars.Length - 1;
+            potIndex = runtimeSave.currentPlayerSaveData.playerVehiclesVar.Length - 1;
 
         DespawnVehicle();
         currentVehicleIndex = potIndex;
@@ -328,7 +338,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     }
     public void SwitchVehicle(int _toIndex)
     {
-        if (_toIndex >= 0 && _toIndex < playerManager.playerCurrentVehicleVars.Length)
+        if (_toIndex >= 0 && _toIndex < runtimeSave.currentPlayerSaveData.playerVehiclesVar.Length)
         {
             DespawnVehicle();
             currentVehicleIndex = _toIndex;
@@ -556,12 +566,12 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             }
         }
 
-        playerManager.playerCurrentVehicleVars[currentVehicleIndex] = new VehicleSaveVar(baseVehicleStats, cabStats, cabTurrets, bodyStats, bodyTurrets);
+        runtimeSave.currentPlayerSaveData.playerVehiclesVar[currentVehicleIndex] = new VehicleSaveVar(baseVehicleStats, cabStats, cabTurrets, bodyStats, bodyTurrets);
         playerManager.SavePlayerData();
     }
     public void DeleteCurrentVehicle()
     {
-        playerManager.playerCurrentVehicleVars[currentVehicleIndex] = new VehicleSaveVar();
+        runtimeSave.currentPlayerSaveData.playerVehiclesVar[currentVehicleIndex] = new VehicleSaveVar();
         ResetVehicle();
         playerManager.SavePlayerData();
     }
@@ -590,7 +600,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             Vector2 randPos = UnityEngine.Random.insideUnitCircle.normalized * placeDeepLevel;
             initialCityPosition = randPos;
         }
-        for (int i = 0; i < playerManager.playerSave.pathPoints.Count; i++)
+        for (int i = 0; i < playerManager.runtimeSave.currentPlayerSaveData.pathPoints.Count; i++)
         {
             if (i == 0)
             { 

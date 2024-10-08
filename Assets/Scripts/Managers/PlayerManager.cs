@@ -7,13 +7,8 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
     [SerializeField]
-    public RuntimePlayerSaveData playerSave = null;
-    [SerializeField]
-    int playerCurrentMoney = 0;
-    [SerializeField]
-    public List<ScriptableObject> playerCurrentInventory = new List<ScriptableObject>();
-    public VehicleSaveVar[] playerCurrentVehicleVars = new VehicleSaveVar[5];
-    public GameObject[] playerCurrentVehicles = new GameObject[5];
+    public RuntimePlayerSaveData runtimeSave = null;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -28,6 +23,7 @@ public class PlayerManager : MonoBehaviour
     }
     private void InitManager()
     {
+        runtimeSave = RuntimePlayerSaveData.Instance;
         LoadPlayerData();
         CheckPlayerZeroVehicle();
         //CheckPlayerZeroVehicle(standartVehicle, 0);
@@ -35,44 +31,26 @@ public class PlayerManager : MonoBehaviour
     [ContextMenu("Load data")]
     private void LoadPlayerData()
     {
-        if (playerSave == null)
+        if (runtimeSave == null)
         {
-            Debug.Log("No save file");
+            Debug.LogWarning("No runtime save file");
             return;
         }
-        //Load player money
-        playerCurrentMoney = playerSave.playerMoney;
-        //Load player last levelScene/position
-
-        //Load player vehicles
-        playerCurrentVehicleVars = playerSave.playerVehiclesVar;
-        //Load player playerInventory
-        playerCurrentInventory.AddRange(playerSave.playerInventory);
-        //Load player statistics
     }
     [ContextMenu("Save data")]
     public void SavePlayerData()
     {
-        if (playerSave == null)
+        if (runtimeSave == null)
         {
-            Debug.Log("No save file");
+            Debug.Log("No runtime save file");
             return;
         }
-        //Save player money
-        playerSave.playerMoney = playerCurrentMoney;
-        //Save player last levelScene/position
-
-        //Save player vehicles
-        playerSave.playerVehiclesVar = playerCurrentVehicleVars;
-        //Save player playerInventory
-        playerSave.playerInventory = playerCurrentInventory;
-        //Save player statistics
     }
 
     void RefreshInv()
     {
-        playerCurrentInventory = new List<ScriptableObject>();
-        playerCurrentInventory.AddRange(playerSave.playerInventory);
+        runtimeSave.currentPlayerSaveData.playerInventory = new List<ScriptableObject>();
+        runtimeSave.currentPlayerSaveData.playerInventory.AddRange(runtimeSave.currentPlayerSaveData.playerInventory);
     }
 
     [SerializeField]
@@ -80,12 +58,12 @@ public class PlayerManager : MonoBehaviour
     [ContextMenu("Test Add item")]
     void AddItemToInv()
     {
-        playerSave.AddItemToInv(testItem);
+        runtimeSave.AddItemToInv(testItem);
         RefreshInv();
     }
     public void AddItemToInv(ScriptableObject _item)
     {
-        if (playerSave.AddItemToInv(_item) == false)
+        if (runtimeSave.AddItemToInv(_item) == false)
         {
             Debug.Log(_item + " added to player inv");
             RefreshInv();
@@ -97,7 +75,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void RemoveItemFromInv(ScriptableObject _item)
     {
-        if (playerSave.RemoveItemFromInv(_item) == false)
+        if (runtimeSave.RemoveItemFromInv(_item) == false)
         {
             Debug.Log(_item + " removed from player inv");
             RefreshInv();
@@ -111,10 +89,10 @@ public class PlayerManager : MonoBehaviour
     GameObject standartVehicle;
     void CheckPlayerZeroVehicle()
     {
-        if (playerSave.playerVehiclesVar[0].vehicleBaseStats == null)
+        if (runtimeSave.currentPlayerSaveData.playerVehiclesVar[0].vehicleBaseStats == null)
         {
             VehicleBehaviour vehBeh = standartVehicle.GetComponent<VehicleBehaviour>();
-            playerSave.playerVehiclesVar[0] = new VehicleSaveVar(vehBeh.currentVehicleStats,
+            runtimeSave.currentPlayerSaveData.playerVehiclesVar[0] = new VehicleSaveVar(vehBeh.currentVehicleStats,
                                                                 vehBeh.currentVehicleCab.GetComponent<VehiclePartBehaviour>().partStats,
                                                                 new List<TurretStats>(),
                                                                 vehBeh.currentVehicleBody.GetComponent<VehiclePartBehaviour>().partStats,
@@ -123,6 +101,6 @@ public class PlayerManager : MonoBehaviour
     }
     void CheckPlayerZeroVehicle(GameObject _vehicle, int _index)
     {
-        playerSave.ChangeVehicle(_vehicle, _index);
+        runtimeSave.ChangeVehicle(_vehicle, _index);
     }
 }

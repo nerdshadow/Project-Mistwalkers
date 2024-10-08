@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -30,7 +31,8 @@ public class MenuBeh : MonoBehaviour
     [Space(10)]
     [Header("Game")]
     public RectTransform newGameWindow;
-    
+    [SerializeField]
+    public PlayerSaveData defaultSave = new PlayerSaveData();
     public void ToggleStartNewGameWindow()
     {
         if (newGameWindow.gameObject.activeInHierarchy == true)
@@ -40,17 +42,28 @@ public class MenuBeh : MonoBehaviour
         else
         {
             newGameWindow.gameObject.SetActive(true);
-            randSeedInput.text = UnityEngine.Random.Range(451, 9999999).ToString();
+            rSeed = UnityEngine.Random.Range(451, 9999999);
+            randSeedInput.text = rSeed.ToString();
             //randSeedInput.onValueChanged.Invoke(randSeedInput.text);
+
+            playerNameInput.text = pName;
         }
     }
     public void StartNewGame()
     {
         Debug.Log("Started new game");
+        UnityEngine.Random.InitState(rSeed);
         //Create new savefile
-        //Generate seed
-        gameManager.GeneratePath();
-        gameManager.LoadLevel(baseSceneLevel);
+        defaultSave.playerName = pName;
+        defaultSave.playerRandSeed = rSeed;
+        defaultSave.pathPoints = PathGenerator.GeneratePath(rSeed);
+        PlayerSaveData startSave = defaultSave;
+        RuntimePlayerSaveData.Instance.currentPlayerSaveData = startSave;
+        SaveLoadSystem.SavePlayerData(startSave);
+
+        //gameManager.GeneratePath();
+        Debug.Log("Loading start level");
+        //gameManager.LoadLevel(baseSceneLevel);
     }
     public void LoadGame()
     {
@@ -67,6 +80,14 @@ public class MenuBeh : MonoBehaviour
     public void ChangeSeed(string _rSeed)
     {
         Int32.TryParse(_rSeed, out rSeed);
+    }
+    public TMP_InputField playerNameInput;
+    [SerializeField]
+    string pName = "Player";
+    int sizeOfName = 12;
+    public void ChangePName(string _pName)
+    {
+        pName = new string(_pName.Take(sizeOfName).ToArray());
     }
     #endregion GameStates
     #region Settings

@@ -1,20 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerSave_Runtime", menuName = "SO/PlayerSave_Runtime")]
+[CreateAssetMenu(fileName = "RuntimeSaveData", menuName = "SO/PlayerSave_Runtime")]
 public class RuntimePlayerSaveData : ScriptableObject
 {
-    public string playerName = "Player";
-    public int playerRandSeed = 451;
-    public short playerLastCityIndex = 0;
-    public int playerMoney = 100;
-    public short inventoryBaseSize = 20;
-    public int inventory—urrentSize = 20;
-    public List<ScriptableObject> playerInventory = new List<ScriptableObject>();
-    public List<PathPoint> pathPoints = new List<PathPoint>();
-    public VehicleSaveVar[] playerVehiclesVar = new VehicleSaveVar[5];
+    public static RuntimePlayerSaveData instance = null;
+    public static RuntimePlayerSaveData Instance
+    {
+        get
+        {
+            if(instance == null)
+                instance = Resources.Load<RuntimePlayerSaveData>(path: "RuntimeSaveData");
+            return instance;
+        }
+    }
+    public PlayerSaveData currentPlayerSaveData;
     public bool AddItemToInv(ScriptableObject _item)
     {
         //if (playerInventory.Count >= inventoryBaseSize)
@@ -30,7 +33,7 @@ public class RuntimePlayerSaveData : ScriptableObject
         }
         if (_item is IItemInfo)
         {
-            playerInventory.Add(_item);
+            currentPlayerSaveData.playerInventory.Add(_item);
             return true;
         }
         else
@@ -49,7 +52,7 @@ public class RuntimePlayerSaveData : ScriptableObject
         }
         if (_item is IItemInfo)
         {
-            playerInventory.Remove(_item);
+            currentPlayerSaveData.playerInventory.Remove(_item);
             return true;
         }
         else
@@ -61,7 +64,7 @@ public class RuntimePlayerSaveData : ScriptableObject
     [ContextMenu("ClearInv")]
     public void ClearInv()
     {
-        playerInventory = new List<ScriptableObject>();
+        currentPlayerSaveData.playerInventory = new List<ScriptableObject>();
     }
     public void ChangeVehicle(GameObject _potVehicle, int _indexInArr)
     {
@@ -87,30 +90,29 @@ public class RuntimePlayerSaveData : ScriptableObject
             bodyTurrets.Add(turrB.turretStats);
         }
 
-        playerVehiclesVar[_indexInArr] = new VehicleSaveVar(vehicleBaseStats, cabStats, cabTurrets, bodyStats, bodyTurrets);
+        currentPlayerSaveData.playerVehiclesVar[_indexInArr] = new VehicleSaveVar(vehicleBaseStats, cabStats, cabTurrets, bodyStats, bodyTurrets);
     }
     public void ChangePath(List<PathPoint> _pathPoints)
     {
-        pathPoints = new List<PathPoint>();
-        pathPoints.AddRange(_pathPoints);
+        currentPlayerSaveData.pathPoints = new List<PathPoint>();
+        currentPlayerSaveData.pathPoints.AddRange(_pathPoints);
     }
     public void ChangeData(PlayerSaveData saveData)
     {
-        playerName = saveData.playerName;
-        playerRandSeed = saveData.playerRandSeed;
-        playerLastCityIndex = saveData.playerLastCityIndex;
-        playerMoney = saveData.playerMoney;
-        inventoryBaseSize = saveData.inventoryBaseSize;
-        inventory—urrentSize = saveData.inventoryCurrentSize;
-        playerInventory = saveData.playerInventory;
-        pathPoints = saveData.pathPoints;
-        playerVehiclesVar = saveData.playerVehiclesVar;
+        currentPlayerSaveData.playerName = saveData.playerName;
+        currentPlayerSaveData.playerRandSeed = saveData.playerRandSeed;
+        currentPlayerSaveData.playerLastCityIndex = saveData.playerLastCityIndex;
+        currentPlayerSaveData.playerMoney = saveData.playerMoney;
+        currentPlayerSaveData.inventoryBaseSize = saveData.inventoryBaseSize;
+        currentPlayerSaveData.inventoryCurrentSize = saveData.inventoryCurrentSize;
+        currentPlayerSaveData.playerInventory = saveData.playerInventory;
+        currentPlayerSaveData.pathPoints = saveData.pathPoints;
+        currentPlayerSaveData.playerVehiclesVar = saveData.playerVehiclesVar;
     }
     [ContextMenu("Try to save")]
     public void SaveDataToMachine()
     {
-        PlayerSaveData saveData = new PlayerSaveData(playerName, playerRandSeed, playerLastCityIndex, playerMoney, 
-            inventoryBaseSize, inventory—urrentSize, playerInventory, pathPoints, playerVehiclesVar);
+        PlayerSaveData saveData = currentPlayerSaveData;
         SaveLoadSystem.SavePlayerData(saveData);
     }
     [ContextMenu("Try to load")]
