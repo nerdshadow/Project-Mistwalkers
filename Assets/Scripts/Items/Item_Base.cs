@@ -10,7 +10,9 @@ public class Item_Base : ScriptableObject, IItemInfo
     [SerializeField]
     int itemValue = 1; //cost
     [SerializeField]
-    ItemType itemType = ItemType.Misc; // change cost depending on city 
+    ItemType itemType = ItemType.Misc;
+    [SerializeField]
+    ItemFaction itemFaction = global::ItemFaction.None; // change cost depending on city 
     [SerializeField]
     int itemSize = 1; // how much playerInventory space
     [SerializeField]
@@ -29,12 +31,14 @@ public class Item_Base : ScriptableObject, IItemInfo
     public int ItemValue { get; set; }
     public int ItemSize { get; set; }
     public string ItemDescription { get; set; }
+    public ItemFaction ItemFaction { get; set; }
 
     public void RefreshValues()
     {
         ItemName = itemName;
         ItemValue = itemValue;
         ItemType = itemType;
+        ItemFaction = itemFaction;
         ItemSize = itemSize;
         ItemDescription = itemDescription;
     }

@@ -17,11 +17,14 @@ public class MenuBeh : MonoBehaviour
     [Header("Levels")]
     [SerializeField]
     SceneField baseSceneLevel;
+    private void Awake()
+    {
+        LoadSettings();
+    }
     private void Start()
     {
         gameManager = GameManager.instance;
-        audioManager = AudioManager.instance;
-        LoadSettings();
+        audioManager = AudioManager.instance;        
     }
     private void OnEnable()
     {

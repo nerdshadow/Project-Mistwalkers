@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,8 @@ public class VehiclePartStats : ScriptableObject, IItemInfo
     public VehicleBaseStats relatedBase;
     public List<TurretSlotBehaviour> weaponsSlots = new List<TurretSlotBehaviour>();
     public string ItemName { get; set; }
-    public ItemType ItemType { get; set; }
+    public ItemType ItemType { get; set; } = ItemType.VehiclePart;
+    public ItemFaction ItemFaction { get; set; } = ItemFaction.None;
     public int ItemValue { get; set; }
     public int ItemSize { get; set; }
     public string ItemDescription { get; set; }
@@ -34,6 +36,7 @@ public class VehiclePartStats : ScriptableObject, IItemInfo
         ItemName = partName;
         ItemValue = partValue;
         ItemType = ItemType.VehiclePart;
+        ItemFaction = ItemFaction.None;
         ItemSize = partSize;
         ItemDescription = partDescription;
     }

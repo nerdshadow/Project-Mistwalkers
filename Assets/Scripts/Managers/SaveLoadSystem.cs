@@ -69,7 +69,10 @@ public struct SettingsSaveData
         this.voicevolume = voicevolume;
     }
 }
-
+public struct CityData
+{
+    
+}
 public static class SaveLoadSystem
 {
     public static string saveFilePath = Application.persistentDataPath + "/playerSave.json";

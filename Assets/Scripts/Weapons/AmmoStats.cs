@@ -22,6 +22,7 @@ public class AmmoStats : ScriptableObject, IItemInfo
     #region Interface
     public string ItemName { get; set; }
     public ItemType ItemType { get; set; } = ItemType.Ammo;
+    public ItemFaction ItemFaction { get; set; } = ItemFaction.Military;
     public int ItemValue { get; set; } = 1;
     public int ItemSize { get; set; } = 0;
     public string ItemDescription { get; set; }

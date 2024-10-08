@@ -25,7 +25,8 @@ public class VehicleBaseStats : ScriptableObject, IItemInfo
     public GameObject vehicleBasePrefab;
 
     public string ItemName { get; set; }
-    public ItemType ItemType { get; set; }
+    public ItemType ItemType { get; set; } = ItemType.VehicleBase;
+    public ItemFaction ItemFaction { get; set; } = ItemFaction.None;
     public int ItemValue { get; set; }
     public int ItemSize { get; set; }
     public string ItemDescription { get; set; }
@@ -34,6 +35,7 @@ public class VehicleBaseStats : ScriptableObject, IItemInfo
         ItemName = vehicleBaseName;
         ItemValue = vehicleBaseValue;
         ItemType = ItemType.VehicleBase;
+        ItemFaction = ItemFaction.None;
         ItemSize = vehicleBaseSize;
         ItemDescription = vehicleBaseDesc;
     }

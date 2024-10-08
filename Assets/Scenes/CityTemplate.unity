@@ -5261,7 +5261,7 @@ MonoBehaviour:
   currentUIPanel: {fileID: 0}
   shopUIPanel: {fileID: 839661857}
   garageUIPanel: {fileID: 336144577}
-  mapUIPanel: {fileID: 1875826886}
+  mapUIPanel: {fileID: 1105946245}
   shopCameraPos: {fileID: 640614015}
   shopItemList: {fileID: 1575215566}
   shopStock:

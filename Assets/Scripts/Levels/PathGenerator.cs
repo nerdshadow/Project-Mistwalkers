@@ -80,4 +80,9 @@ public static class PathGenerator
         }
         return pathPoints;
     }
+
+    static void GenerateCity()
+    {
+    
+    }
 }
