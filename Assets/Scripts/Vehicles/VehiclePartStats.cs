@@ -24,6 +24,9 @@ public class VehiclePartStats : ScriptableObject, IItemInfo
     public GameObject partPrefab;
     [SerializeField]
     public VehicleBaseStats relatedBase;
+    [Header("CombatStats")]
+    [Space(5)]
+    public int partHealth = 50;
     public List<TurretSlotBehaviour> weaponsSlots = new List<TurretSlotBehaviour>();
     public string ItemName { get; set; }
     public ItemType ItemType { get; set; } = ItemType.VehiclePart;

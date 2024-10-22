@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: Brick Cab
   partType: 0
+  partValue: 100
+  partSize: 10
+  partDescription: Simple vehicle part
   partMass: 600
   partPrefab: {fileID: 5246553456072928407, guid: 22981121755077a41b5ba30318f510c2, type: 3}
   relatedBase: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
-  weaponsSlots: []
+  partHealth: 55
+  weaponsSlots:
+  - {fileID: 4269548487179543628, guid: 22981121755077a41b5ba30318f510c2, type: 3}
+  - {fileID: 4167660202013327543, guid: 22981121755077a41b5ba30318f510c2, type: 3}

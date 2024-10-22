@@ -61,8 +61,8 @@ public class UI_VehicleCompHolder : MonoBehaviour
     //}
     public bool ChangeComp(MonoBehaviour _potComp)
     {
-        //Debug.Log(_potComp is VehicleBehaviour);
-        //if (_potComp is not VehiclePartBehaviour || _potComp is not VehicleBehaviour)
+        //Debug.Log(_potComp is VehicleMovement);
+        //if (_potComp is not VehiclePartBehaviour || _potComp is not VehicleMovement)
         //{
         //    Debug.LogWarning("PotComp is not a Part");
         //    return false;
@@ -96,9 +96,9 @@ public class UI_VehicleCompHolder : MonoBehaviour
                         Destroy(turretSlots);
                     return true;
                 }
-                if (_potComp is VehicleBehaviour)
+                if (_potComp is VehicleMovement)
                 {
-                    VehicleBehaviour buffBase = (VehicleBehaviour)_potComp;
+                    VehicleMovement buffBase = (VehicleMovement)_potComp;
                     ChangeName(((IItemInfo)buffBase.currentVehicleStats).ItemName);
                     compHolder.ChangeHoldItemInfo(buffBase.currentVehicleStats);
                     if (turretSlots != null)

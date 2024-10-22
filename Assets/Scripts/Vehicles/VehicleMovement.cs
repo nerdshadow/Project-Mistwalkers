@@ -10,7 +10,7 @@ public enum FollowType
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(ShowCenterOfMass))]
-public class VehicleBehaviour : MonoBehaviour
+public class VehicleMovement : MonoBehaviour
 {
     #region Wheels
     [Header("Wheels")]
@@ -132,10 +132,12 @@ public class VehicleBehaviour : MonoBehaviour
             if (amountOfCabChild == 1)
             {
                 currentVehicleCab = cabHolder.transform.GetChild(0).gameObject;
+                cabBeh = currentVehicleCab.GetComponent<VehiclePartBehaviour>();
             }
             else if (amountOfCabChild > 1)
             {
                 currentVehicleCab = cabHolder.transform.GetChild(0).gameObject;
+                cabBeh = currentVehicleCab.GetComponent<VehiclePartBehaviour>();
                 Debug.Log("Too many parts for " + cabHolder.name + " in " + transform.root.name);
             }
         }
@@ -147,10 +149,12 @@ public class VehicleBehaviour : MonoBehaviour
             if (amountOfBodyChild == 1)
             {
                 currentVehicleBody = bodyHolder.transform.GetChild(0).gameObject;
+                bodyBeh = currentVehicleBody.GetComponent<VehiclePartBehaviour>();
             }
             else if (amountOfBodyChild > 1)
             {
                 currentVehicleBody = bodyHolder.transform.GetChild(0).gameObject;
+                bodyBeh = currentVehicleBody.GetComponent<VehiclePartBehaviour>();
                 Debug.Log("Too many parts for " + bodyHolder.name + " in " + transform.root.name);
             }
         }

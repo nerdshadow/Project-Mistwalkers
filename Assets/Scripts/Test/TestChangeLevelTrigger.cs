@@ -15,7 +15,7 @@ public class TestChangeLevelTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponentInParent<VehicleBehaviour>())
+        if (other.GetComponentInParent<VehicleMovement>())
         {
             //change level to next
             Debug.Log("LoadingLevel");

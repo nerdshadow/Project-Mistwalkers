@@ -12,7 +12,7 @@ public class ShowCenterOfMass : MonoBehaviour
         Vector3 pos = transform.position + GetComponent<Rigidbody>().centerOfMass;
         Gizmos.DrawWireSphere(pos, 0.3f);
 
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.red;
     }
 #endif
 }

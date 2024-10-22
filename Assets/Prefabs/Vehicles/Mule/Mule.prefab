@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 3460828006198806910}
   - component: {fileID: 2268038568840117555}
   - component: {fileID: 6499170523579952361}
+  - component: {fileID: 7155751949315075458}
   - component: {fileID: 6641565102744452899}
   - component: {fileID: 8846465601921203477}
   - component: {fileID: 5694705027647814387}
@@ -416,8 +417,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAllWheelDrive: 0
   currentVehicleStats: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
-  turnWheels: []
-  staticWheels: []
+  turnWheels:
+  - {fileID: 0}
+  - {fileID: 0}
+  staticWheels:
+  - {fileID: 0}
+  - {fileID: 0}
   canDrive: 0
   forceStop: 0
   useForce: 0
@@ -432,9 +437,9 @@ MonoBehaviour:
   moveTargets: []
   currentVehicleBase: {fileID: 4147948000499981016}
   cabHolder: {fileID: 7717899956627438259}
-  cabBeh: {fileID: 0}
+  cabBeh: {fileID: 2055431097274509697}
   currentVehicleCab: {fileID: 3612599241733292088}
-  bodyBeh: {fileID: 0}
+  bodyBeh: {fileID: 8661289493980963400}
   bodyHolder: {fileID: 7678377033677822845}
   currentVehicleBody: {fileID: 9002076924879482870}
   accelerationSpeed: 4
@@ -448,6 +453,23 @@ MonoBehaviour:
   velocityLimit: 0
   currentRpm: 0
   pushpower: 1000
+--- !u!114 &7155751949315075458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4147948000499981016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f829091638e36804f93374512e3568f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 1
+  testDamage: 100
+  testExplRad: 10
+  testExplForce: 80000
+  testExplUpForce: 3
 --- !u!54 &6641565102744452899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -840,6 +862,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+--- !u!114 &8661289493980963400 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8266862021848406972, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+  m_PrefabInstance: {fileID: 759665581459765748}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9002076924879482870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5011a3833b69d4b9eb900130b57123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9002076924879482870 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8531808458537784834, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
@@ -1163,6 +1196,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c113be0c53731cc44b322dad355a8833, type: 3}
+--- !u!114 &2055431097274509697 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7259302291381086888, guid: c113be0c53731cc44b322dad355a8833, type: 3}
+  m_PrefabInstance: {fileID: 8662783051243471657}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612599241733292088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5011a3833b69d4b9eb900130b57123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3612599241733292088 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5339831645677519633, guid: c113be0c53731cc44b322dad355a8833, type: 3}

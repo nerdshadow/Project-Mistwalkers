@@ -19,6 +19,8 @@ public class VehicleBaseStats : ScriptableObject, IItemInfo
     public float brakeTorque = 80f;
     public float maxTurnAngle = 15f;
     public float turnSpeed = 1f;
+    [Header("CombatStats")]
+    public int vehicleBaseHealth = 100;
     [Header("VFX")]
     public Color baseColor = Color.white;
     [Header("BasePrefab")]

@@ -222,7 +222,7 @@ public class UI_VehicleSpawner : MonoBehaviour
             Destroy(ui_cabSlotsHolder.transform.GetChild(i).gameObject);        
 
         //ui_cabSlots.AddRange(currentVehicleSpawner.vehicleCabPartSO.partPrefab.GetComponentsInChildren<TurretSlotBehaviour>());
-        ui_cabSlots.AddRange(currentVehicleSpawner.currentVehicle.GetComponent<VehicleBehaviour>().currentVehicleCab.GetComponentsInChildren<TurretSlotBehaviour>());
+        ui_cabSlots.AddRange(currentVehicleSpawner.currentVehicle.GetComponent<VehicleMovement>().currentVehicleCab.GetComponentsInChildren<TurretSlotBehaviour>());
 
         if (ui_cabSlots.Count > 0)
         {

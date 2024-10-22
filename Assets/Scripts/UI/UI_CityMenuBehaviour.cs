@@ -244,7 +244,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
         currentVehicle = Instantiate(runtimeSave.currentPlayerSaveData.playerVehiclesVar[_indexOfVehicle].vehicleBaseStats.vehicleBasePrefab, vehicleSpawnPoint.position, vehicleSpawnPoint.rotation);
         //currentVehicle.SetActive(false);
-        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement vehicleBehaviour = currentVehicle.GetComponent<VehicleMovement>();
 
         //Destroy(vehicleBehaviour.currentVehicleCab.gameObject);
         DestroyImmediate(vehicleBehaviour.currentVehicleCab, false); //A bit of danger to use
@@ -291,7 +291,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
 
         currentVehicle = Instantiate(_VehicleBase.vehicleBasePrefab, vehicleSpawnPoint.position, vehicleSpawnPoint.rotation);
         //currentVehicle.SetActive(false);
-        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();        
+        VehicleMovement vehicleBehaviour = currentVehicle.GetComponent<VehicleMovement>();        
 
         StartCoroutine(AssebleNextFrame());
     }
@@ -303,7 +303,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     IEnumerator AssebleNextFrame()
     {
         yield return new WaitForFixedUpdate();
-        //currentVehicle.GetComponent<VehicleBehaviour>().SerializeVehicle();
+        //currentVehicle.GetComponent<VehicleMovement>().SerializeVehicle();
         currentVehicle.SetActive(true);
         StartCoroutine(UpdateWheels());
         currentVehicle.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
@@ -375,7 +375,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             UIvehicleBodyHolder.ChangeComp(null);
             return ;
         }
-        VehicleBehaviour buffVehBeh = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement buffVehBeh = currentVehicle.GetComponent<VehicleMovement>();
         VehiclePartBehaviour buffCabBeh = buffVehBeh.cabHolder.GetComponentInChildren<VehiclePartBehaviour>();
         VehiclePartBehaviour buffBodyBeh = null;
         if (buffVehBeh.bodyHolder != null)
@@ -522,7 +522,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             Debug.LogWarning("part is null");
             return;
         }
-        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement vehicleBehaviour = currentVehicle.GetComponent<VehicleMovement>();
         if (vehiclePartStats.partType == PartType.Cab)
         {
             Destroy(vehicleBehaviour.currentVehicleCab);
@@ -543,7 +543,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     }
     public void SaveCurrentVehicle()
     {
-        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement vehicleBehaviour = currentVehicle.GetComponent<VehicleMovement>();
         VehicleBaseStats baseVehicleStats = vehicleBehaviour.currentVehicleStats;
         VehiclePartStats cabStats = vehicleBehaviour.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats;
         List<TurretSlotBehaviour> buffTurretSlots = new List<TurretSlotBehaviour>();

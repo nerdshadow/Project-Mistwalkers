@@ -51,8 +51,8 @@ public class WheelBehaviour : MonoBehaviour
         }
         List<Collider> poTColliders = new List<Collider>();
 
-        poTColliders.Add(GetComponentInParent<VehicleBehaviour>().GetComponent<Collider>());
-        poTColliders.AddRange(GetComponentInParent<VehicleBehaviour>().GetComponentsInChildren<Collider>());
+        poTColliders.Add(GetComponentInParent<VehicleMovement>().GetComponent<Collider>());
+        poTColliders.AddRange(GetComponentInParent<VehicleMovement>().GetComponentsInChildren<Collider>());
 
         foreach (Collider collider in poTColliders)
         {

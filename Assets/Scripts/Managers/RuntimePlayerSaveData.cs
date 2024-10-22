@@ -68,22 +68,22 @@ public class RuntimePlayerSaveData : ScriptableObject
     }
     public void ChangeVehicle(GameObject _potVehicle, int _indexInArr)
     {
-        VehicleBaseStats vehicleBaseStats = _potVehicle.GetComponent<VehicleBehaviour>().currentVehicleStats;
+        VehicleBaseStats vehicleBaseStats = _potVehicle.GetComponent<VehicleMovement>().currentVehicleStats;
 
-        VehiclePartStats cabStats = _potVehicle.GetComponent<VehicleBehaviour>().currentVehicleCab.GetComponent<VehiclePartBehaviour>().partStats;
+        VehiclePartStats cabStats = _potVehicle.GetComponent<VehicleMovement>().currentVehicleCab.GetComponent<VehiclePartBehaviour>().partStats;
 
         List<TurretBehaviour> buffTurr = new List<TurretBehaviour>();
-        buffTurr.AddRange(_potVehicle.GetComponent<VehicleBehaviour>().currentVehicleCab.GetComponentsInChildren<TurretBehaviour>());
+        buffTurr.AddRange(_potVehicle.GetComponent<VehicleMovement>().currentVehicleCab.GetComponentsInChildren<TurretBehaviour>());
         List<TurretStats> cabTurrets = new List<TurretStats>();
         foreach (TurretBehaviour turrB in buffTurr)
         {
             cabTurrets.Add(turrB.turretStats);
         }
 
-        VehiclePartStats bodyStats = _potVehicle.GetComponentInChildren<VehicleBehaviour>().currentVehicleBody.GetComponent<VehiclePartBehaviour>().partStats;
+        VehiclePartStats bodyStats = _potVehicle.GetComponentInChildren<VehicleMovement>().currentVehicleBody.GetComponent<VehiclePartBehaviour>().partStats;
 
         buffTurr = new List<TurretBehaviour>();
-        buffTurr.AddRange(_potVehicle.GetComponent<VehicleBehaviour>().currentVehicleBody.GetComponentsInChildren<TurretBehaviour>());
+        buffTurr.AddRange(_potVehicle.GetComponent<VehicleMovement>().currentVehicleBody.GetComponentsInChildren<TurretBehaviour>());
         List<TurretStats> bodyTurrets = new List<TurretStats>();
         foreach (TurretBehaviour turrB in buffTurr)
         {

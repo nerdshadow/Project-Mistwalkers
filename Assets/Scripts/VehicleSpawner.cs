@@ -53,7 +53,7 @@ public class VehicleSpawner : MonoBehaviour
             Destroy(currentVehicle);
         currentVehicle = Instantiate(vehicleBaseSO.vehicleBasePrefab, spawnPosition.position, Quaternion.identity);
         //currentVehicle.SetActive(false);
-        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement vehicleBehaviour = currentVehicle.GetComponent<VehicleMovement>();
 
         Destroy(vehicleBehaviour.currentVehicleCab);
         Instantiate(vehicleCabPartSO.partPrefab, vehicleBehaviour.cabHolder.transform);
@@ -84,7 +84,7 @@ public class VehicleSpawner : MonoBehaviour
         if (currentVehicle == null || canSpawn == false || Application.isPlaying == false)
             return;
 
-        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement vehicleBehaviour = currentVehicle.GetComponent<VehicleMovement>();
 
         Destroy(vehicleBehaviour.currentVehicleCab);
         Instantiate(vehicleCabPartSO.partPrefab, vehicleBehaviour.cabHolder.transform);
@@ -97,7 +97,7 @@ public class VehicleSpawner : MonoBehaviour
         if (currentVehicle == null || canSpawn == false)
             return;
 
-        VehicleBehaviour vehicleBehaviour = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement vehicleBehaviour = currentVehicle.GetComponent<VehicleMovement>();
 
         if (vehicleBodyPartSO != null)
         {
@@ -109,9 +109,10 @@ public class VehicleSpawner : MonoBehaviour
     IEnumerator AssebleNextFrame()
     {
         yield return new WaitForFixedUpdate();
-        //currentVehicle.GetComponent<VehicleBehaviour>().SerializeVehicle();
+        //currentVehicle.GetComponent<VehicleMovement>().SerializeVehicle();
         currentVehicle.SetActive(true);
         StartCoroutine(UpdateWheels());
+        currentVehicle.GetComponent<VehicleCombatBehaviour>().ResetHealth();
         currentVehicle.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
     }
     IEnumerator UpdateWheels()
@@ -127,7 +128,7 @@ public class VehicleSpawner : MonoBehaviour
     IEnumerator UpdateParts()
     {
         yield return new WaitForFixedUpdate();
-        VehicleBehaviour vehicleBeh = currentVehicle.GetComponent<VehicleBehaviour>();
+        VehicleMovement vehicleBeh = currentVehicle.GetComponent<VehicleMovement>();
 
         VehiclePartBehaviour[] potParts = vehicleBeh.GetComponentsInChildren<VehiclePartBehaviour>();
         foreach (VehiclePartBehaviour part in potParts)

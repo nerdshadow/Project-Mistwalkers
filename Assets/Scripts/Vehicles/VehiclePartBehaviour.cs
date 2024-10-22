@@ -7,14 +7,13 @@ using UnityEngine;
 public class VehiclePartBehaviour : MonoBehaviour
 {
     [Header("Stats")]
-    [Space(5)]
-    
+    [Space(5)]    
     public VehiclePartStats partStats = null;
     public PartType partType = PartType.Cab;
     [SerializeField]
     Rigidbody rigidBody;
     [SerializeField]
-    VehicleBehaviour currentBase = null;
+    VehicleMovement currentBase = null;
     [Header("Weapons")]
     [Space(5)]
     List<GameObject> weaponHolders = new List<GameObject>();
@@ -41,7 +40,7 @@ public class VehiclePartBehaviour : MonoBehaviour
         }
         if (currentBase == null) 
         {
-            currentBase = GetComponentInParent<VehicleBehaviour>();
+            currentBase = GetComponentInParent<VehicleMovement>();
         }
         if (currentBase != null)
         {

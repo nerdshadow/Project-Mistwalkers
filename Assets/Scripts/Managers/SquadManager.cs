@@ -5,34 +5,34 @@ using UnityEngine;
 
 public class SquadManager : MonoBehaviour
 {
-    public List<VehicleBehaviour> vehicleSquad = new List<VehicleBehaviour>();
-    public VehicleBehaviour leaderVehicle;
+    public List<VehicleMovement> vehicleSquad = new List<VehicleMovement>();
+    public VehicleMovement leaderVehicle;
 
-    public void ChangeSquad(List<VehicleBehaviour> newSquad)
+    public void ChangeSquad(List<VehicleMovement> newSquad)
     {
-        vehicleSquad = new List<VehicleBehaviour>();
+        vehicleSquad = new List<VehicleMovement>();
         vehicleSquad.AddRange(newSquad);
     }
 
-    public void ChangeSquadMember(int squadIndex, VehicleBehaviour newMember)
+    public void ChangeSquadMember(int squadIndex, VehicleMovement newMember)
     {
         vehicleSquad[squadIndex] = newMember;
     }
-    //public void ChangeSquadMember(VehicleBehaviour squadMember, VehicleBehaviour newMember)
+    //public void ChangeSquadMember(VehicleMovement squadMember, VehicleMovement newMember)
     //{
     //    if(vehicleSquad.Contains(squadMember))
-    //    int buffIndex = List<VehicleBehaviour>().FindIndex(vehicleSquad, x => x == squadMember);
+    //    int buffIndex = List<VehicleMovement>().FindIndex(vehicleSquad, x => x == squadMember);
     //}
     public void MoveSquad()
     {
-        foreach (VehicleBehaviour vehicle in vehicleSquad)
+        foreach (VehicleMovement vehicle in vehicleSquad)
         {
             vehicle.MoveVehicle();
         }
     }
     public void StopSquad()
     {
-        foreach (VehicleBehaviour vehicle in vehicleSquad)
+        foreach (VehicleMovement vehicle in vehicleSquad)
         {
             vehicle.StopVehicle();
         }

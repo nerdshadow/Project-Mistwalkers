@@ -164,14 +164,14 @@ public class TurretBehaviour : MonoBehaviour
         float targetAngle = ghostVertRotator.transform.localEulerAngles.x;
         //if (limitVertRotation == true)
         //{
-            Debug.Log("Start targetAngel = " + targetAngle);
+            //Debug.Log("Start targetAngel = " + targetAngle);
 
             float diff = 180 - targetAngle;
             if (diff < 0)
             {
                 if (targetAngle < 360 - turretStats.verticalMaxAngle_pos)
                 {
-                    Debug.Log("Smaller");
+                    //Debug.Log("Smaller");
                     targetAngle = 360 - turretStats.verticalMaxAngle_pos;
                 }
             }
@@ -179,11 +179,11 @@ public class TurretBehaviour : MonoBehaviour
             {
                 if (targetAngle > -turretStats.verticalMaxAngle_neg)
                 {
-                    Debug.Log("Smaller");
+                    //Debug.Log("Smaller");
                     targetAngle = -turretStats.verticalMaxAngle_neg;
                 }
             }
-            Debug.Log("After targetAngel = " + targetAngle);
+            //Debug.Log("After targetAngel = " + targetAngle);
         //}
         VertTurret.transform.localEulerAngles = new Vector3(targetAngle, 0.0f, 0.0f);
     }

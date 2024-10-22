@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: Caterpillar Body
   partType: 1
+  partValue: 100
+  partSize: 10
+  partDescription: Simple vehicle part
   partMass: 800
   partPrefab: {fileID: 2340046302237935110, guid: 3ac31082be43aac4cac972f49aa5db72, type: 3}
   relatedBase: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
-  weaponsSlots: []
+  partHealth: 50
+  weaponsSlots:
+  - {fileID: 4344251382794368277, guid: 3ac31082be43aac4cac972f49aa5db72, type: 3}

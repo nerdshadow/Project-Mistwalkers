@@ -91,7 +91,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (runtimeSave.currentPlayerSaveData.playerVehiclesVar[0].vehicleBaseStats == null)
         {
-            VehicleBehaviour vehBeh = standartVehicle.GetComponent<VehicleBehaviour>();
+            VehicleMovement vehBeh = standartVehicle.GetComponent<VehicleMovement>();
             runtimeSave.currentPlayerSaveData.playerVehiclesVar[0] = new VehicleSaveVar(vehBeh.currentVehicleStats,
                                                                 vehBeh.currentVehicleCab.GetComponent<VehiclePartBehaviour>().partStats,
                                                                 new List<TurretStats>(),

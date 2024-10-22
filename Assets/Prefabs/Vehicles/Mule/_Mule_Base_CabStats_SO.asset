@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: ST_Cab
   partType: 0
+  partValue: 100
+  partSize: 10
+  partDescription: Simple vehicle part
   partMass: 500
   partPrefab: {fileID: 5339831645677519633, guid: c113be0c53731cc44b322dad355a8833, type: 3}
   relatedBase: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
+  partHealth: 30
+  weaponsSlots:
+  - {fileID: 9116207492850872179, guid: c113be0c53731cc44b322dad355a8833, type: 3}
