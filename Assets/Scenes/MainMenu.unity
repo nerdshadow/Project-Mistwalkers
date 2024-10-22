@@ -1031,9 +1031,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 898033260}
-  baseSceneLevel:
-    m_SceneAsset: {fileID: 102900000, guid: 8f28ef76f710fcf47bd85b632c3d398a, type: 3}
-    m_SceneName: CityTemplate
+  gameManager: {fileID: 0}
+  audioManager: {fileID: 0}
+  tutorialSceneLevel:
+    m_SceneAsset: {fileID: 102900000, guid: 8ae5a33c41bd5154bb49a8c4a23ecca4, type: 3}
+    m_SceneName: TutorialLevel
   newGameWindow: {fileID: 1043377799}
   defaultSave:
     playerName: Player
@@ -5369,14 +5371,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerManager
       objectReference: {fileID: 0}
-    - target: {fileID: 4140937879789438813, guid: 2dda7c88514cb7a4fa1872932e625c6b, type: 3}
-      propertyPath: playerSave
-      value: 
-      objectReference: {fileID: 11400000, guid: 0b588d446cdfaac48b9404336d6e525c, type: 2}
-    - target: {fileID: 4140937879789438813, guid: 2dda7c88514cb7a4fa1872932e625c6b, type: 3}
-      propertyPath: runtimeSave
-      value: 
-      objectReference: {fileID: 11400000, guid: 0b588d446cdfaac48b9404336d6e525c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9415,10 +9409,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 8921564436752249924, guid: 742c2fe1adf1fcf4a86a557eaa925bc4, type: 3}
-      propertyPath: loadingScreen
-      value: 
-      objectReference: {fileID: 825115575913680680, guid: 6c3c315a004a89b4cb7444b99a642106, type: 3}
     - target: {fileID: 9021324658564476959, guid: 742c2fe1adf1fcf4a86a557eaa925bc4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

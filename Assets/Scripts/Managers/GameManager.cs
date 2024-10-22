@@ -6,14 +6,31 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System;
 
+public enum LevelType
+{
+    Road = 0,
+    City = 1,
+}
 public class GameManager : MonoBehaviour
 {
+    [Header("Manager")]
     public static GameManager instance;
     bool managerIsCreatedThisScene = false;
-    List<Level_SO> levels = new List<Level_SO>();
     public bool gameIsPaused = false;
+    [Space(10)]
+    [Header("Game state")]
+    public PathPoint currentPathPoint;
+    public LevelType levelType;
+    [Space(10)]
+    [Header("Loading")]
     [SerializeField]
     GameObject loadingScreen;
+    List<Level_SO> levels = new List<Level_SO>();
+    [SerializeField]
+    SceneField CityTemplate;
+    [SerializeField]
+    SceneField RoadTemplate;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -51,8 +68,8 @@ public class GameManager : MonoBehaviour
     {
 
         StopAllCoroutines();
-        //if (AudioManager.instance != null)
-        //    AudioManager.instance.StopAllCoroutines();
+        if (AudioManager.instance != null)
+            AudioManager.instance.StopAllCoroutines();
         //if (InputManager.instance != null)
         //    InputManager.instance.StopAllCoroutines();
         //if (ObjectPoolManager.instance != null)
@@ -83,8 +100,8 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(string sceneName)
     {
         StopAllCoroutines();
-        //if (AudioManager.instance != null)
-        //    AudioManager.instance.StopAllCoroutines();
+        if (AudioManager.instance != null)
+            AudioManager.instance.StopAllCoroutines();
         //if (InputManager.instance != null)
         //    InputManager.instance.StopAllCoroutines();
         //if (ObjectPoolManager.instance != null)
@@ -111,6 +128,18 @@ public class GameManager : MonoBehaviour
         {
             DoOnLoadingScene();
         }
+    }
+    public void LoadRoad()
+    {
+        //do stuff
+
+        LoadLevel(RoadTemplate);
+    }
+    public void LoadCity()
+    {
+        //do stuff
+
+        LoadLevel(CityTemplate);
     }
     void DoOnLoadingScene()
     {

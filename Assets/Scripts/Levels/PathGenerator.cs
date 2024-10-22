@@ -22,14 +22,18 @@ public struct PathPoint
 {
     public PathPointType pathType;
     public MapType mapType;
+    public CityData pathCity;
     public int rowIndex;
     public int difficulty;
-    public PathPoint(PathPointType _pathPointType, MapType _mapType, int _rowIndex, int _difficulty)
+    public UnityEngine.Random.State rStateOnCreating;
+    public PathPoint(PathPointType _pathPointType, MapType _mapType, CityData _cityData, int _rowIndex, int _difficulty, UnityEngine.Random.State _rState)
     {
         pathType = _pathPointType;
         mapType = _mapType;
+        pathCity = _cityData;
         rowIndex = _rowIndex;
         difficulty = _difficulty;
+        rStateOnCreating = _rState;
     }
 }
 public static class PathGenerator
@@ -43,17 +47,17 @@ public static class PathGenerator
             //Start point
             if (i == 0)
             {
-                pathPoints.Add(new PathPoint(PathPointType.Start, MapType.City, i, 1));
+                pathPoints.Add(new PathPoint(PathPointType.Start, MapType.City, GenerateCity(), i, 1, UnityEngine.Random.state));
                 continue;
             }
             //End point
             if (i == pathLength - 1)
             {
-                pathPoints.Add(new PathPoint(PathPointType.End, MapType.Void, i, 10));
+                pathPoints.Add(new PathPoint(PathPointType.End, MapType.Void, GenerateCity(), i, 10, UnityEngine.Random.state));
                 continue;
             }
             //Mid point
-            pathPoints.Add(new PathPoint(PathPointType.MidPath, MapType.Sand, i, i + 1));
+            pathPoints.Add(new PathPoint(PathPointType.MidPath, MapType.Sand, GenerateCity(), i, i + 1, UnityEngine.Random.state));
         }
         return pathPoints;
     }
@@ -65,24 +69,27 @@ public static class PathGenerator
             //Start point
             if (i == 0)
             {
-                pathPoints.Add(new PathPoint(PathPointType.Start, MapType.City, i, 1));
+                pathPoints.Add(new PathPoint(PathPointType.Start, MapType.City, GenerateCity(), i, 1, UnityEngine.Random.state));
                 continue;
             }
             //End point
             if (i == pathLength - 1)
             {
-                pathPoints.Add(new PathPoint(PathPointType.End, MapType.Void, i, 10));
+                pathPoints.Add(new PathPoint(PathPointType.End, MapType.Void, GenerateCity(), i, 10, UnityEngine.Random.state));
                 continue;
             }
             //Mid point
 
-            pathPoints.Add(new PathPoint(PathPointType.MidPath, MapType.Sand, i, i + 1));
+            pathPoints.Add(new PathPoint(PathPointType.MidPath, MapType.Sand, GenerateCity(), i, i + 1, UnityEngine.Random.state));
         }
         return pathPoints;
     }
 
-    static void GenerateCity()
+    static CityData GenerateCity()
     {
-    
+        string cName = "city" + UnityEngine.Random.Range(1, 64);
+        RelatedFaction cFact = (RelatedFaction)UnityEngine.Random.Range(0, Enum.GetValues(typeof(RelatedFaction)).Length);
+        List<ScriptableObject> cStock = new List<ScriptableObject>();
+        return new CityData(cName, cFact, cStock);
     }
 }

@@ -8,10 +8,11 @@ public class FollowObject : MonoBehaviour
     GameObject target;
     [SerializeField]
     float speed = 2f;
-    private void LateUpdate()
+    private void Update()
     {
         if (target == null)
             return;
-        transform.position = Vector3.Lerp(transform.position, target.transform.position, Time.deltaTime * speed);
+        if(Vector3.Distance(this.transform.position, target.transform.position) > 0.1f)
+            transform.position = Vector3.Lerp(transform.position, target.transform.position, Time.deltaTime * speed);
     }
 }

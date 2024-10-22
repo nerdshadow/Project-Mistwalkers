@@ -13,7 +13,7 @@ public enum ItemType
     Artifact = 5,
 }
 [Serializable]
-public enum ItemFaction
+public enum RelatedFaction
 {
     None = 0,
     Nomads = 1,
@@ -25,7 +25,7 @@ public interface IItemInfo
 {
     string ItemName { get; set; }
     ItemType ItemType { get; set; }
-    ItemFaction ItemFaction { get; set; }
+    RelatedFaction ItemFaction { get; set; }
     int ItemValue { get; set; }
     int ItemSize { get; set; }
     string ItemDescription { get; set; }

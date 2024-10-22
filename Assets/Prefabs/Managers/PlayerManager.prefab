@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e445ed9037cac1488b489468ef1829f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSave: {fileID: 0}
-  playerCurrentMoney: 0
-  playerCurrentInventory: []
+  runtimeSave: {fileID: 11400000, guid: 0b588d446cdfaac48b9404336d6e525c, type: 2}
+  testItem: {fileID: 11400000, guid: 301144887ca5f6d45a5b58e3c29b3250, type: 2}
+  standartVehicle: {fileID: 4147948000499981016, guid: ba03702b47c3b794b901987661779b24, type: 3}

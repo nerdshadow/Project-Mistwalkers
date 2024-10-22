@@ -27,7 +27,7 @@ public class VehiclePartStats : ScriptableObject, IItemInfo
     public List<TurretSlotBehaviour> weaponsSlots = new List<TurretSlotBehaviour>();
     public string ItemName { get; set; }
     public ItemType ItemType { get; set; } = ItemType.VehiclePart;
-    public ItemFaction ItemFaction { get; set; } = ItemFaction.None;
+    public RelatedFaction ItemFaction { get; set; } = RelatedFaction.None;
     public int ItemValue { get; set; }
     public int ItemSize { get; set; }
     public string ItemDescription { get; set; }
@@ -36,7 +36,7 @@ public class VehiclePartStats : ScriptableObject, IItemInfo
         ItemName = partName;
         ItemValue = partValue;
         ItemType = ItemType.VehiclePart;
-        ItemFaction = ItemFaction.None;
+        ItemFaction = RelatedFaction.None;
         ItemSize = partSize;
         ItemDescription = partDescription;
     }

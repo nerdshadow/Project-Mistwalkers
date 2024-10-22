@@ -9,6 +9,27 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 49b2326df80a6684aa4af68df783ccd3
   - enabled: 1
+    path: Assets/Scenes/TutorialLevel.unity
+    guid: 8ae5a33c41bd5154bb49a8c4a23ecca4
+  - enabled: 1
+    path: Assets/Scenes/CityTemplate.unity
+    guid: 8f28ef76f710fcf47bd85b632c3d398a
+  - enabled: 1
+    path: Assets/Scenes/RoadTemplate.unity
+    guid: 93cab854d6d30b44bbf0d01ced107e3e
+  - enabled: 1
     path: Assets/Scenes/VehicleSpawnerTest.unity
     guid: 5a210e931a8ac6041a6f5b15bb715989
+  - enabled: 1
+    path: Assets/Scenes/ManagersTest.unity
+    guid: 7c37cd9542497b248b34dae9ea202e96
+  - enabled: 1
+    path: Assets/Scenes/TurretTestScene.unity
+    guid: cab7e68d25da77b4097121a735670b95
+  - enabled: 1
+    path: Assets/Scenes/VehicleTestScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/WheelColliderZeroTorque.unity
+    guid: 8ceaaef16d8e9724cbbcb7ad48ff33b4
   m_configObjects: {}

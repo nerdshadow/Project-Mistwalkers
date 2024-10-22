@@ -71,7 +71,23 @@ public struct SettingsSaveData
 }
 public struct CityData
 {
-    
+    public string cityName;
+    public RelatedFaction cityFaction;
+    public List<ScriptableObject> cityStock;
+
+    public CityData(string _name, RelatedFaction _faction, List<ScriptableObject> _stock)
+    {
+        cityName = _name;
+        cityFaction = _faction;
+        cityStock = new List<ScriptableObject>();
+        foreach (var item in _stock)
+        {
+            if (item is IItemInfo)
+            {
+                cityStock.Add(item);
+            }
+        }
+    }
 }
 public static class SaveLoadSystem
 {

@@ -11,23 +11,25 @@ public class MenuBeh : MonoBehaviour
 {
     public RectTransform settingsPanel;
     [Header("Managers")]
-    GameManager gameManager;
-    AudioManager audioManager;
+    public GameManager gameManager;
+    public  AudioManager audioManager;
     [Space(10)]
     [Header("Levels")]
     [SerializeField]
-    SceneField baseSceneLevel;
+    SceneField tutorialSceneLevel;
     private void Awake()
     {
-        LoadSettings();
+
     }
     private void Start()
     {
-        gameManager = GameManager.instance;
-        audioManager = AudioManager.instance;        
+      
     }
     private void OnEnable()
     {
+        gameManager = GameManager.instance;
+        audioManager = AudioManager.instance;
+        LoadSettings();
     }
 
     #region GameStates
@@ -64,9 +66,11 @@ public class MenuBeh : MonoBehaviour
         RuntimePlayerSaveData.Instance.currentPlayerSaveData = startSave;
         SaveLoadSystem.SavePlayerData(startSave);
 
-        //gameManager.GeneratePath();
+        gameManager.GeneratePath();
+        gameManager.currentPathPoint = RuntimePlayerSaveData.Instance.currentPlayerSaveData.pathPoints[0];
+        gameManager.levelType = LevelType.Road;
         Debug.Log("Loading start level");
-        //gameManager.LoadLevel(baseSceneLevel);
+        gameManager.LoadLevel(tutorialSceneLevel);
     }
     public void LoadGame()
     {

@@ -25,7 +25,7 @@ public class UI_VehicleCompHolder : MonoBehaviour
     //    }
     //    switch (compType)
     //    {
-    //        case ItemFaction.VehicleBase:
+    //        case RelatedFaction.VehicleBase:
     //            if (_potPart is VehicleBaseStats)
     //            {
     //                ChangeName(((IItemInfo)_potPart).ItemName);
@@ -34,7 +34,7 @@ public class UI_VehicleCompHolder : MonoBehaviour
     //                    Destroy(turretSlots);
     //            }
     //            break;
-    //        case ItemFaction.VehiclePart:
+    //        case RelatedFaction.VehiclePart:
     //            if (_potPart is VehiclePartStats)
     //            {
     //                ChangeName(((IItemInfo)_potPart).ItemName);

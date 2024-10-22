@@ -44,3 +44,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69a10f9646402f64487e2f1760498935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameIsPaused: 0
+  currentPathPoint:
+    pathType: 0
+    mapType: 0
+    rowIndex: 0
+    difficulty: 0
+    rStateOnCreating:
+      s0: 0
+      s1: 0
+      s2: 0
+      s3: 0
+  levelType: 0
+  loadingScreen: {fileID: 825115575913680680, guid: 6c3c315a004a89b4cb7444b99a642106, type: 3}
+  CityTemplate:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
+  RoadTemplate:
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 

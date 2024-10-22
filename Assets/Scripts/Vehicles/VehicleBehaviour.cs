@@ -176,6 +176,16 @@ public class VehicleBehaviour : MonoBehaviour
     //    }
     //}
     #endregion VehicleSer
+    public void StopVehicle()
+    {
+        canDrive = true;
+        forceStop = true;
+    }
+    public void MoveVehicle()
+    {
+        canDrive = true;
+        forceStop = false;
+    }
     void FollowTarget()
     {
         if (currentMoveTarget == null || forceStop == true)
@@ -190,12 +200,12 @@ public class VehicleBehaviour : MonoBehaviour
         }
         ManageWheels();
     }
-    public void TryToStop()
+    void TryToStop()
     {
         Move(Movement.stop);
         Turn(0f, 0f);
     }
-    public void TryToMove()
+    void TryToMove()
     {
         //move vehicle
         if (zDistance > stopDistance)

@@ -26,8 +26,9 @@ public class CameraFollow : MonoBehaviour
     {
         if(followBody == null)
             return;
-
-        Vector3 pos = Vector3.Lerp(transform.position, followBody.position + offset + (-transform.forward * followDistance), followSpeed * Time.deltaTime);
+        Vector3 buffPos = followBody.position;
+        buffPos.y = 0;
+        Vector3 pos = Vector3.Slerp(transform.position, buffPos + offset + (-transform.forward * followDistance), followSpeed * Time.deltaTime);
         transform.position = pos;
 
         transform.rotation = rotation;
@@ -35,7 +36,9 @@ public class CameraFollow : MonoBehaviour
     [ContextMenu("RefreshCamera")]
     void RefreshCameraEdit()
     {
-        Vector3 pos = followBody.position + offset + (-transform.forward * followDistance);
+        Vector3 buffPos = followBody.position;
+        buffPos.y = 0;
+        Vector3 pos = buffPos + offset + (-transform.forward * followDistance);
         transform.position = pos;
 
         transform.rotation = rotation;

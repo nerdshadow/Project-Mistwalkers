@@ -50,7 +50,7 @@ public class TurretStats : ScriptableObject, IItemInfo
     #region Interface
     public string ItemName { get; set; }
     public ItemType ItemType { get; set; } = ItemType.Turret;
-    public ItemFaction ItemFaction { get; set; } = ItemFaction.Military;
+    public RelatedFaction ItemFaction { get; set; } = RelatedFaction.Military;
     public int ItemValue { get; set; } = 1;
     public int ItemSize { get; set; } = 3;
     public string ItemDescription { get; set; }

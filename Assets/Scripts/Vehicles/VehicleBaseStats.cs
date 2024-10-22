@@ -26,7 +26,7 @@ public class VehicleBaseStats : ScriptableObject, IItemInfo
 
     public string ItemName { get; set; }
     public ItemType ItemType { get; set; } = ItemType.VehicleBase;
-    public ItemFaction ItemFaction { get; set; } = ItemFaction.None;
+    public RelatedFaction ItemFaction { get; set; } = RelatedFaction.None;
     public int ItemValue { get; set; }
     public int ItemSize { get; set; }
     public string ItemDescription { get; set; }
@@ -35,7 +35,7 @@ public class VehicleBaseStats : ScriptableObject, IItemInfo
         ItemName = vehicleBaseName;
         ItemValue = vehicleBaseValue;
         ItemType = ItemType.VehicleBase;
-        ItemFaction = ItemFaction.None;
+        ItemFaction = RelatedFaction.None;
         ItemSize = vehicleBaseSize;
         ItemDescription = vehicleBaseDesc;
     }
