@@ -41,15 +41,19 @@ public class VehicleCombatBehaviour : MonoBehaviour, IIDamageable
                     //    Destroy(potParent);
                     //}
                     Destroy(rb.GetComponent<VehiclePartBehaviour>());
-                    rb.mass *= 0.5f;
+                    //rb.mass *= 0.5f;
                 }
                 Destroy(rb.GetComponent<FixedJoint>());
                 rb.transform.SetParent(null, true);
+                if(rb.GetComponent<Collider>() != null)
+                    rb.GetComponent<Collider>().isTrigger = false;
             }
             //if (rb != null && rb is WheelCollider)
             //{
             //    Destroy(rb.transform.parent.gameObject);
             //}
+            rb.drag = 0.8f;
+            rb.angularDrag = 0.1f;
         }
         //gameObject.transform.DetachChildren();
         //Add explosion for effect

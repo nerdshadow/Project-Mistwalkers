@@ -764,9 +764,177 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 41526566189673879, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 41526566189673879, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 41526566189673879, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 143181583007431723, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 836383642806728843, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 952030707933675333, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1177427635441954492, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377190053522296530, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377190053522296530, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377190053522296530, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1404127923339302610, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471172096824657557, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601683860752037976, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801196629718419443, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1935476558095012246, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1935476558095012246, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1935476558095012246, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2328517019514203130, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_CenterOfMass.z
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 2335089301661992632, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2676161998547490296, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2719617393031107344, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2719617393031107344, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2719617393031107344, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064556241121535519, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3159181365953044396, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3159181365953044396, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3159181365953044396, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237100527140258487, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237100527140258487, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237100527140258487, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562346353191966327, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4088493030939041377, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4147948000499981016, guid: ba03702b47c3b794b901987661779b24, type: 3}
       propertyPath: m_Name
       value: Mule
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193492127453164176, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721563396154154999, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738942316863399604, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738942316863399604, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738942316863399604, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635066747150861983, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6186386859615046215, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6186386859615046215, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6186386859615046215, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6415602783395474530, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6499170523579952361, guid: ba03702b47c3b794b901987661779b24, type: 3}
       propertyPath: cabBeh
@@ -792,13 +960,69 @@ PrefabInstance:
       propertyPath: staticWheels.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6510823520796705818, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6644655451518073437, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7155751949315075458, guid: ba03702b47c3b794b901987661779b24, type: 3}
       propertyPath: testExplForce
-      value: 500
+      value: 900
       objectReference: {fileID: 0}
     - target: {fileID: 7155751949315075458, guid: ba03702b47c3b794b901987661779b24, type: 3}
       propertyPath: testExplUpForce
-      value: 10
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186613834062300122, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385525542273436363, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385525542273436363, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385525542273436363, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7658616153449444006, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7722691122462373625, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7722691122462373625, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7722691122462373625, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584206600184201779, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584206600184201779, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584206600184201779, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8621662368714513157, guid: ba03702b47c3b794b901987661779b24, type: 3}
+      propertyPath: m_EnableCollision
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9066898988953286899, guid: ba03702b47c3b794b901987661779b24, type: 3}
       propertyPath: m_LocalPosition.x
