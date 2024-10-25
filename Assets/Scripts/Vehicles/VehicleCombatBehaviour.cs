@@ -10,15 +10,25 @@ public class VehicleCombatBehaviour : MonoBehaviour, IIDamageable
     VehicleMovement vehicleMovement;
     VehicleBaseStats vehicleBaseStats;
     [SerializeField]
+    int maxHealth = 1;
+    [SerializeField]
     int currentHealth = 1;
+    public bool isDead = false;
     private void Start()
     {
         vehicleMovement = GetComponent<VehicleMovement>();
         vehicleBaseStats = vehicleMovement.currentVehicleStats;
+        InitHealth();
         ResetHealth();
+    }
+    private void OnEnable()
+    {
+
     }
     public void DoDamage(int _damage)
     {
+        if (isDead == true)
+            return;
         currentHealth -= _damage;
         if (currentHealth <= 0)
             Die();
@@ -26,7 +36,39 @@ public class VehicleCombatBehaviour : MonoBehaviour, IIDamageable
     void Die()
     {
         Debug.Log(this.gameObject.name + " died");
+        isDead = true;
         vehicleMovement.StopVehicle();
+        //Check left over hp| if a lot of minus hp then blown up vehicle else slown down vehicle with fire in engine
+        float leftoverhpMod = (Mathf.Abs((float)currentHealth) / (float)maxHealth);
+        Debug.Log(leftoverhpMod);
+        if (leftoverhpMod >= 0.4f)
+        {
+            //blow immid
+            Debug.Log("blow");
+            BlowVehicle(leftoverhpMod);        
+        }
+        else
+        {
+            //slowly destroy vehicle
+            Debug.Log("decay");
+            KillVehicle();
+        }
+    }
+    private void KillVehicle()
+    {
+        //wait some time
+        StartCoroutine(DecayVehicle());
+        
+    }
+    public float timeToDecay = 3f;
+    IEnumerator DecayVehicle()
+    {
+        yield return new WaitForSeconds(timeToDecay);
+        BlowVehicle(0.4f);
+    }
+    void BlowVehicle(float hp)
+    {
+        float leftoverhpMod = hp;
         Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {
@@ -45,7 +87,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IIDamageable
                 }
                 Destroy(rb.GetComponent<FixedJoint>());
                 rb.transform.SetParent(null, true);
-                if(rb.GetComponent<Collider>() != null)
+                if (rb.GetComponent<Collider>() != null)
                     rb.GetComponent<Collider>().isTrigger = false;
             }
             //if (rb != null && rb is WheelCollider)
@@ -70,16 +112,20 @@ public class VehicleCombatBehaviour : MonoBehaviour, IIDamageable
 
             if (rb != null)
             {
-                Debug.Log(rb.name);
-                rb.AddExplosionForce(testExplForce * rb.mass, pointOfEffect, testExplRad, testExplUpForce * rb.mass);
+                //Debug.Log(rb.name);
+                rb.AddExplosionForce(testExplForce * rb.mass * leftoverhpMod, pointOfEffect, testExplRad, testExplUpForce * rb.mass);
             }
         }
     }
+    void InitHealth()
+    {
+        maxHealth = vehicleBaseStats.vehicleBaseHealth
+            + vehicleMovement.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth
+            + vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
+    }
     public void ResetHealth()
     {
-        currentHealth = vehicleBaseStats.vehicleBaseHealth
-        + vehicleMovement.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth
-        + vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
+        currentHealth = maxHealth;
     }
     [Space(10)]
     [Header("Dev")]

@@ -68,12 +68,18 @@ public class VehicleMovement : MonoBehaviour
     private void OnEnable()
     {
         SerializeVehicle();
+        //Move(Movement.stop);
+        //ManageWheels();
     }
     private void FixedUpdate()
     {
         //TryMove();
         if (canDrive == false)
+        {
+            //TryToStop();
+            //ManageWheels();
             return;
+        }
         FollowTarget();
 
     }
@@ -194,7 +200,7 @@ public class VehicleMovement : MonoBehaviour
     {
         if (currentMoveTarget == null || forceStop == true)
         {
-            TryToStop();
+            TryToStop(true);
         }
         else
         {
@@ -204,10 +210,11 @@ public class VehicleMovement : MonoBehaviour
         }
         ManageWheels();
     }
-    void TryToStop()
+    void TryToStop(bool resetWheels)
     {
         Move(Movement.stop);
-        Turn(0f, 0f);
+        if(resetWheels == true)
+            Turn(0f, 0f);
     }
     void TryToMove()
     {
@@ -310,12 +317,13 @@ public class VehicleMovement : MonoBehaviour
                 }
                 else wheel.motorTorque = 0;
 
-                wheel.brakeTorque = currentBrakeTorque;
+                //wheel.brakeTorque = currentBrakeTorque;
             }
         }
         foreach (var wheel in turnWheels)
         {
             wheel.steerAngle = currentTurnAngle;
+            wheel.brakeTorque = currentBrakeTorque;
         }
     }
     public enum Movement
@@ -379,9 +387,16 @@ public class VehicleMovement : MonoBehaviour
         //        currentTorque = 0;
         //}
         //else { currentTorque = 0; }
-        currentTorque = 0;
-
-        currentBrakeTorque = currentVehicleStats.brakeTorque;
+        if (Mathf.Abs(currentVelocity) <= 0.3f)
+        {
+            currentTorque = 0f;
+            currentBrakeTorque = Mathf.Infinity;
+        }
+        else
+        {
+            currentTorque = 0f;
+            currentBrakeTorque = currentVehicleStats.brakeTorque;            
+        }
     }
     void ReleaseTorque()
     {

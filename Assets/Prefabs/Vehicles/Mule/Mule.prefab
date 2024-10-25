@@ -423,8 +423,8 @@ MonoBehaviour:
   staticWheels:
   - {fileID: 0}
   - {fileID: 0}
-  canDrive: 0
-  forceStop: 0
+  canDrive: 1
+  forceStop: 1
   useForce: 0
   followPointList: 0
   stopDistance: 5
@@ -465,11 +465,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f829091638e36804f93374512e3568f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 1
   currentHealth: 1
+  isDead: 0
+  timeToDecay: 3
   testDamage: 100
   testExplRad: 10
-  testExplForce: 80000
-  testExplUpForce: 3
+  testExplForce: 900
+  testExplUpForce: 100
 --- !u!54 &6641565102744452899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -805,6 +808,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2309515760195581908}
     m_Modifications:
+    - target: {fileID: 810252504236090058, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.509
+      objectReference: {fileID: 0}
+    - target: {fileID: 3087870886991598094, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_CenterOfMass.z
+      value: 0.45
+      objectReference: {fileID: 0}
     - target: {fileID: 8266862021848406972, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
       propertyPath: currentBase
       value: 

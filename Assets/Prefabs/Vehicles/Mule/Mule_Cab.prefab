@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 8848940246445332849}
   - component: {fileID: 1912824447105435927}
   - component: {fileID: 6640001694697002912}
+  - component: {fileID: 8223086108548698928}
   m_Layer: 0
   m_Name: MuleMirror_L
   m_TagString: Untagged
@@ -287,6 +288,23 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &8223086108548698928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966031433263406370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 5
+  partCurrentHealth: 10
+  isDetachable: 1
+  isDestroyed: 0
+  debugDmg: 10
 --- !u!1 &1671045166736711842
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +719,7 @@ GameObject:
   - component: {fileID: 8858625424806654095}
   - component: {fileID: 2290502212605579468}
   - component: {fileID: 7112149351055173271}
+  - component: {fileID: 490319946157907817}
   m_Layer: 0
   m_Name: MuleMirror_R
   m_TagString: Untagged
@@ -816,6 +835,23 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &490319946157907817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3135985308188984848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 5
+  partCurrentHealth: 10
+  isDetachable: 1
+  isDestroyed: 0
+  debugDmg: 10
 --- !u!1 &3346648094307796825
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,37 +905,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.49, y: 0.73, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &3413466333065390449
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2186792244606488349}
-  m_Layer: 0
-  m_Name: CabPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2186792244606488349
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3413466333065390449}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5502475674593459732}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3467224958322510336
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,6 +918,7 @@ GameObject:
   - component: {fileID: 5886130368014959873}
   - component: {fileID: 4730845292690040612}
   - component: {fileID: 8119243011986993877}
+  - component: {fileID: 4022524143961850334}
   m_Layer: 0
   m_Name: MuleBumper
   m_TagString: Untagged
@@ -1028,6 +1034,23 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &4022524143961850334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467224958322510336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 15
+  partCurrentHealth: 10
+  isDetachable: 1
+  isDestroyed: 0
+  debugDmg: 10
 --- !u!1 &5121533166417868027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,6 +1065,7 @@ GameObject:
   - component: {fileID: 2708513995936996593}
   - component: {fileID: 6286549096909854991}
   - component: {fileID: 5231394016376116592}
+  - component: {fileID: 2770448329625478327}
   m_Layer: 0
   m_Name: MuleFrontLight
   m_TagString: Untagged
@@ -1177,6 +1201,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18465462, y: 0.17397225, z: 0.13674775}
   m_Center: {x: 0, y: 0.008641481, z: 0.003320992}
+--- !u!114 &2770448329625478327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121533166417868027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 3
+  partCurrentHealth: 10
+  isDetachable: 1
+  isDestroyed: 0
+  debugDmg: 10
 --- !u!1 &5339831645677519633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1230,7 @@ GameObject:
   - component: {fileID: 2052969580971062113}
   - component: {fileID: 6431283645420960004}
   - component: {fileID: 7259302291381086888}
+  - component: {fileID: 7656144325292886451}
   - component: {fileID: 7819958614258038120}
   - component: {fileID: 4677545555222215578}
   - component: {fileID: 6417734240650462439}
@@ -1212,7 +1254,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2186792244606488349}
   - {fileID: 8452685534187077794}
   - {fileID: 2404161168146575105}
   - {fileID: 2007325383996674629}
@@ -1290,6 +1331,23 @@ MonoBehaviour:
   partType: 0
   rigidBody: {fileID: 7819958614258038120}
   currentBase: {fileID: 0}
+--- !u!114 &7656144325292886451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339831645677519633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 10
+  partCurrentHealth: 10
+  isDetachable: 0
+  isDestroyed: 0
+  debugDmg: 10
 --- !u!54 &7819958614258038120
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1411,6 +1469,7 @@ GameObject:
   - component: {fileID: 8801071440285168094}
   - component: {fileID: 2440224257470414822}
   - component: {fileID: 4942316765677185825}
+  - component: {fileID: 1762055152220804946}
   m_Layer: 0
   m_Name: MulePipe
   m_TagString: Untagged
@@ -1548,6 +1607,23 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &1762055152220804946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6186890417206230321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 15
+  partCurrentHealth: 10
+  isDetachable: 1
+  isDestroyed: 0
+  debugDmg: 10
 --- !u!1 &6537629229084891545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,8 +1692,9 @@ GameObject:
   - component: {fileID: 1320311659985644773}
   - component: {fileID: 792138878226404786}
   - component: {fileID: 4820704100589870057}
+  - component: {fileID: 3743099154064553567}
   m_Layer: 0
-  m_Name: MuleStairs_L.001
+  m_Name: MuleStairs_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1645,7 +1722,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6976589937354845359}
-  m_Mesh: {fileID: -750559684895087269, guid: b877d0ab27968e54d869403f4c774131, type: 3}
+  m_Mesh: {fileID: 2723492015459086452, guid: b877d0ab27968e54d869403f4c774131, type: 3}
 --- !u!23 &8450224698139902799
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1772,6 +1849,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18, y: 0.06, z: 0.67}
   m_Center: {x: 0.04, y: -0.07, z: 0}
+--- !u!114 &3743099154064553567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6976589937354845359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 5
+  partCurrentHealth: 10
+  isDetachable: 1
+  isDestroyed: 0
+  debugDmg: 10
 --- !u!1 &7066870467611523708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1926,6 +2020,7 @@ GameObject:
   - component: {fileID: 897359521983149278}
   - component: {fileID: 8506688050371612328}
   - component: {fileID: 7908358127036839924}
+  - component: {fileID: 8243224497615204074}
   m_Layer: 0
   m_Name: MuleStairs_L
   m_TagString: Untagged
@@ -2082,3 +2177,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18, y: 0.06, z: 0.67}
   m_Center: {x: -0.04, y: -0.07, z: 0}
+--- !u!114 &8243224497615204074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032007824962699711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partMaxHealth: 5
+  partCurrentHealth: 10
+  isDetachable: 1
+  isDestroyed: 0
+  debugDmg: 10
