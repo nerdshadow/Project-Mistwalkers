@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class VehiclePartCombatBehaviour : MonoBehaviour, IIDamageable
+public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
 {
     [SerializeField]
     int partMaxHealth = 10;
@@ -45,6 +45,14 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IIDamageable
         {
             GetComponentInParent<VehicleCombatBehaviour>().DoDamage(_damage);
         }
+    }
+    public void DoDamage(int _damage, Vector3 _dmgPos)
+    {
+    
+    }
+    public void DoDamage(int _damage, Vector3 _dmgPos, Vector3 _dmgVectorForce)
+    {
+
     }
 
     private void DetachPart()

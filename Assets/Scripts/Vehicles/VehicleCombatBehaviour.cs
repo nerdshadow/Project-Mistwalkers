@@ -4,7 +4,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 [RequireComponent(typeof(VehicleMovement))]
-public class VehicleCombatBehaviour : MonoBehaviour, IIDamageable
+public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
 {
     [Header("Stats")]
     VehicleMovement vehicleMovement;
@@ -32,6 +32,14 @@ public class VehicleCombatBehaviour : MonoBehaviour, IIDamageable
         currentHealth -= _damage;
         if (currentHealth <= 0)
             Die();
+    }
+    public void DoDamage(int _damage, Vector3 _dmgPos)
+    {
+
+    }
+    public void DoDamage(int _damage, Vector3 _dmgPos, Vector3 _dmgVectorForce)
+    {
+
     }
     void Die()
     {

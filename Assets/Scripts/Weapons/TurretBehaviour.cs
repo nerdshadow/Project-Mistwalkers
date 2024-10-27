@@ -255,7 +255,7 @@ public class TurretBehaviour : MonoBehaviour
         {
             currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
 
-            //hit.collider.GetComponentInParent<IDestroyable>()?.ChangeHealth(-gunDamage);
+            hit.collider.GetComponentInParent<IDamageable>()?.DoDamage(ammoStats.ammoDamage);
 
             //if (hit.collider.GetComponentInParent<CharacterStats>() != null)
             //{
