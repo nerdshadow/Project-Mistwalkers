@@ -417,12 +417,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAllWheelDrive: 0
   currentVehicleStats: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
-  turnWheels:
-  - {fileID: 0}
-  - {fileID: 0}
-  staticWheels:
-  - {fileID: 0}
-  - {fileID: 0}
+  turnWheels: []
+  staticWheels: []
   canDrive: 1
   forceStop: 1
   useForce: 0
@@ -437,9 +433,9 @@ MonoBehaviour:
   moveTargets: []
   currentVehicleBase: {fileID: 4147948000499981016}
   cabHolder: {fileID: 7717899956627438259}
-  cabBeh: {fileID: 2055431097274509697}
+  cabBeh: {fileID: 0}
   currentVehicleCab: {fileID: 3612599241733292088}
-  bodyBeh: {fileID: 8661289493980963400}
+  bodyBeh: {fileID: 0}
   bodyHolder: {fileID: 7678377033677822845}
   currentVehicleBody: {fileID: 9002076924879482870}
   accelerationSpeed: 4
@@ -468,7 +464,8 @@ MonoBehaviour:
   maxHealth: 1
   currentHealth: 1
   isDead: 0
-  timeToDecay: 3
+  timeToDecay: 1.5
+  combatEnabled: 0
   testDamage: 100
   testExplRad: 10
   testExplForce: 900
@@ -812,9 +809,37 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.509
       objectReference: {fileID: 0}
+    - target: {fileID: 1870868763455745830, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2309680821948030955, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3087870886991598094, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
       propertyPath: m_CenterOfMass.z
       value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3434413608026336268, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510724192725224292, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682165678394441599, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6017393420500506006, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7579880221991434798, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8266862021848406972, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
       propertyPath: currentBase
@@ -873,17 +898,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
---- !u!114 &8661289493980963400 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8266862021848406972, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
-  m_PrefabInstance: {fileID: 759665581459765748}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9002076924879482870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5011a3833b69d4b9eb900130b57123, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9002076924879482870 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8531808458537784834, guid: fbaac9b8bc7178446bb965a700e17ffc, type: 3}
@@ -1207,17 +1221,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c113be0c53731cc44b322dad355a8833, type: 3}
---- !u!114 &2055431097274509697 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7259302291381086888, guid: c113be0c53731cc44b322dad355a8833, type: 3}
-  m_PrefabInstance: {fileID: 8662783051243471657}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3612599241733292088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5011a3833b69d4b9eb900130b57123, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3612599241733292088 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5339831645677519633, guid: c113be0c53731cc44b322dad355a8833, type: 3}

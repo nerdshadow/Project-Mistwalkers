@@ -12,7 +12,7 @@ public class WheelBehaviour : MonoBehaviour
         //Debug.Log("Wheel disables");
         vehicleColliders = new List<Collider>();
     }
-    private void OnEnable()
+    private void Awake()
     {
         //Debug.Log("Wheel enables");
         ReManageWheelColliders();

@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ProjectileBehaviour : MonoBehaviour
 {
-    public float projectileDamage = 1f;
+    public int projectileDamage = 1;
     public float lifetime = 5f;
     public float impulsePower = 1f;
     private void Update()
@@ -53,6 +53,22 @@ public class ProjectileBehaviour : MonoBehaviour
             //    forceVector.y = 0;
             forceVector = forceVector.normalized;
             collider.GetComponentInParent<Rigidbody>().AddForce(forceVector * impulsePower, ForceMode.Impulse);
+        }
+    }
+    void DoDamage(Collider collider)
+    {
+        IDamageable potTarget = collider.GetComponent<IDamageable>();
+        if (potTarget != null)
+        {
+            potTarget.DoDamage(projectileDamage);
+        }
+        else
+        {
+            potTarget = collider.GetComponentInParent<IDamageable>();
+            if (potTarget != null)
+            {
+                potTarget.DoDamage(projectileDamage);
+            }
         }
     }
 }

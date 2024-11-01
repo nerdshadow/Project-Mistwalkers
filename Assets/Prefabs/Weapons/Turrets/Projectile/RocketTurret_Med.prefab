@@ -176,6 +176,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3312984300916902097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3898708903398004704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7522274964040575503}
+  m_Layer: 0
+  m_Name: Eye
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7522274964040575503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3898708903398004704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2509698206797310735}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3914789536835866769
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +389,7 @@ Transform:
   m_Children:
   - {fileID: 3312984300916902097}
   - {fileID: 2705053846076638866}
+  - {fileID: 7522274964040575503}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4800285722334297137
@@ -374,10 +406,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turretStats: {fileID: 11400000, guid: 80911f1d00550e1439b1172d8071620a, type: 2}
   ammoStats: {fileID: 11400000, guid: 4cc70ac66e474d0428b522ebbe07a7ef, type: 2}
+  canAim: 1
+  minReqAngle: 5
   ghostHorRotator: {fileID: 2197824637539425263}
   ghostVertRotator: {fileID: 3674877725668722436}
+  limitVertRotation: 0
+  rotateByShort: 1
   HorTurret: {fileID: 8584901539398000975}
   VertTurret: {fileID: 5596731322729741514}
+  triggerColls: []
   canFire: 0
   fireRateType: 0
   burstMaxSize: 3
@@ -392,6 +429,9 @@ MonoBehaviour:
   currentShootPoint: {fileID: 4912134850630305348}
   lastShootPoint: {fileID: 0}
   centerOfArea: {fileID: 0}
+  viewEye: {fileID: 7522274964040575503}
+  toggleViewEye: 0
+  wasRotatingRight: 0
 --- !u!1 &7448190134358859576
 GameObject:
   m_ObjectHideFlags: 0

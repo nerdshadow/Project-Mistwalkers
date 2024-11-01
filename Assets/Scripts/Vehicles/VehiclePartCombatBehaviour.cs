@@ -9,6 +9,8 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
     int partCurrentHealth = 10;
     [SerializeField]
     bool isDetachable = false;
+    //[SerializeField]
+    //bool isDetached = false;
     [SerializeField]
     bool isDestroyed = false;
     private void Start()

@@ -9,22 +9,32 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     [Header("Stats")]
     VehicleMovement vehicleMovement;
     VehicleBaseStats vehicleBaseStats;
-    [SerializeField]
-    int maxHealth = 1;
-    [SerializeField]
-    int currentHealth = 1;
-    public bool isDead = false;
+
     private void Start()
     {
         vehicleMovement = GetComponent<VehicleMovement>();
         vehicleBaseStats = vehicleMovement.currentVehicleStats;
         InitHealth();
         ResetHealth();
+
+        ManageAllTurrets();
     }
     private void OnEnable()
     {
 
     }
+    private void FixedUpdate()
+    {
+        HealthConditionsBeh();
+    }
+    #region Health
+    [Space(10)]
+    [Header("Health")]
+    [SerializeField]
+    int maxHealth = 1;
+    [SerializeField]
+    int currentHealth = 1;
+    public bool isDead = false;
     public void DoDamage(int _damage)
     {
         if (isDead == true)
@@ -45,7 +55,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     {
         Debug.Log(this.gameObject.name + " died");
         isDead = true;
-        vehicleMovement.StopVehicle();
+        ChangeVehicleMovement();
         //Check left over hp| if a lot of minus hp then blown up vehicle else slown down vehicle with fire in engine
         float leftoverhpMod = (Mathf.Abs((float)currentHealth) / (float)maxHealth);
         Debug.Log(leftoverhpMod);
@@ -61,6 +71,11 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
             Debug.Log("decay");
             KillVehicle();
         }
+    }
+    void ChangeVehicleMovement()
+    {
+        vehicleMovement.StopVehicle();
+
     }
     private void KillVehicle()
     {
@@ -83,20 +98,23 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
             if (rb.GetComponent<FixedJoint>() != null)
             {
                 if (rb.GetComponent<VehiclePartBehaviour>() != null)
-                {
-                    //if (rb.transform.parent != null)
-                    //{
-                    //    GameObject potParent = rb.transform.parent.gameObject;
-                    //    potParent.transform.transform.DetachChildren();
-                    //    Destroy(potParent);
-                    //}
+                {                    
                     Destroy(rb.GetComponent<VehiclePartBehaviour>());
-                    //rb.mass *= 0.5f;
+                    int r = Random.Range(1, 5);
+                    //Debug.Log("r to destr = " + r);
+                    if (r == 1)
+                    {
+                        Destroy(rb.GetComponent<FixedJoint>());
+                        rb.transform.SetParent(null, true);
+                    }
                 }
-                Destroy(rb.GetComponent<FixedJoint>());
-                rb.transform.SetParent(null, true);
-                if (rb.GetComponent<Collider>() != null)
-                    rb.GetComponent<Collider>().isTrigger = false;
+                else
+                {                    
+                    Destroy(rb.GetComponent<FixedJoint>());
+                    rb.transform.SetParent(null, true);
+                    if (rb.GetComponent<Collider>() != null)
+                        rb.GetComponent<Collider>().isTrigger = false;
+                }
             }
             //if (rb != null && rb is WheelCollider)
             //{
@@ -125,6 +143,23 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
             }
         }
     }
+    void HealthConditionsBeh()
+    {
+        if (currentHealth > (int)(maxHealth * 0.6f))
+            return;
+        if (currentHealth <= (int)(maxHealth * 0.1f))
+        {
+            //show smoke and fire
+        }
+        else if (currentHealth <= (int)(maxHealth * 0.3f))
+        {
+            //show more smoke
+        }
+        else if (currentHealth <= (int)(maxHealth * 0.6f))
+        {
+            //Show smoke from vehicle
+        }
+    }
     void InitHealth()
     {
         maxHealth = vehicleBaseStats.vehicleBaseHealth
@@ -135,6 +170,23 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     {
         currentHealth = maxHealth;
     }
+    #endregion Health
+    #region Weapons
+    [Space(10)]
+    [Header("Weapons")]
+    public bool combatEnabled;
+    void ManageAllTurrets()
+    {
+        TurretBehaviour[] turretBehaviours = GetComponentsInChildren<TurretBehaviour>();
+        foreach (TurretBehaviour turret  in turretBehaviours)
+        {
+            turret.canAim = combatEnabled;
+            turret.canFire = combatEnabled;
+        }
+    }
+
+    #endregion Weapons
+    #region Dev
     [Space(10)]
     [Header("Dev")]
     [SerializeField]
@@ -150,4 +202,5 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     {
         DoDamage(testDamage);
     }
+    #endregion Dev
 }

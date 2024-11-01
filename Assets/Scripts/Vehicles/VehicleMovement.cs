@@ -63,7 +63,7 @@ public class VehicleMovement : MonoBehaviour
         if(!gameObject.activeInHierarchy || Application.isPlaying == true)
             return;
 
-        SerializeVehicle();
+        //SerializeVehicle();
     }
     private void OnEnable()
     {
@@ -84,7 +84,7 @@ public class VehicleMovement : MonoBehaviour
 
     }
     #region VehicleSer
-    void FindWheels()
+    public void FindWheels()
     {
         if (turnWheels.Count + staticWheels.Count != 0)
         {
@@ -323,7 +323,8 @@ public class VehicleMovement : MonoBehaviour
         foreach (var wheel in turnWheels)
         {
             wheel.steerAngle = currentTurnAngle;
-            wheel.brakeTorque = currentBrakeTorque;
+            if(Mathf.Abs(currentSpeed) <= 0.01f)
+                wheel.brakeTorque = currentBrakeTorque;
         }
     }
     public enum Movement
@@ -386,8 +387,12 @@ public class VehicleMovement : MonoBehaviour
         //    if (currentTorque < 0)
         //        currentTorque = 0;
         //}
-        //else { currentTorque = 0; }
-        if (Mathf.Abs(currentVelocity) <= 0.3f)
+        //else 
+        //{ 
+        //    currentTorque = 0;
+        //}
+
+        if (Mathf.Abs(currentSpeed) <= 0.01f)
         {
             currentTorque = 0f;
             currentBrakeTorque = Mathf.Infinity;
@@ -395,7 +400,7 @@ public class VehicleMovement : MonoBehaviour
         else
         {
             currentTorque = 0f;
-            currentBrakeTorque = currentVehicleStats.brakeTorque;            
+            currentBrakeTorque = currentVehicleStats.brakeTorque;
         }
     }
     void ReleaseTorque()

@@ -21,7 +21,7 @@ MonoBehaviour:
   maxRpm: 500
   forwardTorque: 1350
   backwardTorque: 1000
-  brakeTorque: 500
+  brakeTorque: 700
   maxTurnAngle: 25
   turnSpeed: 2
   vehicleBaseHealth: 105
