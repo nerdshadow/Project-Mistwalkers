@@ -302,8 +302,10 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     }
     IEnumerator AssebleNextFrame()
     {
+        currentVehicle.GetComponent< VehicleMovement>().canDrive = false;
+
         yield return new WaitForFixedUpdate();
-        //currentVehicle.GetComponent<VehicleMovement>().SerializeVehicle();
+        currentVehicle.GetComponent<VehicleMovement>().SerializeVehicle();
         currentVehicle.SetActive(true);
         StartCoroutine(UpdateWheels());
         currentVehicle.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
@@ -373,6 +375,7 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             UIvehicleBaseHolder.ChangeComp(null);
             UIvehicleCabHolder.ChangeComp(null);
             UIvehicleBodyHolder.ChangeComp(null);
+
             return ;
         }
         VehicleMovement buffVehBeh = currentVehicle.GetComponent<VehicleMovement>();
@@ -383,17 +386,22 @@ public class UI_CityMenuBehaviour : MonoBehaviour
             buffBodyBeh = buffVehBeh.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>();
         }
 
+        UIvehicleBaseHolder.compHolder.itemHolderClicked.RemoveListener(CreateListOfBases);
         UIvehicleBaseHolder.ChangeComp(buffVehBeh);
         UIvehicleBaseHolder.compHolder.itemHolderClicked.AddListener(CreateListOfBases);
-
+        
+        UIvehicleCabHolder.compHolder.itemHolderClicked.RemoveListener(CreateListOfCabs);
         UIvehicleCabHolder.ChangeComp(buffCabBeh);
         UIvehicleCabHolder.compHolder.itemHolderClicked.AddListener(CreateListOfCabs);
 
+        if (buffBodyBeh != null)
+            UIvehicleBodyHolder.compHolder.itemHolderClicked.RemoveListener(CreateListOfBodies);
         UIvehicleBodyHolder.ChangeComp(buffBodyBeh);
         if(buffBodyBeh != null)
             UIvehicleBodyHolder.compHolder.itemHolderClicked.AddListener(CreateListOfBodies);
     }
-    public RectTransform bufferList;    
+    public RectTransform bufferList;
+    public RectTransform bufferListParent;
     void CreateListOf(ItemType _itemType)
     {    
         switch (_itemType)
@@ -411,16 +419,18 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     ScriptableObject lastListType = null;
     public void ManageList(ScriptableObject _scriptable)
     {
-        if (bufferList == null)
+        if (bufferList == null || bufferListParent == null)
         { Debug.LogWarning("no list"); return; }
-        if (bufferList.transform.parent.gameObject.activeInHierarchy == true && _scriptable == lastListType)
+
+        Debug.Log("Managing list");
+        if (bufferListParent.gameObject.activeInHierarchy == true && _scriptable == lastListType)
         {
-            bufferList.transform.parent.gameObject.SetActive(false);
+            bufferListParent.gameObject.SetActive(false);
             return;
         }
         else
         {
-            bufferList.transform.parent.gameObject.SetActive(true);
+            bufferListParent.gameObject.SetActive(true);
             lastListType = _scriptable;
         }
         //Clear list
@@ -429,7 +439,8 @@ public class UI_CityMenuBehaviour : MonoBehaviour
     }
     public void CloseList()
     {
-        bufferList.transform.parent.gameObject.SetActive(false);
+        Debug.Log("Clearing list");
+        bufferListParent.gameObject.SetActive(false);
     }
     [ContextMenu("Refresh List of Bases")]
     public void CreateListOfBases(UI_BaseItemHolder _uI_BaseItemHolder)

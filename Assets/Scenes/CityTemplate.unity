@@ -276,7 +276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5930706
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2200,7 +2200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partName: {fileID: 159828018}
-  compType: 7
+  compType: 4
   compHolder: {fileID: 2012025700}
   turretSlots: {fileID: 1860707498}
   UI_TurretSlotPrefab: {fileID: 1662831142184942799, guid: 857b3f6624ab49c48ae626a49e07ab04, type: 3}
@@ -4691,7 +4691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partName: {fileID: 1805740588}
-  compType: 7
+  compType: 4
   compHolder: {fileID: 711363092}
   turretSlots: {fileID: 313538436}
   UI_TurretSlotPrefab: {fileID: 1662831142184942799, guid: 857b3f6624ab49c48ae626a49e07ab04, type: 3}
@@ -5297,6 +5297,7 @@ MonoBehaviour:
   UIvehicleBodyHolder: {fileID: 846378556}
   TESTSLOTLIST: []
   bufferList: {fileID: 1397111409}
+  bufferListParent: {fileID: 5930706}
   mapCameraPos: {fileID: 625442599}
   mapSpace: {fileID: 1659083034}
   acceptMapMoveWindow: {fileID: 3257741859689657384, guid: 3f5633970d833114f813b4b134b2d248, type: 3}
@@ -7581,7 +7582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partName: {fileID: 819451269}
-  compType: 6
+  compType: 3
   compHolder: {fileID: 1686248144}
   turretSlots: {fileID: 0}
   UI_TurretSlotPrefab: {fileID: 1662831142184942799, guid: 857b3f6624ab49c48ae626a49e07ab04, type: 3}

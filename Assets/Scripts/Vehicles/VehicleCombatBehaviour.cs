@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(VehicleMovement))]
 public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
@@ -9,6 +10,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     [Header("Stats")]
     VehicleMovement vehicleMovement;
     VehicleBaseStats vehicleBaseStats;
+    public UnityEvent vehicleDies = new UnityEvent();
 
     private void Start()
     {
@@ -55,10 +57,12 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     {
         Debug.Log(this.gameObject.name + " died");
         isDead = true;
+        vehicleDies.Invoke();
+        vehicleDies.RemoveAllListeners();
         ChangeVehicleMovement();
         //Check left over hp| if a lot of minus hp then blown up vehicle else slown down vehicle with fire in engine
         float leftoverhpMod = (Mathf.Abs((float)currentHealth) / (float)maxHealth);
-        Debug.Log(leftoverhpMod);
+        //Debug.Log(leftoverhpMod);
         if (leftoverhpMod >= 0.4f)
         {
             //blow immid
@@ -110,7 +114,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
                 }
                 else
                 {                    
-                    Destroy(rb.GetComponent<FixedJoint>());
+                    Destroy(rb.GetComponent<FixedJoint>());                    
                     rb.transform.SetParent(null, true);
                     if (rb.GetComponent<Collider>() != null)
                         rb.GetComponent<Collider>().isTrigger = false;
@@ -180,8 +184,10 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
         TurretBehaviour[] turretBehaviours = GetComponentsInChildren<TurretBehaviour>();
         foreach (TurretBehaviour turret  in turretBehaviours)
         {
-            turret.canAim = combatEnabled;
-            turret.canFire = combatEnabled;
+            if(combatEnabled == true)
+                turret.currentTurretState = TurretStates.Combat;
+            else
+                turret.currentTurretState = TurretStates.Calm;
         }
     }
 

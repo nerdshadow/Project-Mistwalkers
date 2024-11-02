@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: _NullTurret
   m_EditorClassIdentifier: 
   turretName: Null Turret
+  turretDesc: Hand made turret
   TurretType: 0
   TurretSize: 0
   weight: 1
@@ -23,7 +24,7 @@ MonoBehaviour:
   maxSpreadAmount: {x: 0.02, y: 0.02, z: 0.02}
   spreadEnlargingSpeed: 1
   spreadWaitTime: 1
-  horizontalSpeed: 1
+  horizontalSpeed: 35
   verticalSpeed: 1
   verticalMaxAngle_pos: 90
   verticalMaxAngle_neg: -90

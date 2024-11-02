@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MGTurret_Med_Stats
   m_EditorClassIdentifier: 
   turretName: MG Med
+  turretDesc: Hand made turret
   TurretType: 0
   TurretSize: 1
   weight: 75
@@ -23,8 +24,9 @@ MonoBehaviour:
   maxSpreadAmount: {x: 0.07, y: 0.07, z: 0.07}
   spreadEnlargingSpeed: 1
   spreadWaitTime: 1
-  horizontalSpeed: 1
+  horizontalSpeed: 50
   verticalSpeed: 1
-  verticalMaxAngle: 90
+  verticalMaxAngle_pos: 90
+  verticalMaxAngle_neg: -90
   mainColor: {r: 1, g: 1, b: 1, a: 1}
   turretPrefab: {fileID: 2554458913704090277, guid: 0b2230606ae04af49818c6608ef32595, type: 3}

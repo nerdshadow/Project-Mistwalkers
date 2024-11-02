@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 2413041}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.397, y: 2.433, z: 0.481}
+  m_LocalPosition: {x: 14.14, y: 2.433, z: -2.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -541,7 +541,7 @@ Transform:
   m_GameObject: {fileID: 185655880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.203, y: 2.566, z: 2.04}
+  m_LocalPosition: {x: 15.938, y: 2.566, z: 2.012}
   m_LocalScale: {x: 1, y: 3.46, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1100,6 +1100,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899011186}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &976834035 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 667999575658539886, guid: ba03702b47c3b794b901987661779b24, type: 3}
+  m_PrefabInstance: {fileID: 524962411}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &978523916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,22 +1378,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6052728354479427072, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
       propertyPath: canAim
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6052728354479427072, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
       propertyPath: canFire
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6052728354479427072, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
       propertyPath: viewEye
       value: 
       objectReference: {fileID: 524817785}
     - target: {fileID: 6052728354479427072, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
+      propertyPath: ammoStats
+      value: 
+      objectReference: {fileID: 11400000, guid: b7062819fd3f59a4f9c8540ae89c5a73, type: 2}
+    - target: {fileID: 6052728354479427072, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
       propertyPath: targetTrans
       value: 
-      objectReference: {fileID: 2413042}
+      objectReference: {fileID: 976834035}
     - target: {fileID: 6052728354479427072, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
       propertyPath: fireRateType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052728354479427072, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}
+      propertyPath: currentTurretState
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7569810767204491465, guid: a544717b60dabdc4f8385ed79a947fca, type: 3}

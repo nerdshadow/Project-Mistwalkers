@@ -168,7 +168,7 @@ public class VehicleMovement : MonoBehaviour
         
     }
     public void SerializeVehicle()
-    {
+    { 
         UpdateComp();
         UpdateParts();
         FindWheels();
@@ -208,6 +208,7 @@ public class VehicleMovement : MonoBehaviour
             CheckDistances();
             TryToMove();        
         }
+
         ManageWheels();
     }
     void TryToStop(bool resetWheels)
@@ -279,6 +280,9 @@ public class VehicleMovement : MonoBehaviour
     }
     void ManageWheels()
     {
+        if(staticWheels.Count == 0 && turnWheels.Count == 00)
+            return;
+
         //Check current values
         currentVelocity = rigidBody.velocity.z;
         currentSpeed = currentVelocity * 3.6f;

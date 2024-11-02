@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: LaserTurret_Small_Stats
   m_EditorClassIdentifier: 
   turretName: Lasert Turret Small
+  turretDesc: Hand made turret
+  TurretType: 0
+  TurretSize: 0
   weight: 75
   reloadSpeed: 3
   maxRange: 12
@@ -21,8 +24,9 @@ MonoBehaviour:
   maxSpreadAmount: {x: 0.03, y: 0.03, z: 0.03}
   spreadEnlargingSpeed: 1
   spreadWaitTime: 1
-  horizontalSpeed: 0.75
+  horizontalSpeed: 35
   verticalSpeed: 1
-  verticalMaxAngle: 90
+  verticalMaxAngle_pos: 90
+  verticalMaxAngle_neg: -90
   mainColor: {r: 1, g: 1, b: 1, a: 1}
   turretPrefab: {fileID: 2232447757633640160, guid: 7434871a9c3e8dd438b0ba48aedfb909, type: 3}

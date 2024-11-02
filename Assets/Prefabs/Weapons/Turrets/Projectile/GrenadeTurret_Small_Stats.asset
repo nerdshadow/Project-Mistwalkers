@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GrenadeTurret_Small_Stats
   m_EditorClassIdentifier: 
   turretName: Grenade Turret Small
+  turretDesc: Hand made turret
   TurretType: 1
   TurretSize: 0
   weight: 50
@@ -23,8 +24,9 @@ MonoBehaviour:
   maxSpreadAmount: {x: 0.2, y: 0.2, z: 0.2}
   spreadEnlargingSpeed: 1
   spreadWaitTime: 1
-  horizontalSpeed: 1
+  horizontalSpeed: 30
   verticalSpeed: 1
-  verticalMaxAngle: 90
+  verticalMaxAngle_pos: 90
+  verticalMaxAngle_neg: -90
   mainColor: {r: 1, g: 1, b: 1, a: 1}
   turretPrefab: {fileID: 6731125572163288252, guid: 26e5cb58f3b2c9e43bb7dc1d5528b016, type: 3}

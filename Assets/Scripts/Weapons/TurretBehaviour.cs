@@ -1,6 +1,7 @@
 //using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +18,11 @@ public enum TargetDirection
     Front = 2,
     Back = 3
 }
+public enum TurretStates
+{
+    Calm = 0,
+    Combat = 1
+}
 public class TurretBehaviour : MonoBehaviour
 {
     [Header("Refs")]
@@ -24,6 +30,7 @@ public class TurretBehaviour : MonoBehaviour
     public TurretStats turretStats;
     [SerializeField]
     protected AmmoStats ammoStats;
+    public TurretStates currentTurretState = TurretStates.Calm;
     [Space(10)]
     [Header("Rotation")]
     public bool canAim = true;
@@ -42,6 +49,17 @@ public class TurretBehaviour : MonoBehaviour
     protected GameObject VertTurret = null;
     [SerializeField]
     Collider[] triggerColls;
+    [SerializeField]
+    Transform centerOfArea = null;
+    [SerializeField]
+    Transform viewEye; //object that will detecting objects position change
+    [SerializeField]
+    bool toggleViewEye = false;
+    [SerializeField]
+    bool wasRotatingRight = false; //in what way turret was rotating
+    // rotate by short way
+    TargetDirection targetDirection = TargetDirection.Left;
+    TargetDirection lastRotationDirection = TargetDirection.Front;
     [Space(10)]
     [Header("Shooting")]
     public bool canFire = false;
@@ -89,6 +107,11 @@ public class TurretBehaviour : MonoBehaviour
         else
             currentShootPoint = shootPoints[0];
 
+        if (centerOfArea == null)
+        {
+            centerOfArea = transform.root.transform;
+        }
+
         MGShoot += ShootBullet;
         SShoot += ShootShell;
         LShoot += ShootLaser;
@@ -106,7 +129,12 @@ public class TurretBehaviour : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        FindTarget();
+        if (currentTurretState == TurretStates.Calm)
+        {
+            return;
+        }
+
+        CheckingTarget();
         TryRotateTurret();
         TryToFire();
     }
@@ -115,18 +143,23 @@ public class TurretBehaviour : MonoBehaviour
         targetTrans = _newTarget.transform;
         rotateByShort = true;
         toggleViewEye = false;
+        if (targetTrans == null)
+            currentTurretState = TurretStates.Calm;
     }
     public void ChangeTargetTo(Transform _newTargetTrans)
     {
         targetTrans = _newTargetTrans;
         rotateByShort = true;
         toggleViewEye = false;
+        if(targetTrans == null)
+            currentTurretState = TurretStates.Calm;
     }
     public void ClearTarget() //If changing name -> change next func too
     {
         targetTrans = null;
         rotateByShort = true;
         toggleViewEye = false;
+        currentTurretState = TurretStates.Calm;
     }
     public void ClearTarget(float time)
     {
@@ -134,30 +167,26 @@ public class TurretBehaviour : MonoBehaviour
         rotateByShort = true;
         toggleViewEye = false;
     }
-    [SerializeField]
-    Transform centerOfArea = null;
-    public virtual void FindTarget()
+    void CheckingTarget()
     {
-        if (centerOfArea == null)
-        {
-            centerOfArea = transform.root.transform;
-        }
-        if (targetTrans != null)
-        {
-            if (Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange)
-                ClearTarget();
-            return;
-        }
+        if (targetTrans == null || targetTrans.GetComponent<VehiclePartCombatBehaviour>() == null || targetTrans.GetComponent<VehiclePartCombatBehaviour>().parentIsDead == true)
+            FindTarget();
+        if (targetTrans != null && Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange * 1.1f)
+            ClearTarget();
+    }
+    public void FindTarget()
+    {
         Collider[] potTargets = Physics.OverlapSphere(centerOfArea.position, turretStats.maxRange * 1.1f);
         foreach (Collider potTarget in potTargets)
         {
-
-            if (potTarget.isTrigger == false)
+            if (potTarget.GetComponent<VehiclePartCombatBehaviour>() != null && potTarget.GetComponent<VehiclePartCombatBehaviour>().parentIsDead != true)
             {
                 ChangeTargetTo(potTarget.transform);
-                break;
+                return;
             }
         }
+        Debug.Log("No targets found");
+        ClearTarget();
     }
     protected void TryRotateTurret()// go in FixedUpdate
     {
@@ -190,13 +219,6 @@ public class TurretBehaviour : MonoBehaviour
             targetInAngle = false;
         //Debug.Log("Is in angle: " + a + " and " + targetInAngle);
     }
-
-    [SerializeField]
-    Transform viewEye; //object that will detecting objects position change
-    [SerializeField]
-    bool toggleViewEye = false;
-    [SerializeField]
-    bool wasRotatingRight = false; //in what way turret was rotating
     bool isObstacleToLeft()
     {
         // check if no colliders in left | if yes change rotation
@@ -307,26 +329,39 @@ public class TurretBehaviour : MonoBehaviour
             wasRotatingRight = true;
         }
     }
-    // rotate by short way
-    TargetDirection targetDirection = TargetDirection.Left;
-    TargetDirection lastRotationDirection = TargetDirection.Front;
     void RotateHorShort()
     {
         if (HorTurret == null)
             return;
         targetDirection = GetTargetDirection();
-        Debug.Log("Turrets target is " + targetDirection);
+        //Debug.Log("Turrets target is " + targetDirection);
 
         ObstacleCheck();
+
+        Vector3 targetDir = targetTrans.position - VertTurret.transform.position;
+        Vector3 forward = VertTurret.transform.forward;
+        float angleBetween = Vector3.Angle(targetDir, forward);
+        float angleToRotate = 0f;
+        if(targetDirection == TargetDirection.Right)
+            angleToRotate = turretStats.horizontalSpeed * Time.deltaTime;
+        else if(targetDirection == TargetDirection.Left)
+            angleToRotate = -turretStats.horizontalSpeed * Time.deltaTime;
+        //Debug.Log("Angle between is " + angleBetween + " and angle to rotate is " + angleToRotate);
 
         switch (targetDirection)
         {
             case TargetDirection.Right:
-                HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                if(Mathf.Abs(angleToRotate) > angleBetween)
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(angleBetween, HorTurret.transform.up);
+                else
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 lastRotationDirection = TargetDirection.Right;
                 break;
             case TargetDirection.Left:
-                HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                if (Mathf.Abs(angleToRotate) > angleBetween)
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-angleBetween, HorTurret.transform.up);
+                else
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 lastRotationDirection = TargetDirection.Left;
                 break;
             case TargetDirection.Front:
@@ -334,9 +369,9 @@ public class TurretBehaviour : MonoBehaviour
                 break;
             case TargetDirection.Back:
                 if (lastRotationDirection == TargetDirection.Right)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 if (lastRotationDirection == TargetDirection.Left)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 break;
             default:
                 Debug.LogWarning("Cannot find direction to target!");
@@ -357,17 +392,34 @@ public class TurretBehaviour : MonoBehaviour
             rotateByShort = true;
             return;
         }
-        Debug.Log("Turrets target is " + targetDirection);
+        //Debug.Log("Turrets target is " + targetDirection);
 
         ObstacleCheck();
+
+        Vector3 targetDir = targetTrans.position - VertTurret.transform.position;
+        Vector3 forward = VertTurret.transform.forward;
+        float angleBetween = Vector3.Angle(targetDir, forward);
+        float angleToRotate = 0f;
+        if (targetDirection == TargetDirection.Right)
+            angleToRotate = -turretStats.horizontalSpeed * Time.deltaTime;
+        else if (targetDirection == TargetDirection.Left)
+            angleToRotate = turretStats.horizontalSpeed * Time.deltaTime;
+        //Debug.Log("Angle between is " + angleBetween + " and angle to rotate is " + angleToRotate);
+
         switch (targetDirection)
         {
             case TargetDirection.Right:
-                HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                if (Mathf.Abs(angleToRotate) > angleBetween)
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-angleBetween, HorTurret.transform.up);
+                else
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);    
                 lastRotationDirection = TargetDirection.Right;
                 break;
             case TargetDirection.Left:
-                HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                if (Mathf.Abs(angleToRotate) > angleBetween)
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(angleBetween, HorTurret.transform.up);
+                else
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);                
                 lastRotationDirection = TargetDirection.Left;
                 break;
             case TargetDirection.Front:
@@ -376,9 +428,9 @@ public class TurretBehaviour : MonoBehaviour
             case TargetDirection.Back:
                 //helps to unstuck turrent from facing target by back
                 if(lastRotationDirection == TargetDirection.Right)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 if(lastRotationDirection == TargetDirection.Left)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * 40 * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 break;
             default:
                 Debug.LogWarning("Cannot find direction to target!");
@@ -405,18 +457,6 @@ public class TurretBehaviour : MonoBehaviour
             return TargetDirection.Front;
         else
             return TargetDirection.Back;
-    }
-    void RotateHor()
-    {
-        if (HorTurret == null)
-            return;
-
-        Vector3 _lookDirection = (targetTrans.position - ghostHorRotator.transform.position).normalized;
-        Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
-
-        ghostHorRotator.transform.rotation = Quaternion.RotateTowards(ghostHorRotator.transform.rotation, _lookRotation, turretStats.horizontalSpeed);
-        HorTurret.transform.localEulerAngles = new Vector3(0.0f, ghostHorRotator.transform.localEulerAngles.y, 0.0f);
-
     }
     void RotateVert()
     {
@@ -470,8 +510,7 @@ public class TurretBehaviour : MonoBehaviour
         if (canFire == false 
             || targetInAngle == false 
             || reloading == true 
-            || targetTrans == null
-            /*|| SomethingInTheWay() == true*/)
+            || targetTrans == null)
             return;
         Shoot();
         StartCoroutine(Reload());

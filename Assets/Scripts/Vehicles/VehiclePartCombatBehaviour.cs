@@ -12,22 +12,46 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
     //[SerializeField]
     //bool isDetached = false;
     [SerializeField]
-    bool isDestroyed = false;
+    public bool isDestroyed = false;
+
+    public bool parentIsDead = false;
     private void Start()
     {
         InitHealth();
         partCurrentHealth = partMaxHealth;
     }
-
+    private void OnEnable()
+    {
+        if (GetComponentInParent<VehicleCombatBehaviour>() == null)
+            return;
+        GetComponentInParent<VehicleCombatBehaviour>().vehicleDies.AddListener(ParentDies);
+    }
+    private void OnDisable()
+    {
+        if (GetComponentInParent<VehicleCombatBehaviour>() == null)
+            return;
+        GetComponentInParent<VehicleCombatBehaviour>().vehicleDies.RemoveListener(ParentDies);
+    }
     private void InitHealth()
     {
         if (GetComponent<VehiclePartBehaviour>() != null)
             partMaxHealth = GetComponent<VehiclePartBehaviour>().partStats.partHealth;
         partCurrentHealth = partMaxHealth;
     }
-
+    public void ParentDies()
+    {
+        parentIsDead = true;
+        if (GetComponentInParent<VehicleCombatBehaviour>() == null)
+            return;
+        GetComponentInParent<VehicleCombatBehaviour>().vehicleDies.RemoveListener(ParentDies);
+        Destroy(this);
+    }
     public void DoDamage(int _damage)
     {
+        if (parentIsDead == true)
+        {
+            return;
+        }
         partCurrentHealth -= _damage;
         if (partCurrentHealth <= 0)
         {

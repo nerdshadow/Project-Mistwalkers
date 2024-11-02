@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MGTurret_Small_Stats
   m_EditorClassIdentifier: 
   turretName: MGTurret Small
+  turretDesc: Hand made turret
   TurretType: 0
   TurretSize: 0
   weight: 50
@@ -23,7 +24,7 @@ MonoBehaviour:
   maxSpreadAmount: {x: 0.07, y: 0.07, z: 0.07}
   spreadEnlargingSpeed: 1
   spreadWaitTime: 1
-  horizontalSpeed: 1.5
+  horizontalSpeed: 60
   verticalSpeed: 1
   verticalMaxAngle_pos: 45
   verticalMaxAngle_neg: -45
