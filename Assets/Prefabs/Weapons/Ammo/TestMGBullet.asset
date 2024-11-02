@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf1fcd89407a4de45970a16c05ceda9d, type: 3}
-  m_Name: SimpleMGBullet
+  m_Name: TestMGBullet
   m_EditorClassIdentifier: 
-  ammmoName: BasicBullet
+  ammoName: TestAmmo
+  ammoDesc: Ammo for war
   ammoType: 0
   ammoDamage: 1
   onHitImpulsePower: 50
@@ -21,4 +22,5 @@ MonoBehaviour:
   trailLifetime: 0.1
   shellPrefab: {fileID: 0}
   shellSpeed: 100
+  shellLifeTime: 20
   laserTrailVfx_Prefab: {fileID: 0}

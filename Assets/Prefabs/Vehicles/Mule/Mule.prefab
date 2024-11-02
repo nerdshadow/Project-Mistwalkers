@@ -461,11 +461,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f829091638e36804f93374512e3568f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vehicleDies:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 1
   currentHealth: 1
   isDead: 0
   timeToDecay: 1.5
-  combatEnabled: 0
+  combatEnabled: 1
   testDamage: 100
   testExplRad: 10
   testExplForce: 900

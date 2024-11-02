@@ -8,7 +8,9 @@ using UnityEngine.Events;
 public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
 {
     [Header("Stats")]
+    [SerializeField]
     VehicleMovement vehicleMovement;
+    [SerializeField]
     VehicleBaseStats vehicleBaseStats;
     public UnityEvent vehicleDies = new UnityEvent();
 
@@ -59,6 +61,8 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
         isDead = true;
         vehicleDies.Invoke();
         vehicleDies.RemoveAllListeners();
+        combatEnabled = false;
+        ManageAllTurrets();
         ChangeVehicleMovement();
         //Check left over hp| if a lot of minus hp then blown up vehicle else slown down vehicle with fire in engine
         float leftoverhpMod = (Mathf.Abs((float)currentHealth) / (float)maxHealth);
@@ -96,6 +100,12 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     void BlowVehicle(float hp)
     {
         float leftoverhpMod = hp;
+        TurretBehaviour[] tBehs = GetComponentsInChildren<TurretBehaviour>();
+        foreach (TurretBehaviour t in tBehs)
+        {
+            t.Die();
+        }
+        int r = 1;
         Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {
@@ -104,7 +114,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
                 if (rb.GetComponent<VehiclePartBehaviour>() != null)
                 {                    
                     Destroy(rb.GetComponent<VehiclePartBehaviour>());
-                    int r = Random.Range(1, 5);
+                    r = Random.Range(1, 5);
                     //Debug.Log("r to destr = " + r);
                     if (r == 1)
                     {
@@ -113,11 +123,27 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
                     }
                 }
                 else
-                {                    
-                    Destroy(rb.GetComponent<FixedJoint>());                    
-                    rb.transform.SetParent(null, true);
-                    if (rb.GetComponent<Collider>() != null)
+                {
+                    if (rb.GetComponent<Collider>() != null && rb.GetComponent<Collider>().isTrigger == true)
+                    {
+                        Destroy(rb.GetComponent<FixedJoint>());
+                        rb.transform.SetParent(null, true);
                         rb.GetComponent<Collider>().isTrigger = false;
+                        rb.drag = 0.8f;
+                        rb.angularDrag = 0.1f;
+                        continue;
+                    }
+                    r = Random.Range(1, 11);
+                    if (r <= 8)
+                    {
+                        Destroy(rb.GetComponent<FixedJoint>());
+                        rb.transform.SetParent(null, true);
+                    }
+                    else
+                    {
+                        Destroy(rb.GetComponent<FixedJoint>());
+                        Destroy(rb);
+                    }
                 }
             }
             //if (rb != null && rb is WheelCollider)
@@ -166,12 +192,14 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     }
     void InitHealth()
     {
-        maxHealth = vehicleBaseStats.vehicleBaseHealth
-            + vehicleMovement.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth
-            + vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
+        maxHealth = vehicleBaseStats.vehicleBaseHealth;
+        maxHealth += vehicleMovement.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
+        if(vehicleMovement.bodyHolder != null && vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>() != null)
+            maxHealth += vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
     }
     public void ResetHealth()
     {
+        Debug.Log("Reseting health of " + gameObject.name);
         currentHealth = maxHealth;
     }
     #endregion Health

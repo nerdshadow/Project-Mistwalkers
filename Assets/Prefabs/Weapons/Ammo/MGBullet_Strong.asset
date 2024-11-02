@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf1fcd89407a4de45970a16c05ceda9d, type: 3}
+  m_Name: MGBullet_Strong
+  m_EditorClassIdentifier: 
+  ammoName: BasicAmmo
+  ammoDesc: Ammo for war
+  ammoType: 0
+  ammoDamage: 5
+  onHitImpulsePower: 50
+  recoilImpulsePower: 25
+  bulletTrailVfx_Prefab: {fileID: 1738409055553455178, guid: c463ea70c30cc6447937efd6b65fa631, type: 3}
+  trailLifetime: 0.1
+  shellPrefab: {fileID: 0}
+  shellSpeed: 100
+  shellLifeTime: 20
+  laserTrailVfx_Prefab: {fileID: 0}

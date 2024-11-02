@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf1fcd89407a4de45970a16c05ceda9d, type: 3}
-  m_Name: SimpleMGBullet_alt
+  m_Name: MGBullet_Weak
   m_EditorClassIdentifier: 
   ammoName: BasicAmmo
   ammoDesc: Ammo for war

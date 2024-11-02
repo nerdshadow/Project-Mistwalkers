@@ -767,6 +767,7 @@ GameObject:
   - component: {fileID: 436163806347410002}
   - component: {fileID: 2658533959521042396}
   - component: {fileID: 1365189564819071499}
+  - component: {fileID: 2595955465248002455}
   - component: {fileID: 1937096660923711801}
   - component: {fileID: 7097869696862099587}
   - component: {fileID: 149781563178489147}
@@ -861,8 +862,8 @@ MonoBehaviour:
   currentVehicleStats: {fileID: 11400000, guid: 85721aa2eda8d144d89a5ed43483bfbb, type: 2}
   turnWheels: []
   staticWheels: []
-  canDrive: 0
-  forceStop: 0
+  canDrive: 1
+  forceStop: 1
   useForce: 0
   followPointList: 0
   stopDistance: 5
@@ -876,9 +877,9 @@ MonoBehaviour:
   currentVehicleBase: {fileID: 0}
   cabHolder: {fileID: 4539315412361799609}
   cabBeh: {fileID: 0}
-  currentVehicleCab: {fileID: 0}
+  currentVehicleCab: {fileID: 9187707128748235780}
   bodyBeh: {fileID: 0}
-  bodyHolder: {fileID: 0}
+  bodyHolder: {fileID: 2655074423614112134}
   currentVehicleBody: {fileID: 0}
   accelerationSpeed: 6
   decelerationSpeed: 7
@@ -891,6 +892,32 @@ MonoBehaviour:
   velocityLimit: 0
   currentRpm: 0
   pushpower: 1000
+--- !u!114 &2595955465248002455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5393972700812242164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f829091638e36804f93374512e3568f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleMovement: {fileID: 0}
+  vehicleBaseStats: {fileID: 0}
+  vehicleDies:
+    m_PersistentCalls:
+      m_Calls: []
+  maxHealth: 10
+  currentHealth: 1
+  isDead: 0
+  timeToDecay: 1.1
+  combatEnabled: 1
+  testDamage: 10
+  testExplRad: 10
+  testExplForce: 1000
+  testExplUpForce: 3
 --- !u!54 &1937096660923711801
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1182,5 +1209,10 @@ PrefabInstance:
 --- !u!4 &3921674961604367005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7257980509351119400, guid: 34c6d569fadd25c4da8008fbf3c1e3a9, type: 3}
+  m_PrefabInstance: {fileID: 5968694783050111157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9187707128748235780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3266335394881406129, guid: 34c6d569fadd25c4da8008fbf3c1e3a9, type: 3}
   m_PrefabInstance: {fileID: 5968694783050111157}
   m_PrefabAsset: {fileID: 0}

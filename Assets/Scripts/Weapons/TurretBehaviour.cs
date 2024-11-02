@@ -82,7 +82,6 @@ public class TurretBehaviour : MonoBehaviour
     UnityAction MGShoot;
     UnityAction SShoot;
     UnityAction LShoot;
-
     private void OnValidate()
     {
         //Update things
@@ -159,7 +158,7 @@ public class TurretBehaviour : MonoBehaviour
         targetTrans = null;
         rotateByShort = true;
         toggleViewEye = false;
-        currentTurretState = TurretStates.Calm;
+        //currentTurretState = TurretStates.Calm;
     }
     public void ClearTarget(float time)
     {
@@ -171,15 +170,25 @@ public class TurretBehaviour : MonoBehaviour
     {
         if (targetTrans == null || targetTrans.GetComponent<VehiclePartCombatBehaviour>() == null || targetTrans.GetComponent<VehiclePartCombatBehaviour>().parentIsDead == true)
             FindTarget();
-        if (targetTrans != null && Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange * 1.1f)
+        if (targetTrans != null && Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange)
+        {
             ClearTarget();
+            FindTarget();
+        }
     }
     public void FindTarget()
     {
         Collider[] potTargets = Physics.OverlapSphere(centerOfArea.position, turretStats.maxRange * 1.1f);
         foreach (Collider potTarget in potTargets)
         {
-            if (potTarget.GetComponent<VehiclePartCombatBehaviour>() != null && potTarget.GetComponent<VehiclePartCombatBehaviour>().parentIsDead != true)
+            if(potTarget.transform.root == this.transform.root)
+                continue;
+            VehiclePartCombatBehaviour buffPart = potTarget.GetComponent<VehiclePartCombatBehaviour>();
+            if (buffPart == null)
+            {
+                continue;
+            }
+            if (buffPart.parentIsDead != true)
             {
                 ChangeTargetTo(potTarget.transform);
                 return;
@@ -192,7 +201,6 @@ public class TurretBehaviour : MonoBehaviour
     {
         if (targetTrans == null || canAim == false)
             return;
-
         //is our eye "active"
         if (toggleViewEye == true)
         {
@@ -210,14 +218,15 @@ public class TurretBehaviour : MonoBehaviour
             RotateHorLong();
 
         RotateVert();
-        float a = Vector3.Angle(VertTurret.transform.forward, (targetTrans.position - VertTurret.transform.position));
+        Vector3 rotateDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
+        float a = Vector3.Angle(VertTurret.transform.forward, rotateDir);
         if (a <= minReqAngle)
         {
             targetInAngle = true;
         }
         else
             targetInAngle = false;
-        //Debug.Log("Is in angle: " + a + " and " + targetInAngle);
+        Debug.Log("Is in angle: " + a + " and " + targetInAngle);
     }
     bool isObstacleToLeft()
     {
@@ -281,7 +290,7 @@ public class TurretBehaviour : MonoBehaviour
     bool ViewEyeCheckTarget(bool changesToRight)
     {
         Vector3 right = viewEye.transform.TransformDirection(transform.right);
-        Vector3 toTarget = Vector3.Normalize(targetTrans.position - viewEye.position);
+        Vector3 toTarget = Vector3.Normalize(targetTrans.GetComponent<Collider>().bounds.center - viewEye.position);
         float dot = Vector3.Dot(right, toTarget);
         //Debug.Log("Dot of turret " + dot);
 
@@ -338,7 +347,7 @@ public class TurretBehaviour : MonoBehaviour
 
         ObstacleCheck();
 
-        Vector3 targetDir = targetTrans.position - VertTurret.transform.position;
+        Vector3 targetDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
         Vector3 forward = VertTurret.transform.forward;
         float angleBetween = Vector3.Angle(targetDir, forward);
         float angleToRotate = 0f;
@@ -396,7 +405,7 @@ public class TurretBehaviour : MonoBehaviour
 
         ObstacleCheck();
 
-        Vector3 targetDir = targetTrans.position - VertTurret.transform.position;
+        Vector3 targetDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
         Vector3 forward = VertTurret.transform.forward;
         float angleBetween = Vector3.Angle(targetDir, forward);
         float angleToRotate = 0f;
@@ -442,7 +451,7 @@ public class TurretBehaviour : MonoBehaviour
     TargetDirection GetTargetDirection()
     {
         Vector3 right = HorTurret.transform.TransformDirection(transform.right);
-        Vector3 toTarget = Vector3.Normalize(targetTrans.position - transform.position);
+        Vector3 toTarget = Vector3.Normalize(targetTrans.GetComponent<Collider>().bounds.center - transform.position);
         float dot = Vector3.Dot(right, toTarget);
         //Debug.Log("Dot of turret " + dot);
 
@@ -463,7 +472,7 @@ public class TurretBehaviour : MonoBehaviour
         if (VertTurret == null)
             return;
 
-        Vector3 _lookDirection = (targetTrans.position - ghostVertRotator.transform.position).normalized;
+        Vector3 _lookDirection = (targetTrans.GetComponent<Collider>().bounds.center - ghostVertRotator.transform.position).normalized;
         Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
 
         ghostVertRotator.transform.rotation = Quaternion.RotateTowards(ghostVertRotator.transform.rotation, _lookRotation, turretStats.verticalSpeed);
@@ -512,11 +521,18 @@ public class TurretBehaviour : MonoBehaviour
             || reloading == true 
             || targetTrans == null)
             return;
+        //if()
         Shoot();
         StartCoroutine(Reload());
     }
+    bool SelfColliderOnTheWay()
+    {
+
+
+        return false;
+    }
     [ContextMenu("Shoot")]
-    public virtual void Shoot()
+    public void Shoot()
     {
         Debug.Log(this.name + " gun tried to shoot");
         if (fireRateType == FireRateType.Burst)
@@ -784,5 +800,26 @@ public class TurretBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(turretStats.reloadSpeed * 0.2f);
         shootAction.Invoke();
+    }
+    public void Die()
+    {
+        currentTurretState = TurretStates.Calm;
+        targetTrans = null;
+        canAim = false;
+        canFire = false;
+        transform.SetParent(null, true);
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject buffObj = null;
+            if (i == 0)
+                buffObj = HorTurret;
+            else if (i == 1)
+                buffObj = VertTurret;
+
+            buffObj.transform.SetParent(null, true);
+            buffObj.AddComponent<Rigidbody>();
+            buffObj.GetComponent<Rigidbody>().drag = 0.1f;
+        }
+
     }
 }
