@@ -1,10 +1,13 @@
-//using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+
 [SerializeField]
 public enum FireRateType
 {
@@ -72,6 +75,7 @@ public class TurretBehaviour : MonoBehaviour
     Vector3 currentSpread = Vector3.zero;
     Coroutine checkingTime = null;
     public Transform targetTrans = null;
+    Vector3 targetClosePoint = Vector3.zero;
     [HideInInspector]
     public Rigidbody bodyRb;
     public List<Transform> shootPoints = new List<Transform>();
@@ -168,17 +172,42 @@ public class TurretBehaviour : MonoBehaviour
     }
     void CheckingTarget()
     {
-        if (targetTrans == null || targetTrans.GetComponent<VehiclePartCombatBehaviour>() == null || targetTrans.GetComponent<VehiclePartCombatBehaviour>().parentIsDead == true)
+        if (targetTrans == null)
+        {
+            Debug.Log("Target is null");
             FindTarget();
+            return;
+        }
+        if (targetTrans.GetComponent<VehiclePartCombatBehaviour>() == null || targetTrans.GetComponent<VehiclePartCombatBehaviour>().parentIsDead == true)
+        {
+            if(targetTrans.GetComponentInParent<VehiclePartCombatBehaviour>() == null || targetTrans.GetComponentInParent<VehiclePartCombatBehaviour>().parentIsDead == true)
+            {
+                Debug.Log("Target dont have combat beh");
+                FindTarget();
+                return;                
+            }
+        }
         if (targetTrans != null && Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange)
         {
+            Debug.Log("Target is too far");
             ClearTarget();
             FindTarget();
+            return;
         }
-    }
+
+        if (targetTrans.GetComponent<Collider>() != null)
+        {
+            Debug.Log("Drawing and finding closepoint");
+            targetClosePoint = targetTrans.GetComponent<Collider>().ClosestPoint(VertTurret.transform.position);
+            Debug.DrawLine(VertTurret.transform.position,
+                targetTrans.GetComponent<Collider>().ClosestPoint(VertTurret.transform.position), Color.cyan, 0.01f);
+        }
+}
     public void FindTarget()
     {
         Collider[] potTargets = Physics.OverlapSphere(centerOfArea.position, turretStats.maxRange * 1.1f);
+        Collider nextTarget = null;
+        float lastDist = Mathf.Infinity;
         foreach (Collider potTarget in potTargets)
         {
             if(potTarget.transform.root == this.transform.root)
@@ -186,14 +215,28 @@ public class TurretBehaviour : MonoBehaviour
             VehiclePartCombatBehaviour buffPart = potTarget.GetComponent<VehiclePartCombatBehaviour>();
             if (buffPart == null)
             {
-                continue;
+                buffPart = potTarget.GetComponentInParent<VehiclePartCombatBehaviour>();
+                if(buffPart == null)
+                    continue;
             }
             if (buffPart.parentIsDead != true)
             {
-                ChangeTargetTo(potTarget.transform);
-                return;
+                //ChangeTargetTo(potTarget.transform);
+                //return;
+                float d = Vector3.Distance(potTarget.ClosestPointOnBounds(VertTurret.transform.position), VertTurret.transform.position);
+                if (d < lastDist)
+                {
+                    nextTarget = potTarget;
+                    lastDist = d;
+                }
             }
         }
+        if (nextTarget != null)
+        {
+            ChangeTargetTo(nextTarget.transform);
+            return;
+        }
+
         Debug.Log("No targets found");
         ClearTarget();
     }
@@ -218,7 +261,8 @@ public class TurretBehaviour : MonoBehaviour
             RotateHorLong();
 
         RotateVert();
-        Vector3 rotateDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
+        //Vector3 rotateDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
+        Vector3 rotateDir = targetClosePoint - VertTurret.transform.position;
         float a = Vector3.Angle(VertTurret.transform.forward, rotateDir);
         if (a <= minReqAngle)
         {
@@ -226,11 +270,12 @@ public class TurretBehaviour : MonoBehaviour
         }
         else
             targetInAngle = false;
-        Debug.Log("Is in angle: " + a + " and " + targetInAngle);
+        //Debug.Log("Is in angle: " + a + " and " + targetInAngle);
     }
     bool isObstacleToLeft()
     {
         // check if no colliders in left | if yes change rotation
+        Collider[] turretColls = GetComponentsInChildren<Collider>();
         RaycastHit hit;
         foreach (Transform shootPoint in shootPoints)
         {
@@ -246,8 +291,13 @@ public class TurretBehaviour : MonoBehaviour
                 Debug.DrawRay(shootPoint.position + (-shootPoint.forward * mod), -shootPoint.right * 0.1f, Color.red);
                 if (Physics.Raycast(shootPoint.position + (-shootPoint.forward * mod), -shootPoint.right, out hit, 0.1f))
                 {
-                    Debug.Log("Hit in left");
-                    return true;
+                    if (turretColls.Contains(hit.collider) == true)
+                        continue;
+                    else
+                    {
+                        Debug.Log("Hit in left");
+                        return true;
+                    }
                 }
             }
         }
@@ -257,6 +307,7 @@ public class TurretBehaviour : MonoBehaviour
     bool isObstacleToRight()
     {
         // check if no colliders in right | if yes change rotation
+        Collider[] turretColls = GetComponentsInChildren<Collider>();
         RaycastHit hit;
         foreach (Transform shootPoint in shootPoints)
         {
@@ -272,8 +323,13 @@ public class TurretBehaviour : MonoBehaviour
                 Debug.DrawRay(shootPoint.position + (-shootPoint.forward * mod), shootPoint.right * 0.1f, Color.blue);
                 if (Physics.Raycast(shootPoint.position + (-shootPoint.forward * mod), shootPoint.right, out hit, 0.1f))
                 {
-                    Debug.Log("Hit in right");
-                    return true;
+                    if (turretColls.Contains(hit.collider) == true)
+                        continue;
+                    else
+                    {
+                        Debug.Log("Hit in right");
+                        return true;
+                    }
                 }
             }
         }
@@ -284,13 +340,14 @@ public class TurretBehaviour : MonoBehaviour
     {
         //change rotation to where obstacle 
         viewEye.transform.rotation = VertTurret.transform.rotation;
-        Debug.Log("Rotated eye to " + viewEye.rotation);
+        //Debug.Log("Rotated eye to " + viewEye.rotation);
     }
     //check if target moved to the side of eye
     bool ViewEyeCheckTarget(bool changesToRight)
     {
         Vector3 right = viewEye.transform.TransformDirection(transform.right);
-        Vector3 toTarget = Vector3.Normalize(targetTrans.GetComponent<Collider>().bounds.center - viewEye.position);
+        //Vector3 toTarget = Vector3.Normalize(targetTrans.GetComponent<Collider>().bounds.center - viewEye.position);
+        Vector3 toTarget = Vector3.Normalize(targetClosePoint - viewEye.position);
         float dot = Vector3.Dot(right, toTarget);
         //Debug.Log("Dot of turret " + dot);
 
@@ -347,7 +404,8 @@ public class TurretBehaviour : MonoBehaviour
 
         ObstacleCheck();
 
-        Vector3 targetDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
+        //Vector3 targetDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
+        Vector3 targetDir = targetClosePoint - VertTurret.transform.position;
         Vector3 forward = VertTurret.transform.forward;
         float angleBetween = Vector3.Angle(targetDir, forward);
         float angleToRotate = 0f;
@@ -405,7 +463,8 @@ public class TurretBehaviour : MonoBehaviour
 
         ObstacleCheck();
 
-        Vector3 targetDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
+        //Vector3 targetDir = targetTrans.GetComponent<Collider>().bounds.center - VertTurret.transform.position;
+        Vector3 targetDir = targetClosePoint - VertTurret.transform.position;
         Vector3 forward = VertTurret.transform.forward;
         float angleBetween = Vector3.Angle(targetDir, forward);
         float angleToRotate = 0f;
@@ -451,7 +510,8 @@ public class TurretBehaviour : MonoBehaviour
     TargetDirection GetTargetDirection()
     {
         Vector3 right = HorTurret.transform.TransformDirection(transform.right);
-        Vector3 toTarget = Vector3.Normalize(targetTrans.GetComponent<Collider>().bounds.center - transform.position);
+        //Vector3 toTarget = Vector3.Normalize(targetTrans.GetComponent<Collider>().bounds.center - transform.position);
+        Vector3 toTarget = Vector3.Normalize(targetClosePoint - transform.position);
         float dot = Vector3.Dot(right, toTarget);
         //Debug.Log("Dot of turret " + dot);
 
@@ -472,7 +532,8 @@ public class TurretBehaviour : MonoBehaviour
         if (VertTurret == null)
             return;
 
-        Vector3 _lookDirection = (targetTrans.GetComponent<Collider>().bounds.center - ghostVertRotator.transform.position).normalized;
+        //Vector3 _lookDirection = (targetTrans.GetComponent<Collider>().bounds.center - ghostVertRotator.transform.position).normalized;
+        Vector3 _lookDirection = (targetClosePoint - ghostVertRotator.transform.position).normalized;
         Quaternion _lookRotation = Quaternion.LookRotation(_lookDirection);
 
         ghostVertRotator.transform.rotation = Quaternion.RotateTowards(ghostVertRotator.transform.rotation, _lookRotation, turretStats.verticalSpeed);
@@ -502,18 +563,6 @@ public class TurretBehaviour : MonoBehaviour
         //}
         VertTurret.transform.localEulerAngles = new Vector3(targetAngle, 0.0f, 0.0f);
     }
-    bool SomethingInTheWay()
-    {
-        //Collider[] colls = Physics.OverlapCapsule(VertTurret.transform.position, shootPoints[0].transform.position, 0.046f);
-        //foreach (Collider coll in colls)
-        //{
-        //    Debug.Log("Colliding with " + coll.gameObject.name);
-        //}
-        //if(colls.Length > 0)
-        //    return true;
-        //else return false;
-        return Physics.CheckCapsule(HorTurret.transform.position, shootPoints[0].transform.position, 0.046f);
-    }
     void TryToFire()
     {
         if (canFire == false 
@@ -521,13 +570,32 @@ public class TurretBehaviour : MonoBehaviour
             || reloading == true 
             || targetTrans == null)
             return;
-        //if()
+        ChangeShootPoint();
+        if (SelfColliderOnTheWay(currentShootPoint, 10f, 0.1f) == true)
+        {
+            Debug.Log("Self collider on the way of " + currentShootPoint.name);
+            return;
+        }
         Shoot();
         StartCoroutine(Reload());
     }
-    bool SelfColliderOnTheWay()
+    bool SelfColliderOnTheWay(Transform startTrans, float length, float radius)
     {
+        Vector3 startPoint = startTrans.position - startTrans.forward * 0.1f;
+        Vector3 endPoint = startTrans.position + startTrans.forward * length;
+        //Debug.DrawRay(startPoint, startTrans.forward * length, Color.green, 0.1f);
+        Debug.DrawLine(startPoint, endPoint, Color.green, 0.1f);
+        Collider[] turretColls = GetComponentsInChildren<Collider>();
+        Collider[] potColls = Physics.OverlapCapsule(startPoint, endPoint, radius);
+        foreach (Collider coll in potColls)
+        {
+            Debug.Log("Collider is " + coll + " parent is " + coll.transform.root);
+            if (turretColls.Contains(coll) == true)
+                continue;
 
+            if (coll.transform.root == this.transform.root)
+                return true;
+        }
 
         return false;
     }
@@ -559,10 +627,10 @@ public class TurretBehaviour : MonoBehaviour
         if (shootPoints.Count <= 1)
             return;
         lastShootPoint = currentShootPoint;
-        currentShootPoint = shootPoints[Random.Range(0, shootPoints.Count)];
+        currentShootPoint = shootPoints[UnityEngine.Random.Range(0, shootPoints.Count)];
         if (currentShootPoint == lastShootPoint)
         {
-            if (loopCount >= 64)
+            if (loopCount >= 32)
                 return;
 
             loopCount++;
@@ -574,7 +642,7 @@ public class TurretBehaviour : MonoBehaviour
         }
     }
     void ShootBullet()
-    {
+    {        
         GameObject currentBulletTrail;
         currentBulletTrail = Instantiate(ammoStats.bulletTrailVfx_Prefab, currentShootPoint.position, currentShootPoint.rotation);
         currentBulletTrail.GetComponent<BulletTrail>().lineLifetime = ammoStats.trailLifetime;
@@ -594,32 +662,33 @@ public class TurretBehaviour : MonoBehaviour
 
         ActivateRecoil();
 
-        Vector3 shootDir = currentShootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
-                                                        Random.Range(-currentSpread.y, currentSpread.y),
-                                                        Random.Range(-currentSpread.z, currentSpread.z));
+        Vector3 shootDir = currentShootPoint.forward + new Vector3(UnityEngine.Random.Range(-currentSpread.x, currentSpread.x),
+                                                        UnityEngine.Random.Range(-currentSpread.y, currentSpread.y),
+                                                        UnityEngine.Random.Range(-currentSpread.z, currentSpread.z));
         shootDir.Normalize();
         if (Physics.Raycast(currentShootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
         {
             currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
-
-            IDamageable potTarget = hit.collider.GetComponent<IDamageable>();
-            if (potTarget != null)
+            if (hit.collider.transform.root == this.transform.root)
             {
-                potTarget.DoDamage(ammoStats.ammoDamage);
+                Debug.Log("Hiting parent");
             }
             else
             {
-                potTarget = hit.collider.GetComponentInParent<IDamageable>();
+                IDamageable potTarget = hit.collider.GetComponent<IDamageable>();
                 if (potTarget != null)
                 {
                     potTarget.DoDamage(ammoStats.ammoDamage);
                 }
+                else
+                {
+                    potTarget = hit.collider.GetComponentInParent<IDamageable>();
+                    if (potTarget != null)
+                    {
+                        potTarget.DoDamage(ammoStats.ammoDamage);
+                    }
+                }
             }
-
-            //if (hit.collider.GetComponentInParent<CharacterStats>() != null)
-            //{
-            //    hit.collider.GetComponentInParent<CharacterStats>().ChangeHealth(-gunDamage);
-            //}
 
             //if (hit.collider.GetComponentInParent<Rigidbody>() != null)
             //{
@@ -641,21 +710,22 @@ public class TurretBehaviour : MonoBehaviour
             if (burstCurrentSize > 0)
                 StartCoroutine(BurstFireReload(MGShoot));
         }
-        ChangeShootPoint(); //Change after shoot
     }
     void ShootShell()
     {
         Debug.Log("Tried to shoot Shell");
 
-        Vector3 shootDir = currentShootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
-                                                         Random.Range(-currentSpread.y, currentSpread.y),
-                                                         Random.Range(-currentSpread.z, currentSpread.z));
+        Vector3 shootDir = currentShootPoint.forward + new Vector3(UnityEngine.Random.Range(-currentSpread.x, currentSpread.x),
+                                                         UnityEngine.Random.Range(-currentSpread.y, currentSpread.y),
+                                                         UnityEngine.Random.Range(-currentSpread.z, currentSpread.z));
         shootDir.Normalize();
 
         GameObject currentShell = Instantiate(ammoStats.shellPrefab, currentShootPoint.position, currentShootPoint.rotation);
         currentShell.transform.rotation = Quaternion.LookRotation(shootDir);
+        currentShell.GetComponent<ProjectileBehaviour>().operatorGO = this.transform.root.gameObject;
         currentShell.GetComponent<ProjectileBehaviour>().impulsePower = ammoStats.onHitImpulsePower;
         currentShell.GetComponent<ProjectileBehaviour>().projectileDamage = ammoStats.ammoDamage;
+        currentShell.GetComponent<ProjectileBehaviour>().lifetime = ammoStats.shellLifeTime;
         currentShell.GetComponent<Rigidbody>().AddForce(currentShell.transform.forward * ammoStats.shellSpeed);
         currentShell = null;
 
@@ -667,7 +737,6 @@ public class TurretBehaviour : MonoBehaviour
             if (burstCurrentSize > 0)
                 StartCoroutine(BurstFireReload(SShoot));
         }
-        ChangeShootPoint(); //Change after shoot
     }
     void ShootLaser()
     {
@@ -690,9 +759,9 @@ public class TurretBehaviour : MonoBehaviour
 
         ActivateRecoil();
 
-        Vector3 shootDir = currentShootPoint.forward + new Vector3(Random.Range(-currentSpread.x, currentSpread.x),
-                                                        Random.Range(-currentSpread.y, currentSpread.y),
-                                                        Random.Range(-currentSpread.z, currentSpread.z));
+        Vector3 shootDir = currentShootPoint.forward + new Vector3(UnityEngine.Random.Range(-currentSpread.x, currentSpread.x),
+                                                        UnityEngine.Random.Range(-currentSpread.y, currentSpread.y),
+                                                        UnityEngine.Random.Range(-currentSpread.z, currentSpread.z));
         shootDir.Normalize();
         if (Physics.Raycast(currentShootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
         {
@@ -736,7 +805,6 @@ public class TurretBehaviour : MonoBehaviour
             if (burstCurrentSize > 0)
                 StartCoroutine(BurstFireReload(LShoot));
         }
-        ChangeShootPoint(); //Change after shoot
     }
     public virtual void ActivateRecoil()
     {
@@ -822,4 +890,35 @@ public class TurretBehaviour : MonoBehaviour
         }
 
     }
+
+    #region Dev
+    public static Bounds GetCombinedBoundingBoxOfChildren(Transform root)
+    {
+        if (root == null)
+        {
+            throw new ArgumentException("The supplied transform was null");
+        }
+
+        List<Collider> colliders = new List<Collider>();
+        colliders.AddRange(root.GetComponentsInChildren<Collider>());
+        foreach (Collider coll in colliders.ToList())
+        {
+            if (coll.GetComponent<TurretBehaviour>() == true || coll.GetComponentInParent<TurretBehaviour>() == true)
+            {
+                colliders.Remove(coll);
+            }
+        }
+        if (colliders.Count == 0)
+        {
+            throw new ArgumentException("The supplied transform " + root?.name + " does not have any children with colliders");
+        }
+
+        Bounds totalBBox = colliders[0].bounds;
+        foreach (var collider in colliders)
+        {
+            totalBBox.Encapsulate(collider.bounds);
+        }
+        return totalBBox;
+    }
+    #endregion Dev
 }

@@ -8,66 +8,76 @@ public class ProjectileBehaviour : MonoBehaviour
     public int projectileDamage = 1;
     public float lifetime = 5f;
     public float impulsePower = 1f;
+    public GameObject operatorGO;
     private void Update()
     {
         lifetime -= Time.deltaTime;
         if (lifetime <= 0)
             Destroy(gameObject);
     }
-    protected Collider SomethingInFront()
-    {
-        RaycastHit hit;
-        Debug.DrawRay(this.transform.position, this.transform.forward, Color.magenta);
-        if (Physics.Raycast(this.transform.position, this.transform.forward, out hit, 2f * GetComponentInChildren<CapsuleCollider>().height))
-        {
-            GetComponent<Rigidbody>().position = hit.point;
-            return hit.collider;
-        }
-        return null;
-    }
-    protected void OnTriggerEnter(Collider other)
-    {
-        DoImpact(other);
-        //if (other.GetComponentInParent<CharacterStats>())
-        //{
-        //    other.GetComponentInParent<CharacterStats>().ChangeHealth(-projectileDamage);
-        //    Destroy(gameObject);
-        //}
-    }
+    //protected Collider SomethingInFront()
+    //{
+    //    RaycastHit hit;
+    //    Debug.DrawRay(this.transform.position, this.transform.forward, Color.magenta);
+    //    if (Physics.Raycast(this.transform.position, this.transform.forward, out hit, 2f * GetComponentInChildren<CapsuleCollider>().height))
+    //    {
+    //        GetComponent<Rigidbody>().position = hit.point;
+    //        return hit.collider;
+    //    }
+    //    return null;
+    //}
+    //protected void OnTriggerEnter(Collider other)
+    //{
+    //    DoImpact(other);
+    //    //if (other.GetComponentInParent<CharacterStats>())
+    //    //{
+    //    //    other.GetComponentInParent<CharacterStats>().ChangeHealth(-projectileDamage);
+    //    //    Destroy(gameObject);
+    //    //}
+    //}
     protected void OnCollisionEnter(Collision collision)
     {
         DoImpact(collision.collider);
-        //collision.collider.GetComponentInParent<IDestroyable>()?.ChangeHealth(-projectileDamage);
+        DoDamage(collision.collider);
+        //play VFX
         Destroy(gameObject);
     }
 
     void DoImpact(Collider collider)
     {
-        if (collider == null)
+        if (collider == null || collider.transform.root == operatorGO.transform)
             return;
-
-        if (collider.GetComponentInParent<Rigidbody>())
+        Rigidbody rb = collider.GetComponent<Rigidbody>();
+        if (rb == null)
+            rb = collider.GetComponentInParent<Rigidbody>();
+        if (rb != null)
         {
             Vector3 forceVector = (GetComponent<Rigidbody>().velocity - transform.position);
-            //if (collider.GetComponentInParent<CharacterStats>() != null)
-            //    forceVector.y = 0;
+
             forceVector = forceVector.normalized;
-            collider.GetComponentInParent<Rigidbody>().AddForce(forceVector * impulsePower, ForceMode.Impulse);
+            rb.AddForce(forceVector * impulsePower, ForceMode.Impulse);
         }
     }
     void DoDamage(Collider collider)
     {
-        IDamageable potTarget = collider.GetComponent<IDamageable>();
-        if (potTarget != null)
+        if (collider.transform.root == operatorGO.transform)
         {
-            potTarget.DoDamage(projectileDamage);
+            Debug.Log("Hiting parent");
         }
         else
         {
-            potTarget = collider.GetComponentInParent<IDamageable>();
+            IDamageable potTarget = collider.GetComponent<IDamageable>();
             if (potTarget != null)
             {
                 potTarget.DoDamage(projectileDamage);
+            }
+            else
+            {
+                potTarget = collider.GetComponentInParent<IDamageable>();
+                if (potTarget != null)
+                {
+                    potTarget.DoDamage(projectileDamage);
+                }
             }
         }
     }

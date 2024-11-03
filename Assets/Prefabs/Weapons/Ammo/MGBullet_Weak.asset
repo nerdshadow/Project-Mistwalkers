@@ -15,7 +15,7 @@ MonoBehaviour:
   ammoName: BasicAmmo
   ammoDesc: Ammo for war
   ammoType: 0
-  ammoDamage: 5
+  ammoDamage: 1
   onHitImpulsePower: 50
   recoilImpulsePower: 25
   bulletTrailVfx_Prefab: {fileID: 1738409055553455178, guid: c463ea70c30cc6447937efd6b65fa631, type: 3}
