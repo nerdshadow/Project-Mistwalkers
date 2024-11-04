@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8979607660839312062}
-  - component: {fileID: 4591983591749235614}
+  - component: {fileID: 8860681480244513609}
   - component: {fileID: 4483198741452030651}
   - component: {fileID: 5398902557624182912}
   m_Layer: 0
-  m_Name: GrenadeAmmo_Small
+  m_Name: Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 1502151620127457712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4591983591749235614
+--- !u!114 &8860681480244513609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,12 +44,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7505810916280048389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e18c9a9f2c09b5c4aa56b93331cfa554, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ae0a4c350242074dbb73020e185c900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectileDamage: 1
   lifetime: 5
   impulsePower: 1
+  explRadius: 0.1
+  operatorGO: {fileID: 0}
 --- !u!54 &4483198741452030651
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,6 +150,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 4132b53913572f941a6e851b5af6d076, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f2b20e14b866bcd47a4faf2fed816f15, type: 2}
     - target: {fileID: 919132149155446097, guid: 4132b53913572f941a6e851b5af6d076, type: 3}
       propertyPath: m_Name
       value: Ammo_Small

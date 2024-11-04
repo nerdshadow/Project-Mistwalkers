@@ -6,22 +6,14 @@ public class LevelManager : MonoBehaviour
 {
     public MapType mapType = MapType.Sand;
     public List<GameObject> tiles = new List<GameObject>();
-    //private void OnEnable()
-    //{
-    //    CreateLevelMap(mapType);
-    //}
-    public void CreateLevelMap(MapType _mapType)
+
+    private void OnEnable()
     {
-        switch (_mapType)
-        {
-            case MapType.Sand:
-                Instantiate(tiles[0]);
-                break;
-            case MapType.Stone:
-                Instantiate(tiles[1]);
-                break;
-            default:
-                break;
-        }
+        CreateNextChunkOfRoad();
+    }
+
+    void CreateNextChunkOfRoad()
+    {
+        
     }
 }

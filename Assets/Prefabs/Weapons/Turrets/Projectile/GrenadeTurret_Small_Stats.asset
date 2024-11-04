@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turretName: Grenade Turret Small
   turretDesc: Hand made turret
-  TurretType: 1
+  TurretType: 6
   TurretSize: 0
   weight: 50
   reloadSpeed: 1

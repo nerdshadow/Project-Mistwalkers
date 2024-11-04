@@ -117,14 +117,14 @@ public class TurretBehaviour : MonoBehaviour
 
         MGShoot += ShootBullet;
         SShoot += ShootShell;
-        LShoot += ShootLaser;
+        LShoot += ShootPenBeam;
 
     }
     private void OnDisable()
     {
         MGShoot -= ShootBullet;
         SShoot -= ShootShell;
-        LShoot -= ShootLaser;
+        LShoot -= ShootPenBeam;
     }
     private void Update()
     {
@@ -221,9 +221,9 @@ public class TurretBehaviour : MonoBehaviour
             }
             if (buffPart.parentIsDead != true)
             {
-                //ChangeTargetTo(potTarget.transform);
+                //ChangeTargetTo(potTargetCollls.transform);
                 //return;
-                float d = Vector3.Distance(potTarget.ClosestPointOnBounds(VertTurret.transform.position), VertTurret.transform.position);
+                float d = Vector3.Distance(potTarget.ClosestPoint(VertTurret.transform.position), VertTurret.transform.position);
                 if (d < lastDist)
                 {
                     nextTarget = potTarget;
@@ -610,11 +610,11 @@ public class TurretBehaviour : MonoBehaviour
             case AmmoType.Bullet:
                 ShootBullet();
                 break;
-            case AmmoType.CannonShell:
+            case AmmoType.Projectile:
                 ShootShell();
                 break;
-            case AmmoType.LaserBatteries:
-                ShootLaser();
+            case AmmoType.PenetrationBeam:
+                ShootPenBeam();
                 break;
             default:
                 Debug.Log(this.name + " gun dont have ammo type");
@@ -725,6 +725,7 @@ public class TurretBehaviour : MonoBehaviour
         currentShell.GetComponent<ProjectileBehaviour>().operatorGO = this.transform.root.gameObject;
         currentShell.GetComponent<ProjectileBehaviour>().impulsePower = ammoStats.onHitImpulsePower;
         currentShell.GetComponent<ProjectileBehaviour>().projectileDamage = ammoStats.ammoDamage;
+        currentShell.GetComponent<ProjectileBehaviour>().explRadius = ammoStats.shellExplRad;
         currentShell.GetComponent<ProjectileBehaviour>().lifetime = ammoStats.shellLifeTime;
         currentShell.GetComponent<Rigidbody>().AddForce(currentShell.transform.forward * ammoStats.shellSpeed);
         currentShell = null;
@@ -738,12 +739,14 @@ public class TurretBehaviour : MonoBehaviour
                 StartCoroutine(BurstFireReload(SShoot));
         }
     }
-    void ShootLaser()
+    void ShootPenBeam()
     {
         GameObject currentLaserTrail;
-        currentLaserTrail = Instantiate(ammoStats.laserTrailVfx_Prefab, currentShootPoint.position, currentShootPoint.rotation);
+        currentLaserTrail = Instantiate(ammoStats.beamTrailVfx_Prefab, currentShootPoint.position, currentShootPoint.rotation);
         currentLaserTrail.GetComponent<BulletTrail>().lineLifetime = ammoStats.trailLifetime;
         currentLaserTrail.GetComponent<LineRenderer>().SetPosition(0, currentShootPoint.position);
+        currentLaserTrail.GetComponent<LineRenderer>().startWidth = ammoStats.beamCapsuleRadius;
+        currentLaserTrail.GetComponent<LineRenderer>().endWidth = ammoStats.beamCapsuleRadius;
         currentLaserTrail.GetComponent<BulletTrail>().StartTimer();
         currentLaserTrail.SetActive(true);
 
@@ -763,48 +766,65 @@ public class TurretBehaviour : MonoBehaviour
                                                         UnityEngine.Random.Range(-currentSpread.y, currentSpread.y),
                                                         UnityEngine.Random.Range(-currentSpread.z, currentSpread.z));
         shootDir.Normalize();
-        if (Physics.Raycast(currentShootPoint.position, shootDir, out RaycastHit hit, turretStats.maxRange * 2f))
-        {
-            currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+        List<Collider> potTargets = new List<Collider>();
+        potTargets.AddRange(Physics.OverlapCapsule(currentShootPoint.position, currentShootPoint.position + (shootDir * turretStats.maxRange * 1.2f), ammoStats.beamCapsuleRadius));
 
-            IDamageable potTarget = hit.collider.GetComponent<IDamageable>();
+        currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, currentShootPoint.position + (shootDir * turretStats.maxRange * 1.2f));
+
+        List<Transform> parents = new List<Transform>();
+        foreach (Collider coll in potTargets.ToList())
+        {
+            if (coll == null || coll.transform.root == transform.root)
+            {
+                potTargets.Remove(coll);
+                continue;
+            }
+            IDamageable potTarget = coll.GetComponent<IDamageable>();
             if (potTarget != null)
             {
-                potTarget.DoDamage(ammoStats.ammoDamage);
+                if (parents.Contains(coll.transform.root) == false)
+                {
+                    potTarget.DoDamage(ammoStats.ammoDamage);
+                    parents.Add(coll.transform.root);
+                    ApplyImpactToTarget(coll);
+                }
+                else
+                    potTarget.DoDamage(1);
             }
             else
             {
-                potTarget = hit.collider.GetComponentInParent<IDamageable>();
-                if (potTarget != null)
+                potTarget = coll.GetComponentInParent<IDamageable>();
+                if (potTarget == null)
+                    continue;
+                if (parents.Contains(coll.transform.root) == false)
                 {
                     potTarget.DoDamage(ammoStats.ammoDamage);
+                    parents.Add(coll.transform.root);
+                    ApplyImpactToTarget(coll);
                 }
+                else
+                    potTarget.DoDamage(1);
             }
-
-            //if (hit.collider.GetComponentInParent<CharacterStats>() != null)
-            //{
-            //    hit.collider.GetComponentInParent<CharacterStats>().ChangeHealth(-gunDamage);
-            //}
-
-            //if (hit.collider.GetComponentInParent<Rigidbody>() != null)
-            //{
-            //    Vector3 forceVector = (hit.point - currentShootPoint.position);
-            //    if (hit.collider.GetComponentInParent<CharacterStats>() != null)
-            //        forceVector.y = 0;
-            //    forceVector = forceVector.normalized;
-            //    hit.collider.GetComponentInParent<Rigidbody>().AddForce(forceVector * impulsePower, ForceMode.Impulse);
-            //}
-        }
-        else
-        {
-            currentLaserTrail.GetComponent<LineRenderer>().SetPosition(1, currentShootPoint.position + (shootDir * turretStats.maxRange * 2f));
-        }
+        }       
         if (fireRateType == FireRateType.Burst)
         {
             burstCurrentSize -= 1;
             if (burstCurrentSize > 0)
                 StartCoroutine(BurstFireReload(LShoot));
         }
+    }
+    void ApplyImpactToTarget(Collider colliderHited)
+    {
+        if (colliderHited == null)
+            return;       
+
+        Vector3 forceVector = (colliderHited.ClosestPoint(currentShootPoint.position) - currentShootPoint.position);
+
+        forceVector = forceVector.normalized;
+        if (colliderHited.GetComponent<Rigidbody>() != null)
+            colliderHited.GetComponent<Rigidbody>().AddForce(forceVector * ammoStats.onHitImpulsePower, ForceMode.Impulse);
+        else if(colliderHited.GetComponentInParent<Rigidbody>() != null)
+            colliderHited.GetComponentInParent<Rigidbody>().AddForce(forceVector * ammoStats.onHitImpulsePower, ForceMode.Impulse);
     }
     public virtual void ActivateRecoil()
     {
@@ -890,7 +910,6 @@ public class TurretBehaviour : MonoBehaviour
         }
 
     }
-
     #region Dev
     public static Bounds GetCombinedBoundingBoxOfChildren(Transform root)
     {

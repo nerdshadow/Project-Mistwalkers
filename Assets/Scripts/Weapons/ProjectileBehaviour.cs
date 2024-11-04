@@ -8,8 +8,9 @@ public class ProjectileBehaviour : MonoBehaviour
     public int projectileDamage = 1;
     public float lifetime = 5f;
     public float impulsePower = 1f;
+    public float explRadius = 0.1f;
     public GameObject operatorGO;
-    private void Update()
+    protected virtual void Update()
     {
         lifetime -= Time.deltaTime;
         if (lifetime <= 0)
@@ -35,7 +36,7 @@ public class ProjectileBehaviour : MonoBehaviour
     //    //    Destroy(gameObject);
     //    //}
     //}
-    protected void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         DoImpact(collision.collider);
         DoDamage(collision.collider);
@@ -43,7 +44,7 @@ public class ProjectileBehaviour : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void DoImpact(Collider collider)
+    protected virtual void DoImpact(Collider collider)
     {
         if (collider == null || collider.transform.root == operatorGO.transform)
             return;
@@ -58,7 +59,7 @@ public class ProjectileBehaviour : MonoBehaviour
             rb.AddForce(forceVector * impulsePower, ForceMode.Impulse);
         }
     }
-    void DoDamage(Collider collider)
+    protected virtual void DoDamage(Collider collider)
     {
         if (collider.transform.root == operatorGO.transform)
         {

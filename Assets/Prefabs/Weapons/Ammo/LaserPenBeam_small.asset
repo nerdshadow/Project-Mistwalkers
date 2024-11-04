@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf1fcd89407a4de45970a16c05ceda9d, type: 3}
-  m_Name: LaserBatteries_Small
+  m_Name: LaserPenBeam_small
   m_EditorClassIdentifier: 
-  ammmoName: LaserBatteriesTest
+  ammoName: BasicAmmo
+  ammoDesc: Ammo for war
   ammoType: 2
-  ammoDamage: 1000
-  onHitImpulsePower: 1000
-  recoilImpulsePower: 100
+  ammoDamage: 10
+  onHitImpulsePower: 100
+  recoilImpulsePower: 5
   bulletTrailVfx_Prefab: {fileID: 1738409055553455178, guid: c463ea70c30cc6447937efd6b65fa631, type: 3}
-  trailLifetime: 0.1
+  trailLifetime: 1
   shellPrefab: {fileID: 0}
   shellSpeed: 100
-  laserTrailVfx_Prefab: {fileID: 1738409055553455178, guid: c463ea70c30cc6447937efd6b65fa631, type: 3}
+  shellLifeTime: 20
+  shellExplRad: 1
+  beamCapsuleRadius: 0.2
+  beamTrailVfx_Prefab: {fileID: 1738409055553455178, guid: 75f24bc43d3c64745b5c60216f035fac, type: 3}

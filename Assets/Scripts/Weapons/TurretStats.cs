@@ -5,9 +5,17 @@ using UnityEngine;
 
 public enum TurretType
 {
-    Machinegun = 0,
-    Cannon = 1,
-    Energy = 2
+    Machinegun,
+    Shotgun,
+    Snipergun,
+    Cannon,
+    AutoCannon,
+    RocketLauncher,
+    ProjectileLauncher,
+    LaserGun,
+    LaserCannon,
+    PlasmaCannon,
+    Electro
 }
 public enum TurretSize
 {

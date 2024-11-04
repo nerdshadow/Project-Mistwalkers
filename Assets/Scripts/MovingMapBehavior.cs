@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class MovingMapBehavior : MonoBehaviour
 {
+    public GameObject referenceObject = null;
+    public Transform lastRoadChunkTrans = null;
+    public float distanceToManageRoad = 30f;
     public List<GameObject> mapPiece = new List<GameObject>();
     public List<GameObject> currentMapPieces = new List<GameObject>();
     public float speed = 1.0f;
@@ -26,6 +29,21 @@ public class MovingMapBehavior : MonoBehaviour
         currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, 0), Quaternion.identity));
         currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, 25), Quaternion.identity));
     }
+    void CheckReference()
+    {
+        if(referenceObject == null)
+            return;
+        float distFromLastPieceToRef = 0;
+        distFromLastPieceToRef = Vector3.Distance(lastRoadChunkTrans.position, referenceObject.transform.position);
+        if (distFromLastPieceToRef >= distanceToManageRoad)
+        {
+            //add new road, delete last
+        }
+    }
+    void CreateNextRoadChunk()
+    {
+        
+    }
     void MovingMapPieces()
     {
         if (currentMapPieces.Count == 0)
@@ -40,7 +58,7 @@ public class MovingMapBehavior : MonoBehaviour
                 //DeleteMapPiece(mapPiece);
                 pieceToDelete.Add(mapPiece);
             }
-            mapPiece.transform.position += new Vector3(0, 0, -1 * speed);
+            mapPiece.transform.position += new Vector3(0, 0, -1 * speed) * Time.deltaTime;
         }
         foreach (GameObject mapPiece in pieceToDelete)
         {

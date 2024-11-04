@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turretName: Lasert Turret Small
   turretDesc: Hand made turret
-  TurretType: 0
+  TurretType: 8
   TurretSize: 0
   weight: 75
   reloadSpeed: 3

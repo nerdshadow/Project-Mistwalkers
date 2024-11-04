@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-    public enum AmmoType
-    {
-        Bullet = 0,
-        CannonShell = 1,
-        LaserBatteries = 2
-    }
+public enum AmmoType
+{
+    Bullet = 0,
+    Projectile = 1,
+    PenetrationBeam = 2
+}
 
 [CreateAssetMenu(fileName = "AmmoStats", menuName = "SO/CreateAmmoStatsSO")]
 public class AmmoStats : ScriptableObject, IItemInfo
@@ -57,11 +57,15 @@ public class AmmoStats : ScriptableObject, IItemInfo
     public float shellSpeed = 100f;
     [HideInInspector]
     public float shellLifeTime = 20f;
+    [HideInInspector]
+    public float shellExplRad = 1f;
     #endregion Shell
 
     #region Laser
     [HideInInspector]
-    public GameObject laserTrailVfx_Prefab;
+    public float beamCapsuleRadius = 0.2f;
+    [HideInInspector]
+    public GameObject beamTrailVfx_Prefab;
 
     #endregion Laser
 

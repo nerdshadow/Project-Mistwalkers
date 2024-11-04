@@ -24,17 +24,19 @@ public class AmmoCustomInspector : Editor
                     ammoStatsBuffer.trailLifetime = EditorGUILayout.FloatField("Trail Life Time", ammoStatsBuffer.trailLifetime);
                     break;
                 }
-            case AmmoType.CannonShell:
+            case AmmoType.Projectile:
                 {
                     ammoStatsBuffer.shellPrefab = (GameObject)EditorGUILayout.ObjectField("Shell Prefab", ammoStatsBuffer.shellPrefab, typeof(GameObject), true);
                     ammoStatsBuffer.shellSpeed = EditorGUILayout.FloatField("Shell speed", ammoStatsBuffer.shellSpeed);
                     ammoStatsBuffer.shellLifeTime= EditorGUILayout.FloatField("Shell lifetime", ammoStatsBuffer.shellLifeTime);
+                    ammoStatsBuffer.shellExplRad = EditorGUILayout.FloatField("Shell explosion radius", ammoStatsBuffer.shellExplRad);
                     break;
                 }
-            case AmmoType.LaserBatteries:
+            case AmmoType.PenetrationBeam:
                 {
-                    ammoStatsBuffer.laserTrailVfx_Prefab = (GameObject)EditorGUILayout.ObjectField("Laser TrailVFX", ammoStatsBuffer.laserTrailVfx_Prefab, typeof(GameObject), true);
+                    ammoStatsBuffer.beamTrailVfx_Prefab = (GameObject)EditorGUILayout.ObjectField("Laser TrailVFX", ammoStatsBuffer.beamTrailVfx_Prefab, typeof(GameObject), true);
                     ammoStatsBuffer.trailLifetime = EditorGUILayout.FloatField("Trail Life Time", ammoStatsBuffer.trailLifetime);
+                    ammoStatsBuffer.beamCapsuleRadius = EditorGUILayout.FloatField("Beam Radius", ammoStatsBuffer.beamCapsuleRadius);
                     break;
                 }
         }
