@@ -1,14 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class MovingMapBehavior : MonoBehaviour
 {
+    public bool isManagingRoad = true;
+    public bool isDeletingRoad = true;
     public GameObject referenceObject = null;
-    public Transform lastRoadChunkTrans = null;
-    public float distanceToManageRoad = 30f;
-    public List<GameObject> mapPiece = new List<GameObject>();
+    public Transform frontRoadChunkTrans = null;
+    public float distanceToCreateRoad = 50f;
+    public Transform backRoadChunkTrans = null;
+    public float distanceToDeleteRoad = 50f;
+    public List<GameObject> mapPieces = new List<GameObject>();
     public List<GameObject> currentMapPieces = new List<GameObject>();
     public float speed = 1.0f;
     void Start()
@@ -18,63 +21,67 @@ public class MovingMapBehavior : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        MovingMapPieces();   
+        if (isManagingRoad == false)
+            return;
+        CheckReference();
+        //MovingMapPieces();
     }
     void InitialCreateMap()
     {
-        if (mapPiece == null)
+        if (mapPieces == null)
             return;
 
-        currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, -25), Quaternion.identity));
-        currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, 0), Quaternion.identity));
-        currentMapPieces.Add(Instantiate(mapPiece[0], new Vector3(0, 0, 25), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, -25), Quaternion.identity));
+        backRoadChunkTrans = currentMapPieces[0].transform;
+        currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, 0), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, 25), Quaternion.identity));
+        frontRoadChunkTrans = currentMapPieces[2].transform;
     }
     void CheckReference()
     {
         if(referenceObject == null)
             return;
-        float distFromLastPieceToRef = 0;
-        distFromLastPieceToRef = Vector3.Distance(lastRoadChunkTrans.position, referenceObject.transform.position);
-        if (distFromLastPieceToRef >= distanceToManageRoad)
+        ManageCreatingRoad();
+        if(isDeletingRoad == true)
+            ManageDeletingRoad();
+    }
+    void ManageCreatingRoad()
+    {
+        float distFromFrontPieceToRef = 0;
+        distFromFrontPieceToRef = Vector3.Distance(frontRoadChunkTrans.position, referenceObject.transform.position);
+        if (distFromFrontPieceToRef <= distanceToCreateRoad)
         {
             //add new road, delete last
+            CreateNextRoadChunk();
         }
     }
     void CreateNextRoadChunk()
     {
-        
+        //create a map piece
+        //find possible chunk
+        //create chunk
+
+        //--- test
+        GameObject potRoadChunk = Instantiate(mapPieces[0], frontRoadChunkTrans.transform.position + new Vector3(0, 0, 25), Quaternion.identity);
+        currentMapPieces.Add(potRoadChunk);
+        frontRoadChunkTrans = potRoadChunk.transform;
+
+        potRoadChunk = null;
     }
-    void MovingMapPieces()
+    void ManageDeletingRoad()
     {
-        if (currentMapPieces.Count == 0)
-            return;
-        List<GameObject> pieceToDelete = new List<GameObject>();
-        foreach (GameObject mapPiece in currentMapPieces) 
+        float distanceFromBackPieceToRef = 0;
+        distanceFromBackPieceToRef = Vector3.Distance(backRoadChunkTrans.position, referenceObject.transform.position);
+        if (distanceFromBackPieceToRef >= distanceToDeleteRoad)
         {
-            if (mapPiece == null)
-                return;
-            if (mapPiece.transform.position.z <= -35)
-            {
-                //DeleteMapPiece(mapPiece);
-                pieceToDelete.Add(mapPiece);
-            }
-            mapPiece.transform.position += new Vector3(0, 0, -1 * speed) * Time.deltaTime;
-        }
-        foreach (GameObject mapPiece in pieceToDelete)
-        {
-            currentMapPieces.Remove(mapPiece);
-            DeleteMapPiece(mapPiece);
-            CreateNewMapPiece();
+            DeleteLastRoadChunk();    
         }
     }
-    void CreateNewMapPiece()
+    void DeleteLastRoadChunk()
     {
-        if (mapPiece == null)
-            return;
-        currentMapPieces.Add(Instantiate(mapPiece[Random.Range(0, (mapPiece.Count))], currentMapPieces.Last().transform.position + new Vector3(0, 0, 25), Quaternion.identity));
-    }
-    void DeleteMapPiece(GameObject _mapPiece)
-    {
-        Destroy(_mapPiece);
+        Debug.Log("Deleting road");
+        currentMapPieces.RemoveAt(0);
+        Destroy(backRoadChunkTrans.gameObject);
+        backRoadChunkTrans = currentMapPieces[0].transform;
     }
 }

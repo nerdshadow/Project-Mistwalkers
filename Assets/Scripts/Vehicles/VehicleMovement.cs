@@ -41,9 +41,9 @@ public class VehicleMovement : MonoBehaviour
     float currentTurnAngle = 0f;    
     public Rigidbody rigidBody;
     [SerializeField]
-    GameObject currentMoveTarget;
+    Transform currentMoveTarget;
     [SerializeField]
-    List<GameObject> moveTargets = new List<GameObject>();
+    List<Transform> moveTargets = new List<Transform>();
     Vector3 mainDifference;
     #endregion Stats
 
@@ -234,7 +234,7 @@ public class VehicleMovement : MonoBehaviour
         else
         {
             if (followPointList == true && (moveTargets.IndexOf(currentMoveTarget) < moveTargets.Count - 1))
-                currentMoveTarget = moveTargets[(moveTargets.IndexOf(currentMoveTarget) + 1)];
+                ChangeFollowTarget(moveTargets[(moveTargets.IndexOf(currentMoveTarget) + 1)]);
             else
             {
                 //if(followPointList == true)
@@ -417,6 +417,35 @@ public class VehicleMovement : MonoBehaviour
                 currentTorque = 0;
         }
     }
+    
+    void Turn(float _targetAngle, float _angleBetween)
+    {
+        if (vehicleIsBehind != true)
+            _targetAngle *= -1f;
+        if (currentTurnAngle > _targetAngle)
+        {
+            currentTurnAngle -= currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
+            if (_targetAngle > currentTurnAngle)
+                currentTurnAngle = _targetAngle;
+        }
+        else if (currentTurnAngle < _targetAngle)
+        {
+            currentTurnAngle += currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
+            if (_targetAngle < currentTurnAngle)
+                currentTurnAngle = _targetAngle;
+        }        
+    }
+    #region Navigation
+    public void ChangeFollowTarget(Transform _nextTarget)
+    {
+        if (_nextTarget == null)
+        {
+            Debug.LogWarning("Follow target is null");
+            return;
+        }
+
+        currentMoveTarget = _nextTarget;
+    }
     void CheckDirections()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -463,23 +492,7 @@ public class VehicleMovement : MonoBehaviour
         zDistance = Mathf.Abs(mainDifference.z);
         //Debug.Log("zDist = " + zDistance);
     }
-    void Turn(float _targetAngle, float _angleBetween)
-    {
-        if (vehicleIsBehind != true)
-            _targetAngle *= -1f;
-        if (currentTurnAngle > _targetAngle)
-        {
-            currentTurnAngle -= currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
-            if (_targetAngle > currentTurnAngle)
-                currentTurnAngle = _targetAngle;
-        }
-        else if (currentTurnAngle < _targetAngle)
-        {
-            currentTurnAngle += currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
-            if (_targetAngle < currentTurnAngle)
-                currentTurnAngle = _targetAngle;
-        }        
-    }
+    #endregion Navigation
     #region Checks
     [Space(10)]
     [Header("Checks")]
