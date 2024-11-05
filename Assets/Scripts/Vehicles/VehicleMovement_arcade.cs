@@ -1085,7 +1085,15 @@ public class VehicleMovement_arcade : MonoBehaviour
 
     void CalculateAxleForces(Axle axle, int totalWheelsCount, int numberOfPoweredWheels)
     {
-        Vector3 wsDownDirection = transform.TransformDirection(Vector3.down);
+        //Vector3 wsDownDirection = transform.TransformDirection(Vector3.down);
+        //wsDownDirection.Normalize();
+
+        Vector3 dd = transform.TransformDirection(Vector3.down);
+        float mul = 1000f;
+
+        Vector3 wsDownDirection = new Vector3(Mathf.Round((dd.x * mul) / mul), 
+                                                Mathf.Round((dd.y * mul) / mul),
+                                                Mathf.Round((dd.z * mul) / mul));
         wsDownDirection.Normalize();
 
         Vector3 localL = new Vector3(axle.width * -0.5f, axle.offset.y, axle.offset.x);
@@ -1235,7 +1243,16 @@ public class VehicleMovement_arcade : MonoBehaviour
 
     void ApplyVisual()
     {
-        Vector3 wsDownDirection = transform.TransformDirection(Vector3.down);
+        //Vector3 wsDownDirection = transform.TransformDirection(Vector3.down);
+        //wsDownDirection.Normalize();
+
+
+        Vector3 dd = transform.TransformDirection(Vector3.down);
+        float mul = 1000f;
+
+        Vector3 wsDownDirection = new Vector3(Mathf.Round((dd.x * mul) / mul),
+                                                Mathf.Round((dd.y * mul) / mul),
+                                                Mathf.Round((dd.z * mul) / mul));
         wsDownDirection.Normalize();
 
         for (int axleIndex = 0; axleIndex < axles.Length; axleIndex++)
