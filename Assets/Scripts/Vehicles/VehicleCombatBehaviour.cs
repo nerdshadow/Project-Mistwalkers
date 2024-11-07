@@ -106,54 +106,36 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
             t.Die();
         }
         int r = 1;
-        Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
-        foreach (Rigidbody rb in rbs)
+
+        VehiclePartCombatBehaviour[] vpcBehs = GetComponentsInChildren<VehiclePartCombatBehaviour>();
+        foreach (VehiclePartCombatBehaviour vpcBeh in vpcBehs)
         {
-            if (rb.GetComponent<FixedJoint>() != null)
+            if(vpcBeh == null)
+                continue;
+
+            if (vpcBeh.GetComponent<VehiclePartBehaviour>() != null)
+            {                    
+                Destroy(vpcBeh.GetComponent<VehiclePartBehaviour>());
+                r = Random.Range(1, 5);
+                //Debug.Log("r to destr = " + r);
+                if (r == 1)
+                {
+                    vpcBeh.DetachPart();
+                }
+            }
+            else
             {
-                if (rb.GetComponent<VehiclePartBehaviour>() != null)
-                {                    
-                    Destroy(rb.GetComponent<VehiclePartBehaviour>());
-                    r = Random.Range(1, 5);
-                    //Debug.Log("r to destr = " + r);
-                    if (r == 1)
-                    {
-                        Destroy(rb.GetComponent<FixedJoint>());
-                        rb.transform.SetParent(null, true);
-                    }
+                r = Random.Range(1, 11);
+                if (r <= 8)
+                {
+                    vpcBeh.DetachPart();
                 }
                 else
                 {
-                    if (rb.GetComponent<Collider>() != null && rb.GetComponent<Collider>().isTrigger == true)
-                    {
-                        Destroy(rb.GetComponent<FixedJoint>());
-                        rb.transform.SetParent(null, true);
-                        rb.GetComponent<Collider>().isTrigger = false;
-                        rb.drag = 0.8f;
-                        rb.angularDrag = 0.1f;
-                        continue;
-                    }
-                    r = Random.Range(1, 11);
-                    if (r <= 8)
-                    {
-                        Destroy(rb.GetComponent<FixedJoint>());
-                        rb.transform.SetParent(null, true);
-                    }
-                    else
-                    {
-                        Destroy(rb.GetComponent<FixedJoint>());
-                        Destroy(rb);
-                    }
+                    Destroy(vpcBeh);
                 }
             }
-            //if (rb != null && rb is WheelCollider)
-            //{
-            //    Destroy(rb.transform.parent.gameObject);
-            //}
-            rb.drag = 0.8f;
-            rb.angularDrag = 0.1f;
         }
-        //gameObject.transform.DetachChildren();
         //Add explosion for effect
         Vector3 pointOfEffect = transform.position;
         pointOfEffect = GetComponent<Rigidbody>().worldCenterOfMass;
@@ -168,7 +150,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
 
             if (rb != null)
             {
-                //Debug.Log(rb.name);
+                //Debug.Log(vpcBeh.name);
                 rb.AddExplosionForce(testExplForce * rb.mass * leftoverhpMod, pointOfEffect, testExplRad, testExplUpForce * rb.mass);
             }
         }

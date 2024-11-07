@@ -1,8 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
 {
+    VehiclePartBehaviour vehiclePartBeh = null;
     [SerializeField]
     int partMaxHealth = 10;
     [SerializeField]
@@ -25,6 +26,8 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
         if (GetComponentInParent<VehicleCombatBehaviour>() == null)
             return;
         GetComponentInParent<VehicleCombatBehaviour>().vehicleDies.AddListener(ParentDies);
+
+        vehiclePartBeh = GetComponent<VehiclePartBehaviour>();
     }
     private void OnDisable()
     {
@@ -81,15 +84,16 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
 
     }
 
-    private void DetachPart()
-    {
-        FixedJoint joint = GetComponent<FixedJoint>();
-        DestroyImmediate(joint);
-        Rigidbody body = GetComponent<Rigidbody>();
-        body.drag = 0.1f;
-        body.angularDrag = 0.1f;
+    public void DetachPart()
+    {        
+        Rigidbody body = this.gameObject.AddComponent<Rigidbody>();
+        if(vehiclePartBeh != null)
+            body.mass = vehiclePartBeh.partStats.partMass;
+        else body.mass = 1f;
+        body.drag = 0.3f;
+        body.angularDrag = 0.2f;
         this.transform.SetParent(null, true);
-        Vector3 pointOfEffect = GetComponent<Rigidbody>().worldCenterOfMass;
+        Vector3 pointOfEffect = body.worldCenterOfMass;
         pointOfEffect = new Vector3(pointOfEffect.x + 1 * Random.Range(-1f, 1f),
                                     pointOfEffect.y + 1 * Random.Range(-1f, -0.1f),
                                     pointOfEffect.z + 1 * Random.Range(-1f, 1f));

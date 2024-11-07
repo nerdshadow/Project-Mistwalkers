@@ -8,8 +8,6 @@ public class MoveRigidbody : MonoBehaviour
     void MoveRigid()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        rb.Sleep();
         rb.MovePosition(rb.position + new Vector3(0, 0.02f, 1f));
-        rb.WakeUp();
     }
 }

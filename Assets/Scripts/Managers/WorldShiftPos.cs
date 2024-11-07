@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class WorldShiftPos : MonoBehaviour
 {
     [Tooltip("Point of reference from which to check the distance to origin.")]
-    public Transform ReferenceObject = null;
+    public Transform referenceObject = null;
 
     [Tooltip("Distance from the origin the reference object must be in order to trigger an origin shift.")]
     public float Threshold = 4096f;
@@ -35,10 +35,10 @@ public class WorldShiftPos : MonoBehaviour
 
     void LateUpdate()
     {
-        if (ReferenceObject == null)
+        if (referenceObject == null)
             return;
 
-        Vector3 referencePosition = ReferenceObject.position;
+        Vector3 referencePosition = referenceObject.position;
 
         if (Use2DDistance)
             referencePosition.y = 0f;
@@ -60,21 +60,45 @@ public class WorldShiftPos : MonoBehaviour
 
     private void MoveRootTransforms(Vector3 offset)
     {
+        Vector3 newLoc = Vector3.zero;
         if (UpdateAllScenes)
         {
             for (int z = 0; z < SceneManager.sceneCount; z++)
             {
                 foreach (GameObject g in SceneManager.GetSceneAt(z).GetRootGameObjects())
-                    g.transform.position -= offset;
+                {
+                    Debug.Log("Root object " + g);
+                    if (g.GetComponent<Rigidbody>() != null)
+                    {
+                        Rigidbody rb = g.GetComponent<Rigidbody>();
+                        newLoc = rb.position - new Vector3(0, 0, offset.z);
+                        rb.position = newLoc;
+
+                        //continue;
+                    }
+                    newLoc = g.transform.position - new Vector3(0, 0, offset.z);
+                    g.transform.position = newLoc;
+                }                    
             }
         }
         else
         {
             foreach (GameObject g in SceneManager.GetActiveScene().GetRootGameObjects())
-                g.transform.position -= offset;
+            {
+                Debug.Log("Root object " + g);
+                if (g.GetComponent<Rigidbody>() != null)
+                {
+                    Rigidbody rb = g.GetComponent<Rigidbody>();
+                    newLoc = rb.position - new Vector3(0, 0, offset.z);
+                    rb.position = newLoc;
+
+                    //continue;
+                }
+                newLoc = g.transform.position - new Vector3(0, 0, offset.z);
+                g.transform.position = newLoc;
+            }
         }
     }
-
     private void MoveTrailRenderers(Vector3 offset)
     {
         var trails = FindObjectsOfType<TrailRenderer>() as TrailRenderer[];

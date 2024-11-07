@@ -12,12 +12,20 @@ public class WheelBehaviour : MonoBehaviour
         //Debug.Log("Wheel disables");
         vehicleColliders = new List<Collider>();
     }
-    private void Awake()
-    {
-        //Debug.Log("Wheel enables");
-        ReManageWheelColliders();
-        //currentWheelColl.ConfigureVehicleSubsteps(2, 2, 2);
-    }
+    //private void Awake()
+    //{
+    //    //Debug.Log("Wheel enables");
+    //    ReManageWheelColliders();
+    //    //currentWheelColl.ConfigureVehicleSubsteps(2, 2, 2);
+    //}
+    //private void Start()
+    //{
+    //    ReManageWheelColliders();
+    //}
+    //private void OnEnable()
+    //{
+    //    ReManageWheelColliders();
+    //}
 
     private void Update()
     {

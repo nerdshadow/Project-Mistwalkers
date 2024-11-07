@@ -170,8 +170,6 @@ GameObject:
   - component: {fileID: 2007325383996674629}
   - component: {fileID: 6251697742605171323}
   - component: {fileID: 8848940246445332849}
-  - component: {fileID: 1912824447105435927}
-  - component: {fileID: 6640001694697002912}
   - component: {fileID: 8223086108548698928}
   m_Layer: 0
   m_Name: MuleMirror_L
@@ -246,48 +244,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &1912824447105435927
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 966031433263406370}
-  serializedVersion: 4
-  m_Mass: 5
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &6640001694697002912
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 966031433263406370}
-  m_ConnectedBody: {fileID: 7819958614258038120}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!114 &8223086108548698928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +260,7 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 1
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10
 --- !u!1 &1671045166736711842
 GameObject:
@@ -717,8 +674,6 @@ GameObject:
   - component: {fileID: 166644048667940018}
   - component: {fileID: 5164086878096474760}
   - component: {fileID: 8858625424806654095}
-  - component: {fileID: 2290502212605579468}
-  - component: {fileID: 7112149351055173271}
   - component: {fileID: 490319946157907817}
   m_Layer: 0
   m_Name: MuleMirror_R
@@ -793,48 +748,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &2290502212605579468
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3135985308188984848}
-  serializedVersion: 4
-  m_Mass: 5
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &7112149351055173271
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3135985308188984848}
-  m_ConnectedBody: {fileID: 7819958614258038120}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!114 &490319946157907817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -851,6 +764,7 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 1
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10
 --- !u!1 &3346648094307796825
 GameObject:
@@ -916,8 +830,6 @@ GameObject:
   - component: {fileID: 2404161168146575105}
   - component: {fileID: 567724368758378367}
   - component: {fileID: 5886130368014959873}
-  - component: {fileID: 4730845292690040612}
-  - component: {fileID: 8119243011986993877}
   - component: {fileID: 4022524143961850334}
   m_Layer: 0
   m_Name: MuleBumper
@@ -992,48 +904,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &4730845292690040612
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3467224958322510336}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &8119243011986993877
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3467224958322510336}
-  m_ConnectedBody: {fileID: 7819958614258038120}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!114 &4022524143961850334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,6 +920,7 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 1
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10
 --- !u!1 &5121533166417868027
 GameObject:
@@ -1062,8 +933,6 @@ GameObject:
   - component: {fileID: 5948290710578803765}
   - component: {fileID: 759547697450498284}
   - component: {fileID: 8986749580472171997}
-  - component: {fileID: 2708513995936996593}
-  - component: {fileID: 6286549096909854991}
   - component: {fileID: 5231394016376116592}
   - component: {fileID: 2770448329625478327}
   m_Layer: 0
@@ -1138,48 +1007,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &2708513995936996593
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121533166417868027}
-  serializedVersion: 4
-  m_Mass: 2
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &6286549096909854991
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121533166417868027}
-  m_ConnectedBody: {fileID: 7819958614258038120}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!65 &5231394016376116592
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1217,6 +1044,7 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 1
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10
 --- !u!1 &5339831645677519633
 GameObject:
@@ -1231,9 +1059,6 @@ GameObject:
   - component: {fileID: 6431283645420960004}
   - component: {fileID: 7259302291381086888}
   - component: {fileID: 7656144325292886451}
-  - component: {fileID: 7819958614258038120}
-  - component: {fileID: 4677545555222215578}
-  - component: {fileID: 6417734240650462439}
   m_Layer: 0
   m_Name: Mule_Cab
   m_TagString: Untagged
@@ -1329,7 +1154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partStats: {fileID: 11400000, guid: 5b73aa18f2b00f94e85046c609e9062e, type: 2}
   partType: 0
-  rigidBody: {fileID: 7819958614258038120}
   currentBase: {fileID: 0}
 --- !u!114 &7656144325292886451
 MonoBehaviour:
@@ -1347,61 +1171,8 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 0
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10
---- !u!54 &7819958614258038120
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5339831645677519633}
-  serializedVersion: 4
-  m_Mass: 500
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: -0.2, z: -0.23}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 0
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &4677545555222215578
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5339831645677519633}
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
---- !u!114 &6417734240650462439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5339831645677519633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 880555c799f67564f9c8a3de8804e1d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5864795574266106741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,8 +1238,6 @@ GameObject:
   - component: {fileID: 251790872059605342}
   - component: {fileID: 260791597913918472}
   - component: {fileID: 8801071440285168094}
-  - component: {fileID: 2440224257470414822}
-  - component: {fileID: 4942316765677185825}
   - component: {fileID: 1762055152220804946}
   m_Layer: 0
   m_Name: MulePipe
@@ -1565,48 +1334,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.08376989, y: 1.0515203, z: -0.1006203}
---- !u!54 &2440224257470414822
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6186890417206230321}
-  serializedVersion: 4
-  m_Mass: 20
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &4942316765677185825
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6186890417206230321}
-  m_ConnectedBody: {fileID: 7819958614258038120}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!114 &1762055152220804946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1623,6 +1350,7 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 1
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10
 --- !u!1 &6537629229084891545
 GameObject:
@@ -1688,8 +1416,6 @@ GameObject:
   - component: {fileID: 8177786345802524743}
   - component: {fileID: 2464743605947770958}
   - component: {fileID: 8450224698139902799}
-  - component: {fileID: 3235014787404949714}
-  - component: {fileID: 1320311659985644773}
   - component: {fileID: 792138878226404786}
   - component: {fileID: 4820704100589870057}
   - component: {fileID: 3743099154064553567}
@@ -1765,48 +1491,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &3235014787404949714
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6976589937354845359}
-  serializedVersion: 4
-  m_Mass: 15
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &1320311659985644773
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6976589937354845359}
-  m_ConnectedBody: {fileID: 7819958614258038120}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!65 &792138878226404786
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1865,6 +1549,7 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 1
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10
 --- !u!1 &7066870467611523708
 GameObject:
@@ -2016,8 +1701,6 @@ GameObject:
   - component: {fileID: 963260397031645823}
   - component: {fileID: 2965447678329894666}
   - component: {fileID: 2846269780710201610}
-  - component: {fileID: 4183941630133644103}
-  - component: {fileID: 897359521983149278}
   - component: {fileID: 8506688050371612328}
   - component: {fileID: 7908358127036839924}
   - component: {fileID: 8243224497615204074}
@@ -2093,48 +1776,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &4183941630133644103
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032007824962699711}
-  serializedVersion: 4
-  m_Mass: 15
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &897359521983149278
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032007824962699711}
-  m_ConnectedBody: {fileID: 7819958614258038120}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!65 &8506688050371612328
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2193,4 +1834,5 @@ MonoBehaviour:
   partCurrentHealth: 10
   isDetachable: 1
   isDestroyed: 0
+  parentIsDead: 0
   debugDmg: 10

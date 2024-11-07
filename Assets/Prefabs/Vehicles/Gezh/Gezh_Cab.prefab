@@ -628,8 +628,6 @@ GameObject:
   - component: {fileID: 5782945321419252299}
   - component: {fileID: 3053057404943854317}
   - component: {fileID: 6395980938101608400}
-  - component: {fileID: 3384420637347642535}
-  - component: {fileID: 4229494521440268860}
   m_Layer: 0
   m_Name: Gezh_Cab
   m_TagString: Untagged
@@ -728,7 +726,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partStats: {fileID: 11400000, guid: c9056027060212240aa7e7e8fd045985, type: 2}
   partType: 0
-  rigidBody: {fileID: 3384420637347642535}
   currentBase: {fileID: 0}
 --- !u!114 &6395980938101608400
 MonoBehaviour:
@@ -748,48 +745,6 @@ MonoBehaviour:
   isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
---- !u!54 &3384420637347642535
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3266335394881406129}
-  serializedVersion: 4
-  m_Mass: 400
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &4229494521440268860
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3266335394881406129}
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!1 &3681335989613545968
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,10 +12,7 @@ GameObject:
   - component: {fileID: 1842739519831254806}
   - component: {fileID: 1149936646977390885}
   - component: {fileID: 2421486625833873267}
-  - component: {fileID: 1572894481050417932}
-  - component: {fileID: 1984177692774434668}
   - component: {fileID: 6965691379888700069}
-  - component: {fileID: 6763838632559992638}
   m_Layer: 0
   m_Name: Caterpillar_Body
   m_TagString: Untagged
@@ -109,50 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partStats: {fileID: 11400000, guid: 5fb40118446c96441b5e2ed9fd672ffd, type: 2}
   partType: 1
-  rigidBody: {fileID: 1572894481050417932}
   currentBase: {fileID: 0}
---- !u!54 &1572894481050417932
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2340046302237935110}
-  serializedVersion: 4
-  m_Mass: 800
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0.4, z: 0.4}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 0
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &1984177692774434668
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2340046302237935110}
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!65 &6965691379888700069
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -174,18 +128,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2.3, z: 4}
   m_Center: {x: 0, y: 0.85, z: 0.61}
---- !u!114 &6763838632559992638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2340046302237935110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 880555c799f67564f9c8a3de8804e1d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3145759303437295892
 GameObject:
   m_ObjectHideFlags: 0

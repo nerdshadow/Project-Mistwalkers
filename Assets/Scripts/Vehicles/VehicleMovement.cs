@@ -94,6 +94,7 @@ public class VehicleMovement : MonoBehaviour
 
         foreach (var potWheel in GetComponentsInChildren<WheelBehaviour>())
         {
+            potWheel.ReManageWheelColliders();
             if (potWheel.isTurningWheel == true)
             {
                 turnWheels.Add(potWheel.currentWheelColl);

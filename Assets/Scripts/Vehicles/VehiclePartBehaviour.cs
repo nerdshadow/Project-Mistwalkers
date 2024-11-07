@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(FixedJoint))]
 public class VehiclePartBehaviour : MonoBehaviour
 {
     [Header("Stats")]
     [Space(5)]    
     public VehiclePartStats partStats = null;
     public PartType partType = PartType.Cab;
-    [SerializeField]
-    Rigidbody rigidBody;
     [SerializeField]
     VehicleMovement currentBase = null;
     [Header("Weapons")]
@@ -28,12 +24,6 @@ public class VehiclePartBehaviour : MonoBehaviour
     }
     void UpdateComp()
     {
-        if (rigidBody == null)
-            rigidBody = GetComponent<Rigidbody>();
-        if (rigidBody != null && partStats != null)
-        {
-            rigidBody.mass = partStats.partMass;
-        }
         if(partStats != null)
         {
             partType = partStats.partType;
@@ -55,7 +45,7 @@ public class VehiclePartBehaviour : MonoBehaviour
         }
         if (currentBase != null)
         {
-            GetComponent<FixedJoint>().connectedBody = currentBase.rigidBody;
+            
         }
         if (weaponHolders.Count != 0)
         {
