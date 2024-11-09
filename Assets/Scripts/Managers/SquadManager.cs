@@ -7,7 +7,68 @@ public class SquadManager : MonoBehaviour
 {
     public List<VehicleMovement> vehicleSquad = new List<VehicleMovement>();
     public VehicleMovement leaderVehicle;
+    public GameObject targetPrefab;
+    public Transform mainTargetToFollow = null;
+    public List<Transform> squadMemsPositions = new List<Transform>();
 
+    private void OnEnable()
+    {
+        mainTargetToFollow = Instantiate(targetPrefab.transform);
+        ChangeTargetsToFollow();
+    }
+    private void FixedUpdate()
+    {
+        ManageSquadDistance();
+    }
+    void ChangeTargetsToFollow()
+    {
+        if(mainTargetToFollow == null)
+            return;
+        for (int i = 0; i < vehicleSquad.Count; i++)
+        {
+
+        }
+
+        leaderVehicle.ChangeFollowTarget(mainTargetToFollow);
+        leaderVehicle.followSquadPosition = false;
+        mainTargetToFollow.GetComponent<MoveTarget>().reference = leaderVehicle.transform;
+        mainTargetToFollow.GetComponent<MoveTarget>().moveByReference = true;
+        mainTargetToFollow.transform.position = new Vector3(leaderVehicle.transform.position.x,
+                                                                leaderVehicle.transform.position.y,
+                                                                mainTargetToFollow.transform.position.z);
+        for (int i = 0; i < vehicleSquad.Count; i++)
+        {
+        }
+
+        foreach (VehicleMovement vehicleMovement in vehicleSquad)
+        {
+            if(vehicleMovement.currentMoveTarget != null)
+                continue;
+            Transform addTarget = Instantiate(targetPrefab.transform);
+            vehicleMovement.ChangeFollowTarget(addTarget);
+            vehicleMovement.followSquadPosition = true;
+            addTarget.GetComponent<MoveTarget>().reference = vehicleMovement.transform;
+            addTarget.GetComponent<MoveTarget>().moveByReference = true;
+            addTarget.transform.position = new Vector3(vehicleMovement.transform.position.x,
+                                                                vehicleMovement.transform.position.y,
+                                                                addTarget.transform.position.z);
+        }
+    }
+    void ManageSquadDistance()
+    {
+        foreach (VehicleMovement vehicleMovement in vehicleSquad)
+        {
+            if(vehicleMovement == leaderVehicle)
+                continue;
+            float distZ = leaderVehicle.transform.position.z - vehicleMovement.transform.position.z;
+            //Debug.Log(vehicleMovement.gameObject.name + " is " + distZ +" away" );
+            if (distZ > 10)
+            { 
+                //Unblock max speed for vehicle
+                
+            }
+        }
+    }
     public void ChangeSquad(List<VehicleMovement> newSquad)
     {
         vehicleSquad = new List<VehicleMovement>();

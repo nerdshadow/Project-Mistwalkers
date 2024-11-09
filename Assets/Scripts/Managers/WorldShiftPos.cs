@@ -67,7 +67,7 @@ public class WorldShiftPos : MonoBehaviour
             {
                 foreach (GameObject g in SceneManager.GetSceneAt(z).GetRootGameObjects())
                 {
-                    Debug.Log("Root object " + g);
+                    //Debug.Log("Root object " + g);
                     if (g.GetComponent<Rigidbody>() != null)
                     {
                         Rigidbody rb = g.GetComponent<Rigidbody>();
@@ -85,7 +85,7 @@ public class WorldShiftPos : MonoBehaviour
         {
             foreach (GameObject g in SceneManager.GetActiveScene().GetRootGameObjects())
             {
-                Debug.Log("Root object " + g);
+                //Debug.Log("Root object " + g);
                 if (g.GetComponent<Rigidbody>() != null)
                 {
                     Rigidbody rb = g.GetComponent<Rigidbody>();

@@ -6,11 +6,12 @@ public class MovingMapBehavior : MonoBehaviour
 {
     public bool isManagingRoad = true;
     public bool isDeletingRoad = true;
+    public int roadLength = 50;
     public GameObject referenceObject = null;
     public Transform frontRoadChunkTrans = null;
-    public float distanceToCreateRoad = 50f;
+    public float distanceToCreateRoad = 75f;
     public Transform backRoadChunkTrans = null;
-    public float distanceToDeleteRoad = 50f;
+    public float distanceToDeleteRoad = 75f;
     public List<GameObject> mapPieces = new List<GameObject>();
     public List<GameObject> currentMapPieces = new List<GameObject>();
     public float speed = 1.0f;
@@ -31,10 +32,10 @@ public class MovingMapBehavior : MonoBehaviour
         if (mapPieces == null)
             return;
 
-        currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, -25), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, -roadLength), Quaternion.identity));
         backRoadChunkTrans = currentMapPieces[0].transform;
         currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, 0), Quaternion.identity));
-        currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, 25), Quaternion.identity));
+        currentMapPieces.Add(Instantiate(mapPieces[0], new Vector3(0, 0, roadLength), Quaternion.identity));
         frontRoadChunkTrans = currentMapPieces[2].transform;
     }
     void CheckReference()
@@ -62,7 +63,7 @@ public class MovingMapBehavior : MonoBehaviour
         //create chunk
 
         //--- test
-        GameObject potRoadChunk = Instantiate(mapPieces[0], frontRoadChunkTrans.transform.position + new Vector3(0, 0, 25), Quaternion.identity);
+        GameObject potRoadChunk = Instantiate(mapPieces[0], frontRoadChunkTrans.transform.position + new Vector3(0, 0, roadLength), Quaternion.identity);
         currentMapPieces.Add(potRoadChunk);
         frontRoadChunkTrans = potRoadChunk.transform;
 

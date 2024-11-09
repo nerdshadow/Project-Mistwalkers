@@ -29,8 +29,8 @@ public class VehicleMovement : MonoBehaviour
     [Space(5)]
     public bool canDrive = true;
     public bool forceStop = false;
-    public bool useForce = false;
-    public bool followPointList = false;
+    public bool useForce = false;    
+    public bool followSquadPosition = false;
     public float stopDistance = 5f;
     public float minAngleForTurn = 5f;
     [SerializeField]
@@ -41,9 +41,7 @@ public class VehicleMovement : MonoBehaviour
     float currentTurnAngle = 0f;    
     public Rigidbody rigidBody;
     [SerializeField]
-    Transform currentMoveTarget;
-    [SerializeField]
-    List<Transform> moveTargets = new List<Transform>();
+    public Transform currentMoveTarget;
     Vector3 mainDifference;
     #endregion Stats
 
@@ -68,20 +66,14 @@ public class VehicleMovement : MonoBehaviour
     private void OnEnable()
     {
         SerializeVehicle();
-        //Move(Movement.stop);
-        //ManageWheels();
     }
     private void FixedUpdate()
     {
-        //TryMove();
         if (canDrive == false)
         {
-            //TryToStop();
-            //ManageWheels();
             return;
         }
         FollowTarget();
-
     }
     #region VehicleSer
     public void FindWheels()
@@ -112,8 +104,6 @@ public class VehicleMovement : MonoBehaviour
             rigidBody = GetComponent<Rigidbody>();
         rigidBody.mass = currentVehicleStats.vehicleBaseMass;
 
-        if (followPointList == true)
-            currentMoveTarget = moveTargets[0];
     }
     int AmountOfTopChildren(Transform _parent)
     {
@@ -174,18 +164,6 @@ public class VehicleMovement : MonoBehaviour
         UpdateParts();
         FindWheels();
     }
-    //[ContextMenu("Reassemble from behs")]
-    //void ReassebleParts()
-    //{
-    //    if (cabBeh != null)
-    //    {
-    //        if (currentVehicleCab != cabBeh.gameObject)
-    //        {
-    //            Destroy(currentVehicleCab);
-    //            Instantiate(cabBeh.partStats.partPrefab, cabHolder.transform);
-    //        }
-    //    }
-    //}
     #endregion VehicleSer
     public void StopVehicle()
     {
@@ -201,24 +179,24 @@ public class VehicleMovement : MonoBehaviour
     {
         if (currentMoveTarget == null || forceStop == true)
         {
-            TryToStop(true);
+            TryToBreakStop(true);
+            return;
         }
-        else
-        {
-            CheckDirections();
-            CheckDistances();
-            TryToMove();        
-        }
+        
+        CheckDirections();
+        CheckDistances();
+        MoveToTarget();        
+        
 
         ManageWheels();
     }
-    void TryToStop(bool resetWheels)
+    void TryToBreakStop(bool resetWheels)
     {
         Move(Movement.stop);
         if(resetWheels == true)
             Turn(0f, 0f);
     }
-    void TryToMove()
+    void MoveToTarget()
     {
         //move vehicle
         if (zDistance > stopDistance)
@@ -229,21 +207,18 @@ public class VehicleMovement : MonoBehaviour
             }
             else
             {
-                Move(Movement.backward);
+                if (followSquadPosition == true)
+                    Move(Movement.release);
+                else
+                    Move(Movement.backward);                    
             }
         }
         else
         {
-            if (followPointList == true && (moveTargets.IndexOf(currentMoveTarget) < moveTargets.Count - 1))
-                ChangeFollowTarget(moveTargets[(moveTargets.IndexOf(currentMoveTarget) + 1)]);
+            if(followSquadPosition == true)
+                Move(Movement.release);
             else
-            {
-                //if(followPointList == true)
-                //    Move(Movement.stop);
-                //else
-                //    Move(Movement.release);
                 Move(Movement.stop);
-            }
         }
         //Turn
         Vector3 targetDir = currentMoveTarget.transform.position - transform.position;
@@ -278,6 +253,64 @@ public class VehicleMovement : MonoBehaviour
             //currentTurnAngle = 0f;
             Turn(0f, angleBetween);
         }        
+    }
+    void MoveToSquadPos()
+    {
+        //move vehicle
+        if (zDistance > stopDistance)
+        {
+            if (vehicleIsBehind == true)
+            {
+                Move(Movement.forward);
+            }
+            else
+            {
+                if (followSquadPosition == true)
+                    Move(Movement.release);
+                else
+                    Move(Movement.backward);
+            }
+        }
+        else
+        {
+            if (followSquadPosition == true)
+                Move(Movement.release);
+            else
+                Move(Movement.stop);
+        }
+        //Turn
+        Vector3 targetDir = currentMoveTarget.transform.position - transform.position;
+        float angleBetween = 0f;
+        if (vehicleIsBehind == true)
+        {
+            angleBetween = Vector3.Angle(targetDir, transform.forward);
+        }
+        else
+        {
+            angleBetween = Vector3.Angle(targetDir, -transform.forward);
+        }
+        //Debug.Log("Angle is " + angleBetween);
+        //turn vehicle 
+        if (angleBetween >= minAngleForTurn)
+        {
+            float targetAngle = 0f;
+            if (vehicleIsLeft == true)
+            {
+                //currentTurnAngle = -currentVehicleStats.maxTurnAngle;
+                targetAngle = (vehicleIsBehind == true) ? -currentVehicleStats.maxTurnAngle : currentVehicleStats.maxTurnAngle;
+            }
+            else
+            {
+                //currentTurnAngle = currentVehicleStats.maxTurnAngle;
+                targetAngle = (vehicleIsBehind == true) ? currentVehicleStats.maxTurnAngle : -currentVehicleStats.maxTurnAngle;
+            }
+            Turn(targetAngle, angleBetween);
+        }
+        else
+        {
+            //currentTurnAngle = 0f;
+            Turn(0f, angleBetween);
+        }
     }
     void ManageWheels()
     {
@@ -417,8 +450,7 @@ public class VehicleMovement : MonoBehaviour
             if (currentTorque < 0)
                 currentTorque = 0;
         }
-    }
-    
+    }    
     void Turn(float _targetAngle, float _angleBetween)
     {
         if (vehicleIsBehind != true)
@@ -441,7 +473,7 @@ public class VehicleMovement : MonoBehaviour
     {
         if (_nextTarget == null)
         {
-            Debug.LogWarning("Follow target is null");
+            Debug.LogWarning("Follow squadLeader is null");
             return;
         }
 

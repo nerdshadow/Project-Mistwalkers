@@ -117,7 +117,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
             {                    
                 Destroy(vpcBeh.GetComponent<VehiclePartBehaviour>());
                 r = Random.Range(1, 5);
-                //Debug.Log("r to destr = " + r);
+                //Debug.Log("r to destr of " + vpcBeh.gameObject.name + " = " + r);
                 if (r == 1)
                 {
                     vpcBeh.DetachPart();
@@ -126,6 +126,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
             else
             {
                 r = Random.Range(1, 11);
+                //Debug.Log("r to destr of " + vpcBeh.gameObject.name + " = " + r);
                 if (r <= 8)
                 {
                     vpcBeh.DetachPart();

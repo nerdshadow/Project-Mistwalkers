@@ -47,7 +47,7 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
         if (GetComponentInParent<VehicleCombatBehaviour>() == null)
             return;
         GetComponentInParent<VehicleCombatBehaviour>().vehicleDies.RemoveListener(ParentDies);
-        Destroy(this);
+        //Destroy(this);
     }
     public void DoDamage(int _damage)
     {

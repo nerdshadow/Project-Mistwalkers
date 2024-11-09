@@ -174,7 +174,7 @@ public class TurretBehaviour : MonoBehaviour
     {
         if (targetTrans == null)
         {
-            Debug.Log("Target is null");
+            //Debug.Log("Target is null");
             FindTarget();
             return;
         }
@@ -182,14 +182,14 @@ public class TurretBehaviour : MonoBehaviour
         {
             if(targetTrans.GetComponentInParent<VehiclePartCombatBehaviour>() == null || targetTrans.GetComponentInParent<VehiclePartCombatBehaviour>().parentIsDead == true)
             {
-                Debug.Log("Target dont have combat beh");
+                //Debug.Log("Target dont have combat beh");
                 FindTarget();
                 return;                
             }
         }
         if (targetTrans != null && Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange)
         {
-            Debug.Log("Target is too far");
+            //Debug.Log("Target is too far");
             ClearTarget();
             FindTarget();
             return;
@@ -197,7 +197,7 @@ public class TurretBehaviour : MonoBehaviour
 
         if (targetTrans.GetComponent<Collider>() != null)
         {
-            Debug.Log("Drawing and finding closepoint");
+            //Debug.Log("Drawing and finding closepoint");
             targetClosePoint = targetTrans.GetComponent<Collider>().ClosestPoint(VertTurret.transform.position);
             Debug.DrawLine(VertTurret.transform.position,
                 targetTrans.GetComponent<Collider>().ClosestPoint(VertTurret.transform.position), Color.cyan, 0.01f);
@@ -237,7 +237,7 @@ public class TurretBehaviour : MonoBehaviour
             return;
         }
 
-        Debug.Log("No targets found");
+        //Debug.Log("No targets found");
         ClearTarget();
     }
     protected void TryRotateTurret()// go in FixedUpdate
@@ -247,7 +247,7 @@ public class TurretBehaviour : MonoBehaviour
         //is our eye "active"
         if (toggleViewEye == true)
         {
-            //if our eye detected that target reached other side of view
+            //if our eye detected that squadLeader reached other side of view
             if (ViewEyeCheckTarget(!wasRotatingRight) == true)
             {
                 toggleViewEye = false;
@@ -342,7 +342,7 @@ public class TurretBehaviour : MonoBehaviour
         viewEye.transform.rotation = VertTurret.transform.rotation;
         //Debug.Log("Rotated eye to " + viewEye.rotation);
     }
-    //check if target moved to the side of eye
+    //check if squadLeader moved to the side of eye
     bool ViewEyeCheckTarget(bool changesToRight)
     {
         Vector3 right = viewEye.transform.TransformDirection(transform.right);
@@ -378,7 +378,7 @@ public class TurretBehaviour : MonoBehaviour
         if (isObstacleToLeft() == true /*&& toggleViewEye == false */)
         {
             //enable view eye
-            Debug.Log("Path to target blocked, changing rotation");
+            Debug.Log("Path to squadLeader blocked, changing rotation");
             ChangeViewEyeTrans();
             rotateByShort = false;
             toggleViewEye = true;
@@ -388,7 +388,7 @@ public class TurretBehaviour : MonoBehaviour
         if (isObstacleToRight() == true /*&& toggleViewEye == false*/)
         {
             //enable view eye
-            Debug.Log("Path to target blocked, changing rotation");
+            Debug.Log("Path to squadLeader blocked, changing rotation");
             ChangeViewEyeTrans();
             rotateByShort = false;
             toggleViewEye = true;
@@ -400,7 +400,7 @@ public class TurretBehaviour : MonoBehaviour
         if (HorTurret == null)
             return;
         targetDirection = GetTargetDirection();
-        //Debug.Log("Turrets target is " + targetDirection);
+        //Debug.Log("Turrets squadLeader is " + targetDirection);
 
         ObstacleCheck();
 
@@ -441,7 +441,7 @@ public class TurretBehaviour : MonoBehaviour
                     HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 break;
             default:
-                Debug.LogWarning("Cannot find direction to target!");
+                Debug.LogWarning("Cannot find direction to squadLeader!");
                 break;
         }
     }
@@ -459,7 +459,7 @@ public class TurretBehaviour : MonoBehaviour
             rotateByShort = true;
             return;
         }
-        //Debug.Log("Turrets target is " + targetDirection);
+        //Debug.Log("Turrets squadLeader is " + targetDirection);
 
         ObstacleCheck();
 
@@ -494,19 +494,19 @@ public class TurretBehaviour : MonoBehaviour
                 toggleViewEye = false;
                 break;
             case TargetDirection.Back:
-                //helps to unstuck turrent from facing target by back
+                //helps to unstuck turrent from facing squadLeader by back
                 if(lastRotationDirection == TargetDirection.Right)
                     HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 if(lastRotationDirection == TargetDirection.Left)
                     HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
                 break;
             default:
-                Debug.LogWarning("Cannot find direction to target!");
+                Debug.LogWarning("Cannot find direction to squadLeader!");
                 break;
         }
         
     }
-    //Check direction to our target 
+    //Check direction to our squadLeader 
     TargetDirection GetTargetDirection()
     {
         Vector3 right = HorTurret.transform.TransformDirection(transform.right);
@@ -589,7 +589,7 @@ public class TurretBehaviour : MonoBehaviour
         Collider[] potColls = Physics.OverlapCapsule(startPoint, endPoint, radius);
         foreach (Collider coll in potColls)
         {
-            Debug.Log("Collider is " + coll + " parent is " + coll.transform.root);
+            //Debug.Log("Collider is " + coll + " parent is " + coll.transform.root);
             if (turretColls.Contains(coll) == true)
                 continue;
 
@@ -602,7 +602,7 @@ public class TurretBehaviour : MonoBehaviour
     [ContextMenu("Shoot")]
     public void Shoot()
     {
-        Debug.Log(this.name + " gun tried to shoot");
+        //Debug.Log(this.name + " gun tried to shoot");
         if (fireRateType == FireRateType.Burst)
             burstCurrentSize = burstMaxSize;
         switch (ammoStats.ammoType)
