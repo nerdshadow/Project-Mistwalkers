@@ -32,6 +32,7 @@ public class VehicleMovement : MonoBehaviour
     public bool useForce = false;    
     public bool followSquadPosition = false;
     public float stopDistance = 5f;
+    public float followDistance = 0.5f;
     public float minAngleForTurn = 5f;
     [SerializeField]
     float currentTorque = 0f;
@@ -66,6 +67,7 @@ public class VehicleMovement : MonoBehaviour
     private void OnEnable()
     {
         SerializeVehicle();
+        testMaxSpeed = currentVehicleStats.maxSpeed;
     }
     private void FixedUpdate()
     {
@@ -185,10 +187,16 @@ public class VehicleMovement : MonoBehaviour
         
         CheckDirections();
         CheckDistances();
-        MoveToTarget();        
-        
-
-        ManageWheels();
+        if (followSquadPosition == true)
+        {
+            MoveToSquadPos();
+            ManageWheelsSquad();
+        }
+        else
+        {
+            MoveToTarget();        
+            ManageWheels();
+        }
     }
     void TryToBreakStop(bool resetWheels)
     {
@@ -254,40 +262,38 @@ public class VehicleMovement : MonoBehaviour
             Turn(0f, angleBetween);
         }        
     }
+    [SerializeField]
+    float testMaxSpeed;
     void MoveToSquadPos()
     {
         //move vehicle
-        if (zDistance > stopDistance)
+        if (zDistance > followDistance)
         {
             if (vehicleIsBehind == true)
             {
                 Move(Movement.forward);
+                if (zDistance >= 3f && testMaxSpeed <= currentVehicleStats.maxSpeed * 1.5f)
+                    testMaxSpeed += 1f * Time.deltaTime;
             }
             else
             {
-                if (followSquadPosition == true)
-                    Move(Movement.release);
-                else
-                    Move(Movement.backward);
-            }
-        }
-        else
-        {
-            if (followSquadPosition == true)
                 Move(Movement.release);
-            else
-                Move(Movement.stop);
+                if (testMaxSpeed != currentVehicleStats.maxSpeed)
+                    testMaxSpeed = currentVehicleStats.maxSpeed;
+            }
         }
         //Turn
         Vector3 targetDir = currentMoveTarget.transform.position - transform.position;
         float angleBetween = 0f;
+        if (vehicleIsBehind == false)
+        {
+            //Turn(0f, angleBetween);
+            currentTurnAngle = 0f;
+            return;
+        }
         if (vehicleIsBehind == true)
         {
             angleBetween = Vector3.Angle(targetDir, transform.forward);
-        }
-        else
-        {
-            angleBetween = Vector3.Angle(targetDir, -transform.forward);
         }
         //Debug.Log("Angle is " + angleBetween);
         //turn vehicle 
@@ -308,8 +314,8 @@ public class VehicleMovement : MonoBehaviour
         }
         else
         {
-            //currentTurnAngle = 0f;
-            Turn(0f, angleBetween);
+            currentTurnAngle = 0f;
+            //Turn(0f, angleBetween);
         }
     }
     void ManageWheels()
@@ -339,7 +345,10 @@ public class VehicleMovement : MonoBehaviour
         {
             if (wheel.rpm < currentVehicleStats.maxRpm && currentSpeed < currentVehicleStats.maxSpeed)
             {
-                wheel.motorTorque = currentTorque;
+                //if(followSquadPosition == true)
+                    wheel.motorTorque = currentTorque;
+                //else if(currentSpeed < currentVehicleStats.maxSpeed)
+                //    wheel.motorTorque = currentTorque;
             }
             else wheel.motorTorque = 0;
 
@@ -351,7 +360,10 @@ public class VehicleMovement : MonoBehaviour
             {
                 if (wheel.rpm < currentVehicleStats.maxRpm && currentSpeed < currentVehicleStats.maxSpeed)
                 {
-                    wheel.motorTorque = currentTorque;
+                    //if (followSquadPosition == true)
+                        wheel.motorTorque = currentTorque;
+                    //else if (currentSpeed < currentVehicleStats.maxSpeed)
+                    //    wheel.motorTorque = currentTorque;
                 }
                 else wheel.motorTorque = 0;
 
@@ -362,6 +374,59 @@ public class VehicleMovement : MonoBehaviour
         {
             wheel.steerAngle = currentTurnAngle;
             if(Mathf.Abs(currentSpeed) <= 0.01f)
+                wheel.brakeTorque = currentBrakeTorque;
+        }
+    }
+    void ManageWheelsSquad()
+    {
+        if (staticWheels.Count == 0 && turnWheels.Count == 00)
+            return;
+
+        //Check current values
+        currentVelocity = rigidBody.velocity.z;
+        currentSpeed = currentVelocity * 3.6f;
+        currentSpeed = Mathf.Abs(currentSpeed);
+
+
+        if (staticWheels.Count > 0)
+        {
+            currentRpm = staticWheels[0].rpm;
+            //currentBrakeTorque = staticWheels[0].brakeTorque;
+        }
+        else if (turnWheels.Count > 0)
+        {
+            currentRpm = turnWheels[0].rpm;
+            //currentBrakeTorque = turnWheels[0].brakeTorque;
+        }
+
+        //Apply torque and angle
+        foreach (var wheel in staticWheels)
+        {
+            if (wheel.rpm < currentVehicleStats.maxRpm && currentSpeed < testMaxSpeed)
+            {
+                wheel.motorTorque = currentTorque;
+            }
+            else wheel.motorTorque = 0;
+
+            wheel.brakeTorque = currentBrakeTorque;
+        }
+        if (isAllWheelDrive == true)
+        {
+            foreach (var wheel in turnWheels)
+            {
+                if (wheel.rpm < currentVehicleStats.maxRpm && currentSpeed < testMaxSpeed)
+                {
+                    wheel.motorTorque = currentTorque;
+                }
+                else wheel.motorTorque = 0;
+
+                //wheel.brakeTorque = currentBrakeTorque;
+            }
+        }
+        foreach (var wheel in turnWheels)
+        {
+            wheel.steerAngle = currentTurnAngle;
+            if (Mathf.Abs(currentSpeed) <= 0.01f)
                 wheel.brakeTorque = currentBrakeTorque;
         }
     }
@@ -399,6 +464,7 @@ public class VehicleMovement : MonoBehaviour
     float decelerationSpeed = 2f;
     void IncreaseTorque()
     {
+        Debug.Log(gameObject.name + " increasing torque");
         currentBrakeTorque = 0;
         if (currentTorque < currentVehicleStats.forwardTorque)
         {
@@ -409,6 +475,7 @@ public class VehicleMovement : MonoBehaviour
     }
     void DecreaseTorque()
     {
+        Debug.Log(gameObject.name + " decreasing torque");
         currentBrakeTorque = 0;
         if (currentTorque > -currentVehicleStats.backwardTorque)
         {
@@ -419,6 +486,7 @@ public class VehicleMovement : MonoBehaviour
     }
     void BreakTorque()
     {
+        Debug.Log(gameObject.name + " breaking torque");
         //if (currentTorque > 0)
         //{
         //    currentTorque -= decelerationSpeed * 2;
@@ -443,12 +511,15 @@ public class VehicleMovement : MonoBehaviour
     }
     void ReleaseTorque()
     {
-        currentBrakeTorque = 0;
+        Debug.Log(gameObject.name + " releasing torque");
         if (currentTorque > 0)
         {
             currentTorque -= decelerationSpeed;
             if (currentTorque < 0)
                 currentTorque = 0;
+            currentBrakeTorque += accelerationSpeed * 2;
+            if(currentBrakeTorque > currentVehicleStats.brakeTorque)
+                currentBrakeTorque = currentVehicleStats.brakeTorque;
         }
     }    
     void Turn(float _targetAngle, float _angleBetween)
@@ -457,13 +528,13 @@ public class VehicleMovement : MonoBehaviour
             _targetAngle *= -1f;
         if (currentTurnAngle > _targetAngle)
         {
-            currentTurnAngle -= currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
+            currentTurnAngle -= currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f) /** Time.deltaTime*/;
             if (_targetAngle > currentTurnAngle)
                 currentTurnAngle = _targetAngle;
         }
         else if (currentTurnAngle < _targetAngle)
         {
-            currentTurnAngle += currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f);
+            currentTurnAngle += currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f) /** Time.deltaTime*/;
             if (_targetAngle < currentTurnAngle)
                 currentTurnAngle = _targetAngle;
         }        
@@ -473,7 +544,7 @@ public class VehicleMovement : MonoBehaviour
     {
         if (_nextTarget == null)
         {
-            Debug.LogWarning("Follow squadLeader is null");
+            Debug.LogWarning("FollowLeader squadLeader is null");
             return;
         }
 

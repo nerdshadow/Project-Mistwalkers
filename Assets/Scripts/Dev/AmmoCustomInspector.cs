@@ -27,7 +27,7 @@ public class AmmoCustomInspector : Editor
             case AmmoType.Projectile:
                 {
                     ammoStatsBuffer.shellPrefab = (GameObject)EditorGUILayout.ObjectField("Shell Prefab", ammoStatsBuffer.shellPrefab, typeof(GameObject), true);
-                    ammoStatsBuffer.shellSpeed = EditorGUILayout.FloatField("Shell speed", ammoStatsBuffer.shellSpeed);
+                    ammoStatsBuffer.shellSpeed = EditorGUILayout.FloatField("Shell lerpSpeed", ammoStatsBuffer.shellSpeed);
                     ammoStatsBuffer.shellLifeTime= EditorGUILayout.FloatField("Shell lifetime", ammoStatsBuffer.shellLifeTime);
                     ammoStatsBuffer.shellExplRad = EditorGUILayout.FloatField("Shell explosion radius", ammoStatsBuffer.shellExplRad);
                     break;

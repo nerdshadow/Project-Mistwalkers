@@ -156,28 +156,28 @@ public class VehicleMovement_arcade : MonoBehaviour
     [Header("Engine")]
 
     //x - time in seconds
-    //y - speed in km/h
-    [Tooltip("Y - Desired vehicle speed (km/h). X - Time (seconds)")]
+    //y - lerpSpeed in km/h
+    [Tooltip("Y - Desired vehicle lerpSpeed (km/h). X - Time (seconds)")]
     public AnimationCurve accelerationCurve = AnimationCurve.Linear(0.0f, 0.0f, 5.0f, 100.0f);
 
-    [Tooltip("Y - Desired vehicle speed (km/h). X - Time (seconds)")]
+    [Tooltip("Y - Desired vehicle lerpSpeed (km/h). X - Time (seconds)")]
     public AnimationCurve accelerationCurveReverse = AnimationCurve.Linear(0.0f, 0.0f, 5.0f, 20.0f);
 
 
     [Header("Steering")]
-    // x - speed in km/h
+    // x - lerpSpeed in km/h
     // y - angle in degrees
-    [Tooltip("Y - Steereing angle limit (deg). X - Vehicle speed (km/h)")]
+    [Tooltip("Y - Steereing angle limit (deg). X - Vehicle lerpSpeed (km/h)")]
     public AnimationCurve steerAngleLimit = AnimationCurve.Linear(0.0f, 35.0f, 100.0f, 5.0f);
 
-    // x - speed in km/h
-    // y - angle in degrees (speed of returning wheels to zero position)
-    [Tooltip("Y - Steereing reset speed (deg/sec). X - Vehicle speed (km/h)")]
+    // x - lerpSpeed in km/h
+    // y - angle in degrees (lerpSpeed of returning wheels to zero position)
+    [Tooltip("Y - Steereing reset lerpSpeed (deg/sec). X - Vehicle lerpSpeed (km/h)")]
     public AnimationCurve steeringResetSpeed = AnimationCurve.EaseInOut(0.0f, 30.0f, 100.0f, 10.0f);
 
-    // x - speed in km/h
+    // x - lerpSpeed in km/h
     // y - angle in degrees
-    [Tooltip("Y - Steereing speed (deg/sec). X - Vehicle speed (km/h)")]
+    [Tooltip("Y - Steereing lerpSpeed (deg/sec). X - Vehicle lerpSpeed (km/h)")]
     public AnimationCurve steeringSpeed = AnimationCurve.Linear(0.0f, 2.0f, 100.0f, 0.5f);
 
     [Header("Debug")]
@@ -197,9 +197,9 @@ public class VehicleMovement_arcade : MonoBehaviour
 
     public bool controllable = true;
 
-    // x - speed in km/h
+    // x - lerpSpeed in km/h
     // y - Downforce percentage
-    [Tooltip("Y - Downforce (percentage 0%..100%). X - Vehicle speed (km/h)")]
+    [Tooltip("Y - Downforce (percentage 0%..100%). X - Vehicle lerpSpeed (km/h)")]
     public AnimationCurve downForceCurve = AnimationCurve.Linear(0.0f, 0.0f, 200.0f, 100.0f);
 
     [Tooltip("Downforce")]
@@ -338,7 +338,7 @@ public class VehicleMovement_arcade : MonoBehaviour
         if (isResultFound)
         {
             //float speed_now = accCurve.Evaluate(timeNow);
-            //Debug.Log(string.Format("sptime {0}, speed {1}, speedn {2}", timeNow, speedKmH, speed_now));
+            //Debug.Log(string.Format("sptime {0}, lerpSpeed {1}, speedn {2}", timeNow, speedKmH, speed_now));
 
             float speed_desired = accCurve.Evaluate(timeNow + dt);
 
@@ -353,7 +353,7 @@ public class VehicleMovement_arcade : MonoBehaviour
 
         if (debugDraw)
         {
-            Debug.Log("Max speed reached!");
+            Debug.Log("Max lerpSpeed reached!");
         }
 
         float _desiredSpeed = accCurve.keys[numKeys - 1].value;
@@ -537,7 +537,7 @@ public class VehicleMovement_arcade : MonoBehaviour
         {
             float speedKmH = Mathf.Abs(speed) * 3.6f;
 
-            // maximum steer speed when hand-brake is pressed
+            // maximum steer lerpSpeed when hand-brake is pressed
             speedKmH *= GetSteeringHandBrakeK();
 
             float steerSpeed = steeringSpeed.Evaluate(speedKmH);
@@ -1227,7 +1227,7 @@ public class VehicleMovement_arcade : MonoBehaviour
         Vector3 wsWheelForward = wsWheelRot * Vector3.forward;
         Vector3 velocityQueryPos = data.isOnGround ? data.touchPoint.point : wsPos;
         Vector3 wheelVelocity = rb.GetPointVelocity(velocityQueryPos);
-        // Longitudinal speed (meters/sec)
+        // Longitudinal lerpSpeed (meters/sec)
         float tireLongSpeed = Vector3.Dot(wheelVelocity, wsWheelForward);
 
         // Circle length = 2 * PI * R

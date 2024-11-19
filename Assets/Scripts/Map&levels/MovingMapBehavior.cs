@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MovingMapBehavior : MonoBehaviour
 {
@@ -15,10 +16,11 @@ public class MovingMapBehavior : MonoBehaviour
     public List<GameObject> mapPieces = new List<GameObject>();
     public List<GameObject> currentMapPieces = new List<GameObject>();
     public float speed = 1.0f;
+    public UnityEvent onRoadPieceSpawned = new UnityEvent();
     void Start()
     {
         //CreateMapPiece();
-        InitialCreateMap();
+        InitialCreateMap();        
     }
     private void FixedUpdate()
     {
@@ -26,6 +28,10 @@ public class MovingMapBehavior : MonoBehaviour
             return;
         CheckReference();
         //MovingMapPieces();
+    }
+    private void OnDestroy()
+    {
+        onRoadPieceSpawned.RemoveAllListeners();
     }
     void InitialCreateMap()
     {
@@ -68,6 +74,8 @@ public class MovingMapBehavior : MonoBehaviour
         frontRoadChunkTrans = potRoadChunk.transform;
 
         potRoadChunk = null;
+
+        onRoadPieceSpawned.Invoke();
     }
     void ManageDeletingRoad()
     {
