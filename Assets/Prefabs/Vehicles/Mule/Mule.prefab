@@ -422,15 +422,15 @@ MonoBehaviour:
   canDrive: 1
   forceStop: 1
   useForce: 0
-  followPointList: 0
+  followSquadPosition: 0
   stopDistance: 5
+  followDistance: 0.5
   minAngleForTurn: 5
   currentTorque: 0
   currentBrakeTorque: 0
   currentTurnAngle: 0
   rigidBody: {fileID: 6641565102744452899}
   currentMoveTarget: {fileID: 0}
-  moveTargets: []
   currentVehicleBase: {fileID: 4147948000499981016}
   cabHolder: {fileID: 7717899956627438259}
   cabBeh: {fileID: 0}
@@ -438,6 +438,7 @@ MonoBehaviour:
   bodyBeh: {fileID: 0}
   bodyHolder: {fileID: 7678377033677822845}
   currentVehicleBody: {fileID: 9002076924879482870}
+  testMaxSpeed: 0
   accelerationSpeed: 4
   decelerationSpeed: 5
   vehicleIsBehind: 0
@@ -466,9 +467,9 @@ MonoBehaviour:
   vehicleDies:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 1
-  currentHealth: 1
   isDead: 0
+  <maxHealth>k__BackingField: 10
+  <currentHealth>k__BackingField: 1
   timeToDecay: 1.5
   combatEnabled: 1
   testDamage: 100

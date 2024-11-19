@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(VehicleMovement))]
-public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
+public class VehicleCombatBehaviour : MonoBehaviour, IDamageable, IHealth
 {
     [Header("Stats")]
     [SerializeField]
@@ -32,13 +32,14 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
         HealthConditionsBeh();
     }
     #region Health
-    [Space(10)]
-    [Header("Health")]
-    [SerializeField]
-    int maxHealth = 1;
-    [SerializeField]
-    int currentHealth = 1;
-    public bool isDead = false;
+    [field: Space(10)]
+    [field: Header("Health")]
+    [field: SerializeField]
+    public int maxHealth { get; set ; }
+    [field: SerializeField]
+    public int currentHealth { get; set; }
+    public bool isDead { get; set; }
+
     public void DoDamage(int _damage)
     {
         if (isDead == true)
@@ -55,7 +56,21 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     {
 
     }
-    void Die()
+    public void InitHealth()
+    {
+        maxHealth = vehicleBaseStats.vehicleBaseHealth;
+        maxHealth += vehicleMovement.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
+        if (vehicleMovement.bodyHolder != null && vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>() != null)
+            maxHealth += vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
+    }
+
+    public void ResetHealth()
+    {
+        Debug.Log("Reseting health of " + gameObject.name);
+        currentHealth = maxHealth;
+    }
+
+    public void Die()
     {
         Debug.Log(this.gameObject.name + " died");
         isDead = true;
@@ -71,7 +86,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
         {
             //blow immid
             Debug.Log("blow");
-            BlowVehicle(leftoverhpMod);        
+            BlowVehicle(leftoverhpMod);
         }
         else
         {
@@ -173,18 +188,6 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
             //Show smoke from vehicle
         }
     }
-    void InitHealth()
-    {
-        maxHealth = vehicleBaseStats.vehicleBaseHealth;
-        maxHealth += vehicleMovement.cabHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
-        if(vehicleMovement.bodyHolder != null && vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>() != null)
-            maxHealth += vehicleMovement.bodyHolder.GetComponentInChildren<VehiclePartBehaviour>().partStats.partHealth;
-    }
-    public void ResetHealth()
-    {
-        Debug.Log("Reseting health of " + gameObject.name);
-        currentHealth = maxHealth;
-    }
     #endregion Health
     #region Weapons
     [Space(10)]
@@ -214,6 +217,7 @@ public class VehicleCombatBehaviour : MonoBehaviour, IDamageable
     float testExplForce = 1000f;
     [SerializeField]
     float testExplUpForce = 3f;
+
     [ContextMenu("Take dev damage")]
     void TakeDevDamage()
     {

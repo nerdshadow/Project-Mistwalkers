@@ -1,25 +1,26 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
+public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable, IHealth
 {
     VehiclePartBehaviour vehiclePartBeh = null;
-    [SerializeField]
-    int partMaxHealth = 10;
-    [SerializeField]
-    int partCurrentHealth = 10;
+    [field: SerializeField]
+    public int maxHealth { get; set; }
+    [field: SerializeField]
+    public int currentHealth { get; set; }
+    [field: SerializeField]
+    public bool isDead { get; set; }
+
     [SerializeField]
     bool isDetachable = false;
     //[SerializeField]
     //bool isDetached = false;
-    [SerializeField]
-    public bool isDestroyed = false;
 
     public bool parentIsDead = false;
     private void Start()
     {
         InitHealth();
-        partCurrentHealth = partMaxHealth;
+        ResetHealth();
     }
     private void OnEnable()
     {
@@ -35,12 +36,23 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
             return;
         GetComponentInParent<VehicleCombatBehaviour>().vehicleDies.RemoveListener(ParentDies);
     }
-    private void InitHealth()
+    public void InitHealth()
     {
         if (GetComponent<VehiclePartBehaviour>() != null)
-            partMaxHealth = GetComponent<VehiclePartBehaviour>().partStats.partHealth;
-        partCurrentHealth = partMaxHealth;
+            maxHealth = GetComponent<VehiclePartBehaviour>().partStats.partHealth;
+        currentHealth = maxHealth;
     }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+    }
+
+    public void Die()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void ParentDies()
     {
         parentIsDead = true;
@@ -55,15 +67,15 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
         {
             return;
         }
-        partCurrentHealth -= _damage;
-        if (partCurrentHealth <= 0)
+        currentHealth -= _damage;
+        if (currentHealth <= 0)
         {
-            if (isDestroyed == true)
+            if (isDead == true)
                 GetComponentInParent<VehicleCombatBehaviour>().DoDamage((int)(_damage * 1.5f));
             else
             {
-                GetComponentInParent<VehicleCombatBehaviour>().DoDamage(_damage  - Mathf.Abs(partCurrentHealth));
-                isDestroyed = true;
+                GetComponentInParent<VehicleCombatBehaviour>().DoDamage(_damage  - Mathf.Abs(currentHealth));
+                isDead = true;
             }
             if (isDetachable == true)
             {
@@ -102,6 +114,7 @@ public class VehiclePartCombatBehaviour : MonoBehaviour, IDamageable
     }
     [SerializeField]
     int debugDmg = 10;
+
     [ContextMenu("do test dmg")]
     void DebugDmg()
     {
