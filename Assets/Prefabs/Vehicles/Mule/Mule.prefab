@@ -44,7 +44,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.5
   m_SuspensionSpring:
-    spring: 35000
+    spring: 25000
     damper: 2000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
@@ -53,16 +53,16 @@ WheelCollider:
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 4
     m_AsymptoteValue: 2
-    m_Stiffness: 1.5
+    m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
-    m_ExtremumValue: 2
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 1.4
-    m_Stiffness: 1.5
+    m_ExtremumSlip: 2
+    m_ExtremumValue: 3
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 2
+    m_Stiffness: 1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -212,7 +212,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.5
   m_SuspensionSpring:
-    spring: 35000
+    spring: 25000
     damper: 2000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
@@ -221,16 +221,16 @@ WheelCollider:
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 4
     m_AsymptoteValue: 2
-    m_Stiffness: 1.5
+    m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
-    m_ExtremumValue: 2
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 1.4
-    m_Stiffness: 1.5
+    m_ExtremumSlip: 2
+    m_ExtremumValue: 3
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 2
+    m_Stiffness: 1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -284,7 +284,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.5
   m_SuspensionSpring:
-    spring: 35000
+    spring: 25000
     damper: 2000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
@@ -293,16 +293,16 @@ WheelCollider:
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 4
     m_AsymptoteValue: 2
-    m_Stiffness: 1.5
+    m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
-    m_ExtremumValue: 2
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 1.4
-    m_Stiffness: 1.5
+    m_ExtremumSlip: 2
+    m_ExtremumValue: 3
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 2
+    m_Stiffness: 1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -419,6 +419,7 @@ MonoBehaviour:
   currentVehicleStats: {fileID: 11400000, guid: 8ef8f7e1b307f1f4190d8028f425f9a3, type: 2}
   turnWheels: []
   staticWheels: []
+  playerDirectControl: 0
   canDrive: 1
   forceStop: 1
   useForce: 0
@@ -467,7 +468,6 @@ MonoBehaviour:
   vehicleDies:
     m_PersistentCalls:
       m_Calls: []
-  isDead: 0
   <maxHealth>k__BackingField: 10
   <currentHealth>k__BackingField: 1
   timeToDecay: 1.5
@@ -727,7 +727,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.5
   m_SuspensionSpring:
-    spring: 35000
+    spring: 25000
     damper: 2000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
@@ -736,16 +736,16 @@ WheelCollider:
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 4
     m_AsymptoteValue: 2
-    m_Stiffness: 1.5
+    m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
-    m_ExtremumValue: 2
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 1.4
-    m_Stiffness: 1.5
+    m_ExtremumSlip: 2
+    m_ExtremumValue: 3
+    m_AsymptoteSlip: 4
+    m_AsymptoteValue: 2
+    m_Stiffness: 1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -910,10 +910,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partMaxHealth: 10
-  partCurrentHealth: 10
+  <maxHealth>k__BackingField: 0
+  <currentHealth>k__BackingField: 0
+  <isDead>k__BackingField: 0
   isDetachable: 0
-  isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
 --- !u!1 &836383642806728843 stripped
@@ -933,10 +933,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partMaxHealth: 10
-  partCurrentHealth: 10
+  <maxHealth>k__BackingField: 0
+  <currentHealth>k__BackingField: 0
+  <isDead>k__BackingField: 0
   isDetachable: 1
-  isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
 --- !u!1 &952030707933675333 stripped
@@ -956,10 +956,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partMaxHealth: 10
-  partCurrentHealth: 10
+  <maxHealth>k__BackingField: 0
+  <currentHealth>k__BackingField: 0
+  <isDead>k__BackingField: 0
   isDetachable: 0
-  isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
 --- !u!1 &3165674349403707240 stripped
@@ -979,10 +979,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partMaxHealth: 10
-  partCurrentHealth: 10
+  <maxHealth>k__BackingField: 0
+  <currentHealth>k__BackingField: 0
+  <isDead>k__BackingField: 0
   isDetachable: 1
-  isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
 --- !u!1 &4088493030939041377 stripped
@@ -1002,10 +1002,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partMaxHealth: 10
-  partCurrentHealth: 10
+  <maxHealth>k__BackingField: 0
+  <currentHealth>k__BackingField: 0
+  <isDead>k__BackingField: 0
   isDetachable: 0
-  isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
 --- !u!1 &5270380047037432745 stripped
@@ -1025,10 +1025,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partMaxHealth: 10
-  partCurrentHealth: 10
+  <maxHealth>k__BackingField: 0
+  <currentHealth>k__BackingField: 0
+  <isDead>k__BackingField: 0
   isDetachable: 0
-  isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
 --- !u!1 &7658616153449444006 stripped
@@ -1048,10 +1048,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25bde3fbb47806249945199f6a6dd94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partMaxHealth: 10
-  partCurrentHealth: 10
+  <maxHealth>k__BackingField: 0
+  <currentHealth>k__BackingField: 0
+  <isDead>k__BackingField: 0
   isDetachable: 1
-  isDestroyed: 0
   parentIsDead: 0
   debugDmg: 10
 --- !u!1 &9002076924879482870 stripped

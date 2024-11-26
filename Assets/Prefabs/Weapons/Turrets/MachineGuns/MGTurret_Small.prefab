@@ -766,7 +766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turretStats: {fileID: 11400000, guid: cbe91eba88fb5354fa99268c9076da75, type: 2}
-  ammoStats: {fileID: 11400000, guid: dc455ef1574f7b94984a8fd68e0ec1b6, type: 2}
+  ammoStats: {fileID: 11400000, guid: f8c6bc4323fbb4342a7c3f0118cbd443, type: 2}
   currentTurretState: 0
   canAim: 1
   minReqAngle: 5

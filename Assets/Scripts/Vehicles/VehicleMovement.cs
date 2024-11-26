@@ -27,6 +27,7 @@ public class VehicleMovement : MonoBehaviour
     #region Stats
     [Header("Stats")]
     [Space(5)]
+    public bool playerDirectControl = false;
     public bool canDrive = true;
     public bool forceStop = false;
     public bool useForce = false;    
@@ -71,7 +72,7 @@ public class VehicleMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (canDrive == false)
+        if (canDrive == false || playerDirectControl == true)
         {
             return;
         }
@@ -318,7 +319,7 @@ public class VehicleMovement : MonoBehaviour
             //Turn(0f, angleBetween);
         }
     }
-    void ManageWheels()
+    public void ManageWheels()
     {
         if(staticWheels.Count == 0 && turnWheels.Count == 00)
             return;
@@ -437,7 +438,7 @@ public class VehicleMovement : MonoBehaviour
         forward = 1,
         release = 2
     }
-    void Move(Movement _direction)
+    public void Move(Movement _direction)
     {
         switch (_direction)
         {
@@ -535,6 +536,44 @@ public class VehicleMovement : MonoBehaviour
         else if (currentTurnAngle < _targetAngle)
         {
             currentTurnAngle += currentVehicleStats.turnSpeed * ((_angleBetween / 180f) * 100f) /** Time.deltaTime*/;
+            if (_targetAngle < currentTurnAngle)
+                currentTurnAngle = _targetAngle;
+        }        
+    }
+    public enum TurnDir
+    {
+        Left = -1,
+        NoTurn = 0,
+        Right = 1
+    }
+    public void Turn(TurnDir turnDir)
+    {
+        float _targetAngle = 0f;
+        switch (turnDir)
+        {
+            case TurnDir.Left:
+                _targetAngle = -currentVehicleStats.maxTurnAngle;
+                break;
+            case TurnDir.NoTurn:
+                _targetAngle = 0f;
+                break;
+            case TurnDir.Right:
+                _targetAngle = currentVehicleStats.maxTurnAngle;
+                break;
+            default:
+                break;
+        }
+        if (currentTurnAngle == _targetAngle)
+            return;
+        if (currentTurnAngle > _targetAngle)
+        {
+            currentTurnAngle -= currentVehicleStats.turnSpeed /** Time.deltaTime*/;
+            if (_targetAngle > currentTurnAngle)
+                currentTurnAngle = _targetAngle;
+        }
+        else if (currentTurnAngle < _targetAngle)
+        {
+            currentTurnAngle += currentVehicleStats.turnSpeed /** Time.deltaTime*/;
             if (_targetAngle < currentTurnAngle)
                 currentTurnAngle = _targetAngle;
         }        

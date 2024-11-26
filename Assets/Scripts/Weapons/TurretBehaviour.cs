@@ -184,7 +184,7 @@ public class TurretBehaviour : MonoBehaviour
             {
                 //Debug.Log("Target dont have combat beh");
                 FindTarget();
-                return;                
+                return;
             }
         }
         if (targetTrans != null && Vector3.Distance(centerOfArea.position, targetTrans.position) > turretStats.maxRange)
@@ -247,7 +247,7 @@ public class TurretBehaviour : MonoBehaviour
         //is our eye "active"
         if (toggleViewEye == true)
         {
-            //if our eye detected that squadLeader reached other side of view
+            //if our eye detected that target reached other side of view
             if (ViewEyeCheckTarget(!wasRotatingRight) == true)
             {
                 toggleViewEye = false;
@@ -342,7 +342,7 @@ public class TurretBehaviour : MonoBehaviour
         viewEye.transform.rotation = VertTurret.transform.rotation;
         //Debug.Log("Rotated eye to " + viewEye.rotation);
     }
-    //check if squadLeader moved to the side of eye
+    //check if target moved to the side of eye
     bool ViewEyeCheckTarget(bool changesToRight)
     {
         Vector3 right = viewEye.transform.TransformDirection(transform.right);
@@ -378,7 +378,7 @@ public class TurretBehaviour : MonoBehaviour
         if (isObstacleToLeft() == true /*&& toggleViewEye == false */)
         {
             //enable view eye
-            Debug.Log("Path to squadLeader blocked, changing rotation");
+            Debug.Log("Path to target blocked, changing rotation");
             ChangeViewEyeTrans();
             rotateByShort = false;
             toggleViewEye = true;
@@ -388,7 +388,7 @@ public class TurretBehaviour : MonoBehaviour
         if (isObstacleToRight() == true /*&& toggleViewEye == false*/)
         {
             //enable view eye
-            Debug.Log("Path to squadLeader blocked, changing rotation");
+            Debug.Log("Path to target blocked, changing rotation");
             ChangeViewEyeTrans();
             rotateByShort = false;
             toggleViewEye = true;
@@ -400,7 +400,7 @@ public class TurretBehaviour : MonoBehaviour
         if (HorTurret == null)
             return;
         targetDirection = GetTargetDirection();
-        //Debug.Log("Turrets squadLeader is " + targetDirection);
+        //Debug.Log("Turrets target is " + targetDirection);
 
         ObstacleCheck();
 
@@ -419,16 +419,17 @@ public class TurretBehaviour : MonoBehaviour
         {
             case TargetDirection.Right:
                 if(Mathf.Abs(angleToRotate) > angleBetween)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(angleBetween, HorTurret.transform.up);
+                    //HorTurret.transform.localRotation *= Quaternion.AngleAxis(angleBetween, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(angleBetween, Vector3.up);
                 else
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);
                 lastRotationDirection = TargetDirection.Right;
                 break;
             case TargetDirection.Left:
                 if (Mathf.Abs(angleToRotate) > angleBetween)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-angleBetween, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-angleBetween, Vector3.up);
                 else
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);
                 lastRotationDirection = TargetDirection.Left;
                 break;
             case TargetDirection.Front:
@@ -436,12 +437,12 @@ public class TurretBehaviour : MonoBehaviour
                 break;
             case TargetDirection.Back:
                 if (lastRotationDirection == TargetDirection.Right)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);
                 if (lastRotationDirection == TargetDirection.Left)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);
                 break;
             default:
-                Debug.LogWarning("Cannot find direction to squadLeader!");
+                Debug.LogWarning("Cannot find direction to target!");
                 break;
         }
     }
@@ -459,7 +460,7 @@ public class TurretBehaviour : MonoBehaviour
             rotateByShort = true;
             return;
         }
-        //Debug.Log("Turrets squadLeader is " + targetDirection);
+        //Debug.Log("Turrets target is " + targetDirection);
 
         ObstacleCheck();
 
@@ -478,38 +479,40 @@ public class TurretBehaviour : MonoBehaviour
         {
             case TargetDirection.Right:
                 if (Mathf.Abs(angleToRotate) > angleBetween)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-angleBetween, HorTurret.transform.up);
+                    //HorTurret.transform.localRotation *= Quaternion.AngleAxis(-angleBetween, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-angleBetween, Vector3.up);
                 else
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);    
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);    
                 lastRotationDirection = TargetDirection.Right;
                 break;
             case TargetDirection.Left:
                 if (Mathf.Abs(angleToRotate) > angleBetween)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(angleBetween, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(angleBetween, Vector3.up);
                 else
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);                
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);                
                 lastRotationDirection = TargetDirection.Left;
                 break;
             case TargetDirection.Front:
                 toggleViewEye = false;
                 break;
             case TargetDirection.Back:
-                //helps to unstuck turrent from facing squadLeader by back
+                //helps to unstuck turrent from facing target by back
                 if(lastRotationDirection == TargetDirection.Right)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);
                 if(lastRotationDirection == TargetDirection.Left)
-                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, HorTurret.transform.up);
+                    HorTurret.transform.localRotation *= Quaternion.AngleAxis(-turretStats.horizontalSpeed * Time.deltaTime, Vector3.up);
                 break;
             default:
-                Debug.LogWarning("Cannot find direction to squadLeader!");
+                Debug.LogWarning("Cannot find direction to target!");
                 break;
         }
         
     }
-    //Check direction to our squadLeader 
+
     TargetDirection GetTargetDirection()
     {
-        Vector3 right = HorTurret.transform.TransformDirection(transform.right);
+        //Vector3 right = HorTurret.transform.TransformDirection(transform.right);
+        Vector3 right = HorTurret.transform.right;
         //Vector3 toTarget = Vector3.Normalize(targetTrans.GetComponent<Collider>().bounds.center - transform.position);
         Vector3 toTarget = Vector3.Normalize(targetClosePoint - transform.position);
         float dot = Vector3.Dot(right, toTarget);
@@ -520,7 +523,8 @@ public class TurretBehaviour : MonoBehaviour
         else if(dot < -0.01)
             return TargetDirection.Left;
 
-        Vector3 forward = HorTurret.transform.TransformDirection(transform.forward);
+        //Vector3 forward = HorTurret.transform.TransformDirection(transform.forward);
+        Vector3 forward = HorTurret.transform.forward;
         dot = Vector3.Dot(forward, toTarget);
         if (dot > 0)
             return TargetDirection.Front;
